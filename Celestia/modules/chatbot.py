@@ -154,7 +154,7 @@ demote = ["demote"]
 
 
 @Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter)
-async def restriction_hiroko(celestia :Celestia, message):
+async def restriction_celestia(celestia :Celestia, message):
     reply = message.reply_to_message
     chat_id = message.chat.id
     if len(message.text) < 2:
@@ -193,13 +193,13 @@ async def restriction_hiroko(celestia :Celestia, message):
                     await message.reply(random.choice(strict_txt))
                 else:
                     permissions = ChatPermissions(can_send_messages=False)
-                    await celestia.set_chat_permissions(chat_id, user_id, permissions)
+                    await  message.chat.restrict_member(user_id, permissions)
                     await message.reply(f"muted successfully! Disgusting people.") 
         for unmuted in data:
             print(f"present {unmuted}")            
             if unmuted in unmute:
                 permissions = ChatPermissions(can_send_messages=True)
-                await celestia.set_chat_permissions(chat_id, user_id, permissions)
+                await message.chat.restrict_member(user_id, permissions)
                 await message.reply(f"Huh, OK, sir!")
 
 
