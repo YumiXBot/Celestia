@@ -1,23 +1,23 @@
 import os, time
 import openai
 from pyrogram import filters
-from Hiroko import Hiroko
+from Celestia import Celestia
 from pyrogram.enums import ChatAction, ParseMode
 
 
 
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 
 
 
-@Hiroko.on_message(filters.command(["chatgpt","ai","ask"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
-async def chat(hiroko :Hiroko, message):
+@Celestia.on_message(filters.command(["chatgpt","ai","ask"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
+async def chat(celestia :Celestia, message):
     
     try:
         start_time = time.time()
-        await hiroko.send_chat_action(message.chat.id, ChatAction.TYPING)
+        await celestia.send_chat_action(message.chat.id, ChatAction.TYPING)
         if len(message.command) < 2:
             await message.reply_text(
             "**ʜᴇʟʟᴏ sɪʀ**\n**ᴇxᴀᴍᴘʟᴇ:-**`.ask How to set girlfriend ?`")
