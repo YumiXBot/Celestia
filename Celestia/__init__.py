@@ -3,7 +3,6 @@ import logging
 import time
 from pyrogram import *
 from pytgcalls import PyTgCalls
-from motor.motor_asyncio import AsyncIOMotorClient as async_mongo
 from importlib import import_module
 from os import environ, getenv, listdir, path
 from dotenv import load_dotenv
@@ -23,8 +22,8 @@ logging.basicConfig(
 
 
 
-Hiroko = Client(
-    ":Hiroko:",
+Celestia = Client(
+    ":Celestia:",
     api_id=API_ID,
     api_hash=API_HASH,
     bot_token=config.BOT_TOKEN,
@@ -39,18 +38,16 @@ userbot = Client(
 
 pytgcalls = PyTgCalls(userbot)
 
-async_mongo_client = async_mongo(config.MONGO_URL)
-db = async_mongo_client.hiroko
 
 
 
 
-async def Hiroko_bot():
+async def Celestia_bot():
     global BOT_ID, BOT_NAME, BOT_USERNAME
-    await Hiroko.start()
+    await Celestia.start()
     await userbot.start()
     await pytgcalls.start()
-    getme = await Hiroko.get_me()
+    getme = await Celestia.get_me()
     BOT_ID = getme.id
     BOT_USERNAME = getme.username
     if getme.last_name:
@@ -59,6 +56,6 @@ async def Hiroko_bot():
         BOT_NAME = getme.first_name
 
 
-loop.run_until_complete(Hiroko_bot())
+loop.run_until_complete(Celestia_bot())
 
 
