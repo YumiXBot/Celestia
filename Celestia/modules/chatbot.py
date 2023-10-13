@@ -152,64 +152,8 @@ demote = ["demote"]
 
 # ========================================= #
 
-@Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter)
-async def restriction_celestia(celestia: Celestia, message):
-    chat_id = message.chat.id
-    text = message.text.split(maxsplit=1)[1]
-    data = text.split()
-
-    if len(data) < 2:
-        return await message.reply(random.choice(hiroko_text))
-
-    reply = message.reply_to_message
-    user_id = reply.from_user.id if reply else None
-
-    # Check if the bot has permissions to ban, kick, mute, etc.
-    bot_permissions = await celestia.get_chat_member(chat_id, celestia.me.id)
-    if not bot_permissions.can_restrict_members:
-        return await message.reply("I don't have the required permissions to perform these actions.")
-
-    admin_check = await celestia.get_chat_member(chat_id, message.from_user.id)
-    if not admin_check.privileges.can_restrict_members:
-        return await message.reply("You don't have the necessary permissions to perform these actions.")
-
-    for action in data[1:]:
-        print(f"present {action}")
-
-        if user_id is None:
-            if action.startswith('@'):
-                username = action[1:]
-                user = await celestia.get_users(username)
-                if user:
-                    user_id = user.id
-
-        if action in ban:
-            if user_id:
-                try:
-                    await celestia.ban_chat_member(chat_id, user_id)
-                    await message.reply("OK, banned!")
-                except Exception as e:
-                    await message.reply(f"Failed to ban the user: {e}")
-
-        # ... (other actions)
-
-        if action in unmute:
-            if user_id:
-                try:
-                    permissions = ChatPermissions(can_send_messages=True)
-                    await message.chat.restrict_member(user_id, permissions)
-                    await message.reply("Huh, OK, sir!")
-                except Exception as e:
-                    await message.reply(f"Failed to unmute the user: {e}")
 
 
-
-
-
-
-
-
-"""
 @Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter)
 async def restriction_celestia(celestia: Celestia, message):
     chat_id = message.chat.id
@@ -289,4 +233,4 @@ async def assist_celestia(celestia: Celestia, message):
             link = await userbot.export_chat_invite_link(chat_id)
             await celestia.send_message(message.chat.id, text=f"Here is your channel link: {link}")
 
-"""
+
