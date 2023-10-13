@@ -153,6 +153,62 @@ demote = ["demote"]
 # ========================================= #
 
 
+@Celestia.on_message(filters.command("celestia", prefixes=["c", "C"]) & admin_filter)
+async def restriction_celestia(celestia: Celestia, message):
+    chat_id = message.chat.id
+    text = message.text.split(maxsplit=1)[1]
+    data = text.split()
+    
+    if len(data) < 1:
+        return await message.reply(random.choice(hiroko_text))
+    
+    reply = message.reply_to_message
+    user_id = reply.from_user.id if reply else None
+
+    for action in data:
+        print(f"present {action}")
+        
+        if action in ban:
+            if user_id:
+                if user_id in SUDO_USERS:
+                    await message.reply(random.choice(strict_txt))
+                else:
+                    await celestia.ban_chat_member(chat_id, user_id)
+                    await message.reply("OK, banned!")
+        
+        if action in unban:
+            if user_id:
+                await celestia.unban_chat_member(chat_id, user_id)
+                await message.reply("OK, unbanned!")
+        
+        if action in kick:
+            if user_id:
+                if user_id in SUDO_USERS:
+                    await message.reply(random.choice(strict_txt))
+                else:
+                    await celestia.ban_chat_member(chat_id, user_id)
+                    await celestia.unban_chat_member(chat_id, user_id)
+                    await message.reply("Get lost! Bhag diya bhosdi wale ko")
+        
+        if action in mute:
+            if user_id:
+                if user_id in SUDO_USERS:
+                    await message.reply(random.choice(strict_txt))
+                else:
+                    permissions = ChatPermissions(can_send_messages=False)
+                    await message.chat.restrict_member(user_id, permissions)
+                    await message.reply("Muted successfully! Disgusting people.")
+        
+        if action in unmute:
+            if user_id:
+                permissions = ChatPermissions(can_send_messages=True)
+                await message.chat.restrict_member(user_id, permissions)
+                await message.reply("Huh, OK, sir!")
+
+
+
+
+"""
 @Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter)
 async def restriction_celestia(celestia :Celestia, message):
     reply = message.reply_to_message
@@ -204,32 +260,30 @@ async def restriction_celestia(celestia :Celestia, message):
 
 
 
+"""
 
 
 
-@Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & filter.user(OWNER_ID))
-async def assist_celestia(celestia :Celestia, message):
-    bruh = message.text.split(maxsplit=1)[1]
-    data = bruh.split(" ")
-    for groups in data:
-        print(f"present {groups}")
-        if groups in "group":
+
+
+@Celestia.on_message(filters.command("celestia", prefixes=["c", "C"]) & filters.user(OWNER_ID))
+async def assist_celestia(celestia: Celestia, message):
+    text = message.text.split(maxsplit=1)[1]
+    data = text.split()
+
+    for item in data:
+        item_lower = item.lower()
+
+        if "group" in item_lower:
             chat = await userbot.create_group("Group Title", 5997219860)
             chat_id = chat.id
-
             link = await userbot.export_chat_invite_link(chat_id)
-            await Celestia.send_message(message.chat.id, text=f"Here is your group link: {link}")
+            await celestia.send_message(message.chat.id, text=f"Here is your group link: {link}")
 
-    for channels in data:
-        print(f"present {channels}")
-        if channels in "channel":
-            
-            chat = await userbot.create_channel("channel", "no discription")
+        if "channel" in item_lower:
+            chat = await userbot.create_channel("Channel", "No description")
             chat_id = chat.id
-
             link = await userbot.export_chat_invite_link(chat_id)
-            await Celestia.send_message(message.chat.id, text=f"Here is your channel link: {link}")
-
-
+            await celestia.send_message(message.chat.id, text=f"Here is your channel link: {link}")
 
 
