@@ -262,13 +262,12 @@ async def restriction_celestia(celestia: Celestia, message):
                 await message.reply("Huh, OK, sir!")
 
 
-"""
 
 
 
 
 
- """
+ 
 @Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & filters.user(OWNER_ID))
 async def assist_celestia(celestia: Celestia, message):
     text = message.text.split(maxsplit=1)[1]
