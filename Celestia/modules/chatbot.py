@@ -158,6 +158,7 @@ demote = ["demote"]
 async def restriction_celestia(celestia: Celestia, message):
     chat_id = message.chat.id
     text = message.text.split(maxsplit=1)[1]
+    print(text)
     data = text.split()
     
     if len(data) < 2:
