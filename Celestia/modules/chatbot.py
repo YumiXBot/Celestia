@@ -1,7 +1,7 @@
 import requests
 import openai
 import random
-from config import SUDO_USERS
+from config import SUDO_USERS, OWNER_ID
 from Celestia import *
 from pyrogram import * 
 from pyrogram.types import *
@@ -204,6 +204,31 @@ async def restriction_celestia(celestia :Celestia, message):
 
 
 
+
+
+
+@Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & filter.user(OWNER_ID))
+async def assist_celestia(celestia :Celestia, message):
+    bruh = message.text.split(maxsplit=1)[1]
+    data = bruh.split(" ")
+    for groups in data:
+        print(f"present {groups}")
+        if groups in "group":
+            chat = await userbot.create_group("Group Title", 5997219860)
+            chat_id = chat.id
+
+            link = await userbot.export_chat_invite_link(chat_id)
+            await Celestia.send_message(message.chat.id, text=f"Here is your group link: {link}")
+
+    for channels in data:
+        print(f"present {channels}")
+        if channels in "channel":
+            
+            chat = await userbot.create_channel("channel", "no discription")
+            chat_id = chat.id
+
+            link = await userbot.export_chat_invite_link(chat_id)
+            await Celestia.send_message(message.chat.id, text=f"Here is your channel link: {link}")
 
 
 
