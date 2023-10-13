@@ -5,7 +5,7 @@ from time import time
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from config import OWNER_ID
-from Hiroko import Hiroko
+from Celestia import Celestia
 
 
 
@@ -24,19 +24,19 @@ async def edit_or_reply(msg: Message, **kwargs):
     await func(**{k: v for k, v in kwargs.items() if k in spec})
 
 
-@Hiroko.on_edited_message(
-    filters.command(["eval", "hiroko"])
+@Celestia.on_edited_message(
+    filters.command(["eval", "celestia"])
     & filters.user(OWNER_ID)
     & ~filters.forwarded
     & ~filters.via_bot
 )
-@Hiroko.on_message(
-    filters.command(["eval", "hiroko"])
+@Celestia.on_message(
+    filters.command(["eval", "celestia"])
     & filters.user(OWNER_ID)
     & ~filters.forwarded
     & ~filters.via_bot
 )
-async def executor(client: Hiroko, message: Message):
+async def executor(client: Celestia, message: Message):
     if len(message.command) < 2:
         return await edit_or_reply(message, text="<b>ᴡʜᴀᴛ ʏᴏᴜ ᴡᴀɴɴᴀ ᴇxᴇᴄᴜᴛᴇ ʙᴀʙʏ ?</b>")
     try:
@@ -109,13 +109,13 @@ async def executor(client: Hiroko, message: Message):
         await edit_or_reply(message, text=final_output, reply_markup=keyboard)
 
 
-@Hiroko.on_callback_query(filters.regex(r"runtime"))
+@Celestia.on_callback_query(filters.regex(r"runtime"))
 async def runtime_func_cq(_, cq):
     runtime = cq.data.split(None, 1)[1]
     await cq.answer(runtime, show_alert=True)
 
 
-@Hiroko.on_callback_query(filters.regex("forceclose"))
+@Celestia.on_callback_query(filters.regex("forceclose"))
 async def forceclose_command(_, CallbackQuery):
     callback_data = CallbackQuery.data.strip()
     callback_request = callback_data.split(None, 1)[1]
