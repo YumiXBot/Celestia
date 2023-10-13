@@ -6,7 +6,7 @@ from Celestia import *
 from pyrogram import * 
 from pyrogram.types import *
 from Celestia.Helper.database import *
-from pyrogram.enums import ChatMemberStatus, ChatType
+from pyrogram.enums import ChatMemberStatus, ChatType, ChatPermissions
 from Celestia.Helper.cust_p_filters import admin_filter
 
 
@@ -152,7 +152,7 @@ demote = ["demote"]
 
 # ========================================= #
 
-from pyrogram import ChatPermissions
+
 
 @Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter)
 async def restriction_celestia(celestia: Celestia, message):
@@ -171,6 +171,11 @@ async def restriction_celestia(celestia: Celestia, message):
     if not bot_permissions.can_restrict_members:
         return await message.reply("I don't have the required permissions to perform these actions.")
 
+    # Check if the user invoking the command is an admin with restriction powers
+    user_permissions = await celestia.get_chat_member(chat_id, message.from_user.id)
+    if not user_permissions.status in ["creator", "administrator"] or not user_permissions.can_restrict_members:
+        return await message.reply("You don't have the necessary permissions to perform these actions.")
+
     for action in data[1:]:
         print(f"present {action}")
 
@@ -183,14 +188,11 @@ async def restriction_celestia(celestia: Celestia, message):
 
         if action in ban:
             if user_id:
-                if user_id in SUDO_USERS:
-                    await message.reply(random.choice(strict_txt))
-                else:
-                    try:
-                        await celestia.ban_chat_member(chat_id, user_id)
-                        await message.reply("OK, banned!")
-                    except Exception as e:
-                        await message.reply(f"Failed to ban the user: {e}")
+                try:
+                    await celestia.ban_chat_member(chat_id, user_id)
+                    await message.reply("OK, banned!")
+                except Exception as e:
+                    await message.reply(f"Failed to ban the user: {e}")
 
         # ... (other actions)
 
@@ -202,6 +204,7 @@ async def restriction_celestia(celestia: Celestia, message):
                     await message.reply("Huh, OK, sir!")
                 except Exception as e:
                     await message.reply(f"Failed to unmute the user: {e}")
+
 
 
 
