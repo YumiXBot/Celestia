@@ -2,13 +2,13 @@ import requests
 import openai
 import random
 from config import SUDO_USERS
-from Hiroko import *
+from Celestia import *
 from pyrogram import * 
 from pyrogram.types import *
-from Hiroko.Helper.database import *
+from Celestia.Helper.database import *
 from pyrogram.enums import ChatMemberStatus, ChatType
-from Hiroko.Helper.cust_p_filters import admin_filter
-from lexica import Client
+from Celestia.Helper.cust_p_filters import admin_filter
+
 
 
 
@@ -72,11 +72,11 @@ def get_response(user_id, query):
 
 # ========================================= #
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 completion = openai.Completion()
 
-start_sequence = "\nHiroko:"
+start_sequence = "\nCelestia:"
 restart_sequence = "\nPerson:"
 session_prompt = chatbot_txt
 session = {}
@@ -110,8 +110,8 @@ def append_interaction_to_chat_log(question, answer, chat_log=None):
 
 
 
-@Hiroko.on_message(filters.text, group=200)
-async def chatbot_reply(hiroko: Hiroko, message):
+@Celestia.on_message(filters.text, group=200)
+async def chatbot_reply(celestia: Celestia, message):
     bot_id = 6632922889
     reply = message.reply_to_message
     if reply and reply.from_user.id == bot_id:
@@ -153,8 +153,8 @@ demote = ["demote"]
 # ========================================= #
 
 
-@Hiroko.on_message(filters.command("iroko", prefixes=["h", "H"]) & admin_filter)
-async def restriction_hiroko(hiroko :Hiroko, message):
+@Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter)
+async def restriction_hiroko(celestia :Celestia, message):
     reply = message.reply_to_message
     chat_id = message.chat.id
     if len(message.text) < 2:
@@ -170,12 +170,12 @@ async def restriction_hiroko(hiroko :Hiroko, message):
                 if user_id in SUDO_USERS:
                     await message.reply(random.choice(strict_txt))
                 else:
-                    await hiroko.ban_chat_member(chat_id, user_id)
+                    await celestia.ban_chat_member(chat_id, user_id)
                     await message.reply("OK, banned!")
         for unbanned in data:
             print(f"present {unbanned}")
             if unbanned in unban:
-                await hiroko.unban_chat_member(chat_id, user_id)
+                await celestia.unban_chat_member(chat_id, user_id)
                 await message.reply(f"OK, unbanned!") 
         for kicked in data:
             print(f"present {kicked}")
@@ -183,8 +183,8 @@ async def restriction_hiroko(hiroko :Hiroko, message):
                 if user_id in SUDO_USERS:
                     await message.reply(random.choice(strict_txt))
                 else:
-                    await hiroko.ban_chat_member(chat_id, user_id)
-                    await hiroko.unban_chat_member(chat_id, user_id)
+                    await celestia.ban_chat_member(chat_id, user_id)
+                    await celestia.unban_chat_member(chat_id, user_id)
                     await message.reply("get lost! bhga diya bhosdi wale ko") 
         for muted in data:
             print(f"present {muted}") 
@@ -193,13 +193,13 @@ async def restriction_hiroko(hiroko :Hiroko, message):
                     await message.reply(random.choice(strict_txt))
                 else:
                     permissions = ChatPermissions(can_send_messages=False)
-                    await hiroko.set_chat_permissions(chat_id, user_id, permissions)
+                    await celestia.set_chat_permissions(chat_id, user_id, permissions)
                     await message.reply(f"muted successfully! Disgusting people.") 
         for unmuted in data:
             print(f"present {unmuted}")            
             if unmuted in unmute:
                 permissions = ChatPermissions(can_send_messages=True)
-                await hiroko.set_chat_permissions(chat_id, user_id, permissions)
+                await celestia.set_chat_permissions(chat_id, user_id, permissions)
                 await message.reply(f"Huh, OK, sir!")
 
 
