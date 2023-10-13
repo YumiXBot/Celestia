@@ -1,1 +1,1 @@
-worker: python -m Hiroko
+worker: python -m Celestia
