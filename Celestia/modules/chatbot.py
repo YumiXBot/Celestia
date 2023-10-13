@@ -191,9 +191,6 @@ async def restriction_celestia(celestia :Celestia, message):
             if muted in mute:
                 if user_id in SUDO_USERS:
                     await message.reply(random.choice(strict_txt))
-                if user_id in "5997219860":
-                    await message.reply("fuck u")
-                    
                 else:
                     permissions = ChatPermissions(can_send_messages=False)
                     await  message.chat.restrict_member(user_id, permissions)
