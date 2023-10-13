@@ -160,7 +160,7 @@ async def restriction_celestia(celestia: Celestia, message):
     text = message.text.split(maxsplit=1)[1]
     data = text.split()
     
-    if len(data) < 1:
+    if len(data) < 2:
         return await message.reply(random.choice(hiroko_text))
     
     reply = message.reply_to_message
