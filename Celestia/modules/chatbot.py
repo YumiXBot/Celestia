@@ -153,7 +153,7 @@ demote = ["demote"]
 # ========================================= #
 
 
-@Celestia.on_message(filters.command("celestia", prefixes=["c", "C"]) & admin_filter)
+@Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter)
 async def restriction_celestia(celestia: Celestia, message):
     chat_id = message.chat.id
     text = message.text.split(maxsplit=1)[1]
@@ -208,65 +208,12 @@ async def restriction_celestia(celestia: Celestia, message):
 
 
 
-"""
-@Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter)
-async def restriction_celestia(celestia :Celestia, message):
-    reply = message.reply_to_message
-    chat_id = message.chat.id
-    if len(message.text) < 2:
-        return await message.reply(random.choice(hiroko_text))
-    bruh = message.text.split(maxsplit=1)[1]
-    data = bruh.split(" ")
-    
-    if reply:
-        user_id = reply.from_user.id
-        for banned in data:
-            print(f"present {banned}")
-            if banned in ban:
-                if user_id in SUDO_USERS:
-                    await message.reply(random.choice(strict_txt))
-                else:
-                    await celestia.ban_chat_member(chat_id, user_id)
-                    await message.reply("OK, banned!")
-        for unbanned in data:
-            print(f"present {unbanned}")
-            if unbanned in unban:
-                await celestia.unban_chat_member(chat_id, user_id)
-                await message.reply(f"OK, unbanned!") 
-        for kicked in data:
-            print(f"present {kicked}")
-            if kicked in kick:
-                if user_id in SUDO_USERS:
-                    await message.reply(random.choice(strict_txt))
-                else:
-                    await celestia.ban_chat_member(chat_id, user_id)
-                    await celestia.unban_chat_member(chat_id, user_id)
-                    await message.reply("get lost! bhga diya bhosdi wale ko") 
-        for muted in data:
-            print(f"present {muted}") 
-            if muted in mute:
-                if user_id in SUDO_USERS:
-                    await message.reply(random.choice(strict_txt))
-                else:
-                    permissions = ChatPermissions(can_send_messages=False)
-                    await  message.chat.restrict_member(user_id, permissions)
-                    await message.reply(f"muted successfully! Disgusting people.") 
-        for unmuted in data:
-            print(f"present {unmuted}")            
-            if unmuted in unmute:
-                permissions = ChatPermissions(can_send_messages=True)
-                await message.chat.restrict_member(user_id, permissions)
-                await message.reply(f"Huh, OK, sir!")
-
-
-
-"""
 
 
 
 
 
-@Celestia.on_message(filters.command("celestia", prefixes=["c", "C"]) & filters.user(OWNER_ID))
+@Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & filters.user(OWNER_ID))
 async def assist_celestia(celestia: Celestia, message):
     text = message.text.split(maxsplit=1)[1]
     data = text.split()
