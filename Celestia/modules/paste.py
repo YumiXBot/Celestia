@@ -1,7 +1,7 @@
 import re, os, socket, aiofiles, aiohttp, asyncio
 from asyncio import get_running_loop
 from functools import partial
-from Hiroko import Hiroko 
+from Celestia import Celestia
 from pyrogram import filters
 from pyrogram.types import *
 from pykeyboard import InlineKeyboard
@@ -50,7 +50,7 @@ async def isPreviewUp(preview: str) -> bool:
     return False
 
 
-@Hiroko.on_message(filters.command("paste"))
+@Celestia.on_message(filters.command("paste"))
 async def paste_func(_, message):
     if not message.reply_to_message:
         return await message.reply_text("**ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴍᴇssᴀɢᴇ ᴡɪᴛʜ /paste**")
