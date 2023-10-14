@@ -1,13 +1,13 @@
 import base64
 import httpx
-from Hiroko import Hiroko
+from Celestia import Celestia
 from pyrogram import filters
 import pyrogram
 from uuid import uuid4
 from pyrogram.types import InlineKeyboardButton,InlineKeyboardMarkup
 
 
-@Hiroko.on_message(filters.reply & filters.command("upscale"))
+@Celestia.on_message(filters.reply & filters.command("upscale"))
 async def upscale_image(client, message):
     try:
         if not message.reply_to_message or not message.reply_to_message.photo:
@@ -44,8 +44,8 @@ async def upscale_image(client, message):
 
 
 
-@Hiroko.on_message(filters.command("packkang"))
-async def _packkang(hiroko :Hiroko,message):  
+@Celestia.on_message(filters.command("packkang"))
+async def _packkang(celestia :Celestia ,message):  
     txt = await message.reply_text("**ᴘʀᴏᴄᴇssɪɴɢ....**")
     if not message.reply_to_message:
         await txt.edit('ʀᴇᴘʟʏ ᴛᴏ ᴍᴇssᴀɢᴇ')
@@ -60,7 +60,7 @@ async def _packkang(hiroko :Hiroko,message):
     else :
         pack_name = message.text.split(maxsplit=1)[1]
     short_name = message.reply_to_message.sticker.set_name
-    stickers = await hiroko.invoke(
+    stickers = await celestia.invoke(
         pyrogram.raw.functions.messages.GetStickerSet(
             stickerset=pyrogram.raw.types.InputStickerSetShortName(
                 short_name=short_name),
@@ -83,9 +83,9 @@ async def _packkang(hiroko :Hiroko,message):
         )
 
     try:
-        short_name = f'stikcer_pack_{str(uuid4()).replace("-","")}_by_{hiroko.me.username}'
-        user_id = await hiroko.resolve_peer(message.from_user.id)
-        await hiroko.invoke(
+        short_name = f'stikcer_pack_{str(uuid4()).replace("-","")}_by_{celestia.me.username}'
+        user_id = await celestia.resolve_peer(message.from_user.id)
+        await celestia.invoke(
             pyrogram.raw.functions.stickers.CreateStickerSet(
                 user_id=user_id,
                 title=pack_name,
@@ -99,8 +99,8 @@ async def _packkang(hiroko :Hiroko,message):
 
 
 
-@Hiroko.on_message(filters.command(["stickerid","stid"]))
-async def sticker_id(Hiroko: Hiroko, msg):
+@Celestia.on_message(filters.command(["stickerid","stid"]))
+async def sticker_id(celestia: Celestia, msg):
     if not msg.reply_to_message:
         await msg.reply_text("Reply to a sticker")        
     elif not msg.reply_to_message.sticker:
