@@ -1,6 +1,6 @@
 import os, wget, asyncio, speedtest
 from PIL import Image
-from Hiroko import Hiroko
+from Celestia import Celestia
 from pyrogram.types import Message
 from pyrogram import filters
 
@@ -23,7 +23,7 @@ def testspeed(m):
 
 # ------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command(["speedtest"], prefixes=["/", "!"]))
+@Celestia.on_message(filters.command(["speedtest"], prefixes=["/", "!"]))
 async def speedtest_function(_, message):
     m = await message.reply_text("💫 ᴛʀʏɪɴɢ ᴛᴏ ᴄʜᴇᴄᴋ ᴜᴩʟᴏᴀᴅ ᴀɴᴅ ᴅᴏᴡɴʟᴏᴀᴅ sᴩᴇᴇᴅ...")
     loop = asyncio.get_event_loop()
@@ -40,7 +40,7 @@ async def speedtest_function(_, message):
 **⊚ sᴩᴏɴsᴏʀ :** {result['server']['sponsor']}
 **⊚ ʟᴀᴛᴇɴᴄʏ :** {result['server']['latency']}  
 **⊚ ᴩɪɴɢ :** {result['ping']}"""
-    msg = await Hiroko.send_photo(
+    msg = await Celestia.send_photo(
         chat_id=message.chat.id, 
         photo=result["share"], 
         caption=output
