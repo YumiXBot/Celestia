@@ -1,12 +1,12 @@
 from pyrogram import filters
 from pyrogram.types import Message
-from Hiroko.Helper.database import *
-from Hiroko import Hiroko
+from Celestia.Helper.database import *
+from Celestia import Celestia
 
 
 
 
-@Hiroko.on_message(filters.group & ~filters.bot & ~filters.via_bot, group=69)
+@Celestia.on_message(filters.group & ~filters.bot & ~filters.via_bot, group=69)
 async def chk_usr(_, message: Message):
     if message.sender_chat or not await check_imposter(message.chat.id):
         return
@@ -89,7 +89,7 @@ async def chk_usr(_, message: Message):
         await message.reply_photo("https://graph.org//file/a5f944533dcaccfaf2567.jpg", caption=msg)
 
 
-@Hiroko.on_message(filters.group & filters.command("imposter") & ~filters.bot & ~filters.via_bot)
+@Celestia.on_message(filters.group & filters.command("imposter") & ~filters.bot & ~filters.via_bot)
 async def set_mataa(_, message: Message):
     if len(message.command) == 1:
         return await message.reply("**ᴅᴇᴛᴇᴄᴛ ɪᴍᴘᴏsᴛᴇʀ ᴜsᴇʀs ᴜsᴀɢᴇ : ɪᴍᴘᴏsᴛᴇʀ ᴏɴ|ᴏғғ**")
