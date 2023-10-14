@@ -2,14 +2,14 @@ import time, re
 from config import BOT_USERNAME
 from pyrogram.enums import MessageEntityType
 from pyrogram import filters
-from Hiroko.modules.ping import get_readable_time
+from Celestia.modules.ping import get_readable_time
 from pyrogram.types import Message
-from Hiroko import Hiroko
-from Hiroko.Helper.database import *
+from Celestia import Celestia
+from Celestia.Helper.database import *
 
 
 
-@Hiroko.on_message(filters.command(["afk", "brb"], prefixes=["/", "!"]))
+@Celestia.on_message(filters.command(["afk", "brb"], prefixes=["/", "!"]))
 async def active_afk(_, message: Message):
     if message.sender_chat:
         return
@@ -94,7 +94,7 @@ async def active_afk(_, message: Message):
             "reason": _reason,
         }
     elif len(message.command) == 1 and message.reply_to_message.photo:
-        await Hiroko.download_media(
+        await Celestia.download_media(
             message.reply_to_message, file_name=f"{user_id}.jpg"
         )
         details = {
@@ -104,7 +104,7 @@ async def active_afk(_, message: Message):
             "reason": None,
         }
     elif len(message.command) > 1 and message.reply_to_message.photo:
-        await Hiroko.download_media(
+        await Celestia.download_media(
             message.reply_to_message, file_name=f"{user_id}.jpg"
         )
         _reason = message.text.split(None, 1)[1].strip()
@@ -123,7 +123,7 @@ async def active_afk(_, message: Message):
                 "reason": None,
             }
         else:
-            await Hiroko.download_media(
+            await Celestia.download_media(
                 message.reply_to_message, file_name=f"{user_id}.jpg"
             )
             details = {
@@ -142,7 +142,7 @@ async def active_afk(_, message: Message):
                 "reason": _reason,
             }
         else:
-            await Hiroko.download_media(
+            await Celestia.download_media(
                 message.reply_to_message, file_name=f"{user_id}.jpg"
             )
             details = {
@@ -168,7 +168,7 @@ async def active_afk(_, message: Message):
 chat_watcher_group = 1
 
 
-@Hiroko.on_message(
+@Celestia.on_message(
     ~filters.me & ~filters.bot & ~filters.via_bot,
     group=chat_watcher_group,
 )
