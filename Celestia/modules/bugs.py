@@ -2,7 +2,7 @@ from datetime import datetime
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, CallbackQuery
 from config import OWNER_ID as owner_id
-from Hiroko import Hiroko
+from Celestia import Celestia
 
 
 
@@ -20,7 +20,7 @@ def content(msg: Message) -> [None, str]:
         return None
 
 
-@Hiroko.on_message(filters.command("bug"))
+@Celestia.on_message(filters.command("bug"))
 async def bugs(_, msg: Message):
     if msg.chat.username:
         chat_username = f"@{msg.chat.username}/`{msg.chat.id}`"
@@ -69,7 +69,7 @@ async def bugs(_, msg: Message):
                     [[InlineKeyboardButton("⌯ ᴄʟᴏsᴇ ⌯", callback_data="close_data")]]
                 ),
             )
-            await Hiroko.send_photo(
+            await Celestia.send_photo(
                 -1001946875647,
                 photo="https://telegra.ph/file/f66e5843568d4b7f2a652.jpg",
                 caption=f"{bug_report}",
@@ -92,9 +92,9 @@ async def bugs(_, msg: Message):
 
 
 
-@Hiroko.on_callback_query(filters.regex("close_send_photo"))
+@Celestia.on_callback_query(filters.regex("close_send_photo"))
 async def close_send_photo(_,  query :CallbackQuery):
-    is_admin = await Hiroko.get_chat_member(query.message.chat.id, query.from_user.id)
+    is_admin = await Celestia.get_chat_member(query.message.chat.id, query.from_user.id)
     if not is_admin.privileges.can_delete_messages:
         await query.answer("ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛs ᴛᴏ ᴄʟᴏsᴇ ᴛʜɪs.", show_alert=True)
     else:
