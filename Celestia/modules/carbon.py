@@ -1,6 +1,6 @@
 import aiohttp
 from io import BytesIO
-from Hiroko import Hiroko
+from Celestia import Celestia
 from pyrogram import filters
 from config import COMMAND_HANDLER
 
@@ -16,7 +16,7 @@ async def make_carbon(code):
 
 
 
-@Hiroko.on_message(filters.command("carbon", COMMAND_HANDLER))
+@Celestia.on_message(filters.command("carbon", COMMAND_HANDLER))
 async def _carbon(client, message):
     replied = message.reply_to_message
     if not replied:
