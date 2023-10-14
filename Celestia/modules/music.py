@@ -2,19 +2,19 @@ import os, aiofiles, aiohttp, ffmpeg, random, textwrap, re
 import numpy as np
 import requests
 from os import path
-from Hiroko import Hiroko, pytgcalls, userbot
+from Celestia import Celestia, pytgcalls, userbot
 from typing import Callable
 from pyrogram import filters, Client
 from pyrogram.types import *
-from Hiroko.Helper.cust_p_filters import admin_filter
+from Celestia.Helper.cust_p_filters import admin_filter
 from youtube_search import YoutubeSearch
 from asyncio.queues import QueueEmpty
 from PIL import ImageGrab
 from PIL import Image, ImageFont, ImageDraw, ImageFilter
 from pyrogram.errors import UserAlreadyParticipant
-from Hiroko.Helper.requirements import get_url, get_file_name, converter, downloader, admins as a, set_admins as set
-from Hiroko.Helper import requirements as rq
-from Hiroko.Helper.errors import DurationLimitError
+from Celestia.Helper.requirements import get_url, get_file_name, converter, downloader, admins as a, set_admins as set
+from Celestia.Helper import requirements as rq
+from Celestia.Helper.errors import DurationLimitError
 from pytgcalls import StreamType
 from pytgcalls.types import Update
 from pytgcalls.types.input_stream import InputStream
@@ -188,7 +188,7 @@ async def generate_cover(requested_by, title, views, duration, thumbnail):
 # --------------------------------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.command(["yt", "play"], prefixes=["!"]))
+@Celestia.on_message(filters.command(["yt", "play"], prefixes=["!"]))
 async def play(_, message: Message):
     global que
     global useer
@@ -339,7 +339,7 @@ async def play(_, message: Message):
 # --------------------------------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.command(["skip", "next"], prefixes=["/", "!"]) & admin_filter)
+@Celestia.on_message(filters.command(["skip", "next"], prefixes=["/", "!"]) & admin_filter)
 async def skip(_, message: Message):    
     ACTV_CALLS = []
     chat_id = message.chat.id
@@ -388,22 +388,22 @@ async def on_stream_end(_, update: Update) -> None:
 # --------------------------------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.video_chat_started)
+@Celestia.on_message(filters.video_chat_started)
 async def brah(_, msg):
        await msg.reply("**ᴠᴏɪᴄᴇ ᴄʜᴀᴛ sᴛᴀʀᴛᴇᴅ**")
 
 
 # --------------------------------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.video_chat_ended)
+@Celestia.on_message(filters.video_chat_ended)
 async def brah2(_, msg):
        await msg.reply("**ᴠᴏɪᴄᴇ ᴄʜᴀᴛ ᴇɴᴅᴇᴅ**")
 
 
 # --------------------------------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.video_chat_members_invited)
-async def fuckoff(hiroko :Hiroko, message:Message):
+@Celestia.on_message(filters.video_chat_members_invited)
+async def fuckoff(celestia :Celestia, message:Message):
            text = f"{message.from_user.mention} ɪɴᴠɪᴛᴇᴅ "
            x = 0
            for user in message.video_chat_members_invited.users:
@@ -421,10 +421,10 @@ async def fuckoff(hiroko :Hiroko, message:Message):
 # --------------------------------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.command("join"))
+@Celestia.on_message(filters.command("join"))
 async def join_userbot(_,msg:Message):
   chat_id = msg.chat.id
-  invitelink = await Hiroko.export_chat_invite_link(chat_id)
+  invitelink = await Celestia.export_chat_invite_link(chat_id)
   await userbot.join_chat(invitelink)
   await msg.reply("**ᴀssɪsᴛᴀɴᴛ sᴜᴄᴄᴇssғᴜʟʟʏ ᴊᴏɪɴ.**")
 
@@ -432,7 +432,7 @@ async def join_userbot(_,msg:Message):
 # --------------------------------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.command(["pause"], prefixes=["/", "!"]))    
+@Celestia.on_message(filters.command(["pause"], prefixes=["/", "!"]))    
 async def pause(_, msg: Message):
     chat_id = msg.chat.id
     if str(chat_id) in str(pytgcalls.active_calls):
@@ -444,7 +444,7 @@ async def pause(_, msg: Message):
 # --------------------------------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.command(["resume"], prefixes=["/", "!"]))    
+@Celestia.on_message(filters.command(["resume"], prefixes=["/", "!"]))    
 async def resume(_, msg: Message):
     chat_id = msg.chat.id
     if str(chat_id) in str(pytgcalls.active_calls):
@@ -457,7 +457,7 @@ async def resume(_, msg: Message):
 # --------------------------------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.command(["end"], prefixes=["/", "!"]))    
+@Celestia.on_message(filters.command(["end"], prefixes=["/", "!"]))    
 async def stop(_, msg: Message):
     chat_id = msg.chat.id
     if str(chat_id) in str(pytgcalls.active_calls):
@@ -470,7 +470,7 @@ async def stop(_, msg: Message):
 # --------------------------------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.command(["leavevc"], prefixes=["/", "!"]))    
+@Celestia.on_message(filters.command(["leavevc"], prefixes=["/", "!"]))    
 async def leavevc(_, msg: Message):
     chat_id = msg.chat.id
     await pytgcalls.leave_group_call(chat_id)
@@ -480,7 +480,7 @@ async def leavevc(_, msg: Message):
 # --------------------------------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.command("volume", prefixes="/"))
+@Celestia.on_message(filters.command("volume", prefixes="/"))
 async def change_volume(client, message):
     chat_id = message.chat.id
     args = message.text.split()
@@ -498,7 +498,7 @@ async def change_volume(client, message):
 
 
 
-@Hiroko.on_callback_query(filters.regex("music_skip"))
+@Celestia.on_callback_query(filters.regex("music_skip"))
 async def callback_skip(_, query : CallbackQuery):    
     ACTV_CALLS = []
     chat_id = query.message.chat.id
@@ -525,7 +525,7 @@ async def callback_skip(_, query : CallbackQuery):
 # --------------------------------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_callback_query(filters.regex("music_pause"))
+@Celestia.on_callback_query(filters.regex("music_pause"))
 async def callback_pause(_, query : CallbackQuery):
     chat_id = query.message.chat.id
     if str(chat_id) in str(pytgcalls.active_calls):
@@ -537,7 +537,7 @@ async def callback_pause(_, query : CallbackQuery):
 # --------------------------------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_callback_query(filters.regex("music_resume"))
+@Celestia.on_callback_query(filters.regex("music_resume"))
 async def callback_resume(_, query : CallbackQuery):
     chat_id = query.message.chat.id
     if str(chat_id) in str(pytgcalls.active_calls):
@@ -550,7 +550,7 @@ async def callback_resume(_, query : CallbackQuery):
 # --------------------------------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_callback_query(filters.regex("music_end"))
+@Celestia.on_callback_query(filters.regex("music_end"))
 async def callback_end(_, query : CallbackQuery):
     chat_id = query.message.chat.id
     if str(chat_id) in str(pytgcalls.active_calls):
@@ -562,7 +562,7 @@ async def callback_end(_, query : CallbackQuery):
 
 # --------------------------------------------------------------------------------------------------------- #
 
-@Hiroko.on_callback_query(filters.regex("music_volume"))
+@Celestia.on_callback_query(filters.regex("music_volume"))
 async def volume_sec(_, query : CallbackQuery):
     results = YoutubeSearch(query, max_results=1).to_dict()
     url = f"https://youtube.com{results[0]['url_suffix']}"            
@@ -573,25 +573,25 @@ async def volume_sec(_, query : CallbackQuery):
                   
 # --------------------------------------------------------------------------------------------------------- #
 
-@Hiroko.on_callback_query(filters.regex("volume_50"))
+@Celestia.on_callback_query(filters.regex("volume_50"))
 async def volume_50(_, query : CallbackQuery):
     chat_id = query.message.chat.id
     await pytgcalls.change_volume_call(chat_id, 50)
     await query.answer("sᴜᴄᴄᴇssғᴜʟʟʏ ᴠᴏʟᴜᴍᴇ sᴇᴛ ᴛᴏ 50%")
     
-@Hiroko.on_callback_query(filters.regex("volume_100"))
+@Celestia.on_callback_query(filters.regex("volume_100"))
 async def volume_100(_, query : CallbackQuery):
     chat_id = query.message.chat.id
     await pytgcalls.change_volume_call(chat_id, 100)
     await query.answer("sᴜᴄᴄᴇssғᴜʟʟʏ ᴠᴏʟᴜᴍᴇ sᴇᴛ ᴛᴏ 100%")
 
-@Hiroko.on_callback_query(filters.regex("volume_150"))
+@Celestia.on_callback_query(filters.regex("volume_150"))
 async def volume_150(_, query : CallbackQuery):
     chat_id = query.message.chat.id
     await pytgcalls.change_volume_call(chat_id, 150)
     await query.answer("sᴜᴄᴄᴇssғᴜʟʟʏ ᴠᴏʟᴜᴍᴇ sᴇᴛ ᴛᴏ 150%")
 
-@Hiroko.on_callback_query(filters.regex("volume_200"))
+@Celestia.on_callback_query(filters.regex("volume_200"))
 async def volume_200(_, query : CallbackQuery):
     chat_id = query.message.chat.id
     await pytgcalls.change_volume_call(chat_id, 200)
@@ -601,8 +601,8 @@ async def volume_200(_, query : CallbackQuery):
 # --------------------------------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.command("activevoice", prefixes="/"))
-async def active_voice(hiroko :Hiroko, message):
+@Celestia.on_message(filters.command("activevoice", prefixes="/"))
+async def active_voice(celestia :Celestia, message):
     mystic = await message.reply(
         "Fetching active voice chats... Please wait."
     )
@@ -611,7 +611,7 @@ async def active_voice(hiroko :Hiroko, message):
     
     for j, chat_id in enumerate(served_chats, start=1):
         try:
-            entity = await hiroko.get_chat(chat_id)
+            entity = await celestia.get_chat(chat_id)
             title = entity.title if entity.title else "Private Group"
             if entity.username:
                 text += f"{j}. [{title}](https://t.me/{entity.username}) [`{chat_id}`]\n"
