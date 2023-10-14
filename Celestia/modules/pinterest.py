@@ -1,12 +1,12 @@
 import requests
 from requests import get 
-from Hiroko import Hiroko
+from Celestia import Celestia
 from pyrogram import filters
 from pyrogram.types import InputMediaPhoto
 
 
 
-@Hiroko.on_message(filters.command(["image", "generate", "photo"]))
+@Celestia.on_message(filters.command(["image", "generate", "photo"]))
 async def pinterest(_, message):
      chat_id = message.chat.id
 
@@ -29,7 +29,7 @@ async def pinterest(_, message):
 
      try:
         
-        await Hiroko.send_media_group(
+        await Celestia.send_media_group(
                 chat_id=chat_id, 
                 media=media_group,
                 reply_to_message_id=message.id)
@@ -44,7 +44,7 @@ async def pinterest(_, message):
 
 
 
-@Hiroko.on_message(filters.command(["chichi"]))
+@Celestia.on_message(filters.command(["chichi"]))
 async def pinterest(_, message):
     try:
         query = message.text.split(None, 1)[1]
@@ -69,7 +69,7 @@ async def pinterest(_, message):
 
     for media_group in media_groups:
          try:
-              await Hiroko.send_media_group(message.chat.id, media=media_group)
+              await Celestia.send_media_group(message.chat.id, media=media_group)
               return await msg.delete()
          except Exception as e:
               await msg.delete()
