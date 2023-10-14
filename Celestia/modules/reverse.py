@@ -1,7 +1,7 @@
 from typing import BinaryIO, Dict, List
 import time, os, httpx
 from uuid import uuid4
-from Hiroko import Hiroko
+from Celestia import Celestia
 from pyrogram.enums import MessageMediaType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from pyrogram import Client, filters
@@ -33,8 +33,8 @@ class STRINGS:
     OPEN_PAGE: str = "ᴏᴘᴇɴ ᴘᴀɢᴇ"
 
 
-@Hiroko.on_message(filters.command(["pp","reverse","sauce"]))
-async def on_reverse(hiroko: Hiroko, message: Message) -> None:
+@Celestia.on_message(filters.command(["pp","reverse","sauce"]))
+async def on_reverse(celestia: Celestia, message: Message) -> None:
     if not message.reply_to_message:
         await message.reply(STRINGS.REPLY_TO_MEDIA)
         return
