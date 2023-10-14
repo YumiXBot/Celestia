@@ -1,9 +1,9 @@
 from pyrogram import filters, Client
 from config import OWNER_ID
-from Hiroko import Hiroko
+from Celestia import Celestia
 import random
-from Hiroko.Helper.database.chatsdb import get_served_chats
-from Hiroko.Helper.database.usersdb import get_served_users
+from Celestia.Helper.database.chatsdb import get_served_chats
+from Celestia.Helper.database.usersdb import get_served_users
 from pyrogram.types import (
     Message,
     CallbackQuery,
@@ -38,7 +38,7 @@ photo = [
 
 # --------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command("stats") & filters.user(OWNER_ID))
+@Celestia.on_message(filters.command("stats") & filters.user(OWNER_ID))
 async def stats(cli: Client, message: Message):
     users = len(await get_served_users())
     chats = len(await get_served_chats())
@@ -63,12 +63,12 @@ button = InlineKeyboardMarkup(
 # --------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.new_chat_members, group=2)
-async def _kk(Hiroko, message):
+@Celestia.on_message(filters.new_chat_members, group=2)
+async def _kk(_, message):
     chat = message.chat
     for members in message.new_chat_members:
         if members.id == 6552685718:
-            count = await Hiroko.get_chat_members_count(chat.id)
+            count = await Celestia.get_chat_members_count(chat.id)
 
             msg = (
                 f"📝 ʜɪʀᴏᴋᴏ ʀᴏʙᴏᴛ ᴀᴅᴅᴇᴅ ɪɴ ᴀ ɴᴇᴡ ɢʀᴏᴜᴘ\n\n"
@@ -77,7 +77,7 @@ async def _kk(Hiroko, message):
                 f"📌 ᴄʜᴀᴛ ɴᴀᴍᴇ: {message.chat.title}\n"
                 f"📈 ɢʀᴏᴜᴘ ᴍᴇᴍʙᴇʀs: {count}"
             )
-            await Hiroko.send_photo(-1001328686560, photo=random.choice(photo), caption=msg, reply_markup=button)
+            await Celestia.send_photo(-1001328686560, photo=random.choice(photo), caption=msg, reply_markup=button)
 
 
 
