@@ -3,7 +3,7 @@ from lexica import Client as ApiClient, AsyncClient
 from pyrogram.types import InlineKeyboardButton
 from math import ceil
 import asyncio
-from Hiroko import Hiroko
+from Celestia import Celestia
 
 
 
@@ -131,8 +131,8 @@ def paginate_models(page_n: int, models: list,user_id) -> list:
 
 
 
-@Hiroko.on_message(filters.command(["draw","create","imagine","dream"]))
-async def draw(_: Hiroko, m: t.Message):
+@Celestia.on_message(filters.command(["draw","create","imagine","dream"]))
+async def draw(_: Celestia, m: t.Message):
     global Database
     prompt = getText(m)
     if prompt is None:
@@ -146,8 +146,8 @@ async def draw(_: Hiroko, m: t.Message):
             reply_markup=t.InlineKeyboardMarkup(btns)
             )
 
-@Hiroko.on_callback_query(filters.regex(pattern=r"^d.(.*)"))
-async def selectModel(_:Hiroko,query:t.CallbackQuery):
+@Celestia.on_callback_query(filters.regex(pattern=r"^d.(.*)"))
+async def selectModel(_:Celestia,query:t.CallbackQuery):
     global Database
     data = query.data.split('.')
     auth_user = int(data[-1])
