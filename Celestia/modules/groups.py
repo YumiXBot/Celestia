@@ -1,11 +1,11 @@
 from pyrogram import enums
 from pyrogram.enums import ChatType
 from pyrogram import filters, Client
-from Hiroko import Hiroko
+from Celestia import Celestia
 from config import OWNER_ID
 from pyrogram.types import Message
 from config import COMMAND_HANDLER
-from Hiroko.Helper.cust_p_filters import admin_filter
+from Celestia.Helper.cust_p_filters import admin_filter
 from pyrogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 
 
@@ -13,7 +13,7 @@ from pyrogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineK
 # ------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.command("pin") & admin_filter)
+@Celestia.on_message(filters.command("pin") & admin_filter)
 async def pin(_, message):
     replied = message.reply_to_message
     chat_title = message.chat.title
@@ -26,7 +26,7 @@ async def pin(_, message):
     elif not replied:
         await message.reply_text("**ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴍᴇssᴀɢᴇ ᴛᴏ ᴘɪɴ ɪᴛ !**")
     else:
-        user_stats = await Hiroko.get_chat_member(chat_id, user_id)
+        user_stats = await Celestia.get_chat_member(chat_id, user_id)
         if user_stats.privileges.can_pin_messages and message.reply_to_message:
             try:
                 await message.reply_to_message.pin()
@@ -35,9 +35,9 @@ async def pin(_, message):
                 await message.reply_text(str(e))
 
 
-@Hiroko.on_message(filters.command("pinned", COMMAND_HANDLER))
+@Celestia.on_message(filters.command("pinned", COMMAND_HANDLER))
 async def pinned(_, message):
-    chat = await Hiroko.get_chat(message.chat.id)
+    chat = await Celestia.get_chat(message.chat.id)
     if not chat.pinned_message:
         return await message.reply_text("**ɴᴏ ᴘɪɴɴᴇᴅ ᴍᴇssᴀɢᴇ ғᴏᴜɴᴅ**")
     try:        
@@ -49,7 +49,7 @@ async def pinned(_, message):
 
 # ------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command("unpin") & admin_filter)
+@Celestia.on_message(filters.command("unpin") & admin_filter)
 async def unpin(_, message):
     replied = message.reply_to_message
     chat_title = message.chat.title
@@ -62,7 +62,7 @@ async def unpin(_, message):
     elif not replied:
         await message.reply_text("**ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴍᴇssᴀɢᴇ ᴛᴏ ᴜɴᴘɪɴ ɪᴛ !**")
     else:
-        user_stats = await Hiroko.get_chat_member(chat_id, user_id)
+        user_stats = await Celestia.get_chat_member(chat_id, user_id)
         if user_stats.privileges.can_pin_messages and message.reply_to_message:
             try:
                 await message.reply_to_message.unpin()
@@ -75,18 +75,18 @@ async def unpin(_, message):
 
 # --------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command("removephoto", COMMAND_HANDLER) & admin_filter)
+@Celestia.on_message(filters.command("removephoto", COMMAND_HANDLER) & admin_filter)
 async def deletechatphoto(_, message):
       
       chat_id = message.chat.id
       user_id = message.from_user.id
       msg = await message.reply_text("**ᴘʀᴏᴄᴇssɪɴɢ....**")
-      admin_check = await Hiroko.get_chat_member(chat_id, user_id)
+      admin_check = await Celestia.get_chat_member(chat_id, user_id)
       if message.chat.type == enums.ChatType.PRIVATE:
            await msg.edit("**ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴡᴏʀᴋ ᴏɴ ɢʀᴏᴜᴘs !**") 
       try:
          if admin_check.privileges.can_change_info:
-             await Hiroko.delete_chat_photo(chat_id)
+             await Celestia.delete_chat_photo(chat_id)
              await msg.edit("**sᴜᴄᴄᴇssғᴜʟʟʏ ʀᴇᴍᴏᴠᴇᴅ ᴘʀᴏғɪʟᴇ ᴘʜᴏᴛᴏ ғʀᴏᴍ ɢʀᴏᴜᴘ !\nʙʏ** {}".format(message.from_user.mention))    
       except:
           await msg.edit("**ᴛʜᴇ ᴜsᴇʀ ᴍᴏsᴛ ɴᴇᴇᴅ ᴄʜᴀɴɢᴇ ɪɴғᴏ ᴀᴅᴍɪɴ ʀɪɢʜᴛs ᴛᴏ ʀᴇᴍᴏᴠᴇ ɢʀᴏᴜᴘ ᴘʜᴏᴛᴏ !**")
@@ -94,13 +94,13 @@ async def deletechatphoto(_, message):
 
 # --------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command("setphoto", COMMAND_HANDLER) & admin_filter)
+@Celestia.on_message(filters.command("setphoto", COMMAND_HANDLER) & admin_filter)
 async def setchatphoto(_, message):
       reply = message.reply_to_message
       chat_id = message.chat.id
       user_id = message.from_user.id
       msg = await message.reply_text("ᴘʀᴏᴄᴇssɪɴɢ...")
-      admin_check = await Hiroko.get_chat_member(chat_id, user_id)
+      admin_check = await Celestia.get_chat_member(chat_id, user_id)
       if message.chat.type == enums.ChatType.PRIVATE:
            await msg.edit("`ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴡᴏʀᴋ ᴏɴ ɢʀᴏᴜᴘs !`") 
       elif not reply:
@@ -120,7 +120,7 @@ async def setchatphoto(_, message):
 
 # --------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command("settitle", COMMAND_HANDLER)& admin_filter)
+@Celestia.on_message(filters.command("settitle", COMMAND_HANDLER)& admin_filter)
 async def setgrouptitle(_, message):
     reply = message.reply_to_message
     chat_id = message.chat.id
@@ -131,7 +131,7 @@ async def setgrouptitle(_, message):
     elif reply:
           try:
             title = message.reply_to_message.text
-            admin_check = await Hiroko.get_chat_member(chat_id, user_id)
+            admin_check = await Celestia.get_chat_member(chat_id, user_id)
             if admin_check.privileges.can_change_info:
                await message.chat.set_title(title)
                await msg.edit("**sᴜᴄᴄᴇssғᴜʟʟʏ ɴᴇᴡ ɢʀᴏᴜᴘ ɴᴀᴍᴇ ɪɴsᴇʀᴛ !\nʙʏ** {}".format(message.from_user.mention))
@@ -140,7 +140,7 @@ async def setgrouptitle(_, message):
     elif len(message.command) >1:
         try:
             title = message.text.split(None, 1)[1]
-            admin_check = await Hiroko.get_chat_member(chat_id, user_id)
+            admin_check = await Celestia.get_chat_member(chat_id, user_id)
             if admin_check.privileges.can_change_info:
                await message.chat.set_title(title)
                await msg.edit("**sᴜᴄᴄᴇssғᴜʟʟʏ ɴᴇᴡ ɢʀᴏᴜᴘ ɴᴀᴍᴇ ɪɴsᴇʀᴛ !\nʙʏ** {}".format(message.from_user.mention))
@@ -156,7 +156,7 @@ async def setgrouptitle(_, message):
 
 
 
-@Hiroko.on_message(filters.command("setdiscription", COMMAND_HANDLER) & admin_filter)
+@Celestia.on_message(filters.command("setdiscription", COMMAND_HANDLER) & admin_filter)
 async def setg_discription(_, message):
     reply = message.reply_to_message
     chat_id = message.chat.id
@@ -167,7 +167,7 @@ async def setg_discription(_, message):
     elif reply:
         try:
             discription = message.reply_to_message.text
-            admin_check = await Hiroko.get_chat_member(chat_id, user_id)
+            admin_check = await Celestia.get_chat_member(chat_id, user_id)
             if admin_check.privileges.can_change_info:
                 await message.chat.set_description(discription)
                 await msg.edit("**sᴜᴄᴄᴇssғᴜʟʟʏ ɴᴇᴡ ɢʀᴏᴜᴘ ᴅɪsᴄʀɪᴘᴛɪᴏɴ ɪɴsᴇʀᴛ!**\nʙʏ {}".format(message.from_user.mention))
@@ -176,7 +176,7 @@ async def setg_discription(_, message):
     elif len(message.command) > 1:
         try:
             discription = message.text.split(None, 1)[1]
-            admin_check = await Hiroko.get_chat_member(chat_id, user_id)
+            admin_check = await Celestia.get_chat_member(chat_id, user_id)
             if admin_check.privileges.can_change_info:
                 await message.chat.set_description(discription)
                 await msg.edit("**sᴜᴄᴄᴇssғᴜʟʟʏ ɴᴇᴡ ɢʀᴏᴜᴘ ᴅɪsᴄʀɪᴘᴛɪᴏɴ ɪɴsᴇʀᴛ!**\nʙʏ {}".format(message.from_user.mention))
@@ -188,12 +188,12 @@ async def setg_discription(_, message):
 
 # --------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command("leavegroup", COMMAND_HANDLER)& filters.user(OWNER_ID))
+@Celestia.on_message(filters.command("leavegroup", COMMAND_HANDLER)& filters.user(OWNER_ID))
 async def bot_leave(_, message):
     chat_id = message.chat.id
     text = "**sᴜᴄᴄᴇssғᴜʟʟʏ ʜɪʀᴏᴋᴏ ʀᴏʙᴏᴛ ʟᴇғᴛ ᴛʜᴇ ɢʀᴏᴜᴘ !!.**"
     await message.reply_text(text)
-    await Hiroko.leave_chat(chat_id=chat_id, delete=True)
+    await Celestia.leave_chat(chat_id=chat_id, delete=True)
 
 
 # --------------------------------------------------------------------------------- #
