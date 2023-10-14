@@ -1,11 +1,11 @@
 import os
 from telegraph import upload_file
-from Hiroko import Hiroko
+from Celestia import Celestia
 from pyrogram import filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
 
-@Hiroko.on_message(filters.command(["tg", "tgm", "telegraph"], prefixes=["/", "!"]))
+@Celestia.on_message(filters.command(["tg", "tgm", "telegraph"], prefixes=["/", "!"]))
 async def telegraph_command(_, message: Message):
     replied = message.reply_to_message
     if not replied:
@@ -29,7 +29,7 @@ async def telegraph_command(_, message: Message):
     ):
         await message.reply_text("**ᴜɴsᴜᴘᴘᴏʀᴛᴇᴅ ғɪʟᴇ ғᴏʀᴍᴀᴛ !**")
         return
-    download_location = await Hiroko.download_media(
+    download_location = await Celestia.download_media(
         message=message.reply_to_message, file_name="root/nana/"
     )
     try:
@@ -51,7 +51,7 @@ async def telegraph_command(_, message: Message):
             reply_markup=reply_markup,
         )
     except Exception as err:
-        await Hiroko.send_message(message.chat.id, f"**ᴇʀʀᴏʀ**: {err}")
+        await Celestia.send_message(message.chat.id, f"**ᴇʀʀᴏʀ**: {err}")
     finally:
         os.remove(download_location)
 
