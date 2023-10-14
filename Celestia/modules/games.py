@@ -2,12 +2,12 @@ import json
 import asyncio
 import datetime, pymongo
 import config, random
-from Hiroko import Hiroko
-from Hiroko.modules.ping import get_readable_time
-from Hiroko import BOT_ID
+from Celestia import Celestia
+from Celestia.modules.ping import get_readable_time
+from Celestia import BOT_ID
 from config import SUDO_USERS as SUPREME_USERS
 from pyrogram import filters
-from Hiroko.modules.games import *
+from Celestia.modules.games import *
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from config import MONGO_URL
 from motor.motor_asyncio import AsyncIOMotorClient as MongoCli
@@ -157,7 +157,7 @@ async def get_user_won(emoji,value):
 # --------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.command(["bonus","daily"]))
+@Celestia.on_message(filters.command(["bonus","daily"]))
 async def _daily(client,message):
     user_id = message.from_user.id
     if not await is_player(user_id):
@@ -173,7 +173,7 @@ async def _daily(client,message):
     
  # --------------------------------------------------------------------------------- #
    
-@Hiroko.on_message(filters.command(["rewards","weekly"]))
+@Celestia.on_message(filters.command(["rewards","weekly"]))
 async def _weekly(client,message):
     user_id = message.from_user.id
     if not await is_player(user_id):
@@ -208,7 +208,7 @@ TRIVIA_DICT = {}
  # --------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.command(["bet","toss"]))
+@Celestia.on_message(filters.command(["bet","toss"]))
 async def _bet(client,message):
   chat_id = message.chat.id
   user = message.from_user
@@ -261,7 +261,7 @@ async def _bet(client,message):
      
 # --------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command("dart"))
+@Celestia.on_message(filters.command("dart"))
 async def _bet(client,message):
   chat_id = message.chat.id
   user = message.from_user
@@ -303,7 +303,7 @@ async def _bet(client,message):
      
  # --------------------------------------------------------------------------------- #
      
-@Hiroko.on_message(filters.command("bowl"))
+@Celestia.on_message(filters.command("bowl"))
 async def _bet(client,message):
   chat_id = message.chat.id
   user = message.from_user
@@ -345,7 +345,7 @@ async def _bet(client,message):
   
 # --------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command("basket"))
+@Celestia.on_message(filters.command("basket"))
 async def _bet(client,message):
   chat_id = message.chat.id
   user = message.from_user
@@ -387,7 +387,7 @@ async def _bet(client,message):
 
 # --------------------------------------------------------------------------------- #
                                                                                                       
-@Hiroko.on_message(filters.command(["pay", "transfer"]) & filters.group)
+@Celestia.on_message(filters.command(["pay", "transfer"]) & filters.group)
 async def _pay(client,message):
     if not message.reply_to_message:
         return await message.reply_photo(photo=random.choice(photo), caption="ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴜsᴇʀ")
@@ -426,7 +426,7 @@ async def _pay(client,message):
 
 # --------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command(["top","leaderboard"]))
+@Celestia.on_message(filters.command(["top","leaderboard"]))
 async def _top(client,message): 
     x = gamesdb.find().sort("coins", pymongo.DESCENDING)
     msg = "**📈 GLOBAL LEADERBOARD | 🌍**\n\n"
@@ -442,7 +442,7 @@ async def _top(client,message):
             if not user_name:
                 user_name = i["user_id"]
                 try:
-                    link = (await Hiroko.get_users(user_name)).mention
+                    link = (await Celestia.get_users(user_name)).mention
                 except Exception as e:
                     print(e)
                     link = user_name
@@ -460,7 +460,7 @@ async def _top(client,message):
 
 # --------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command(["bal","balance","dalcs"]))
+@Celestia.on_message(filters.command(["bal","balance","dalcs"]))
 async def _bal(client,message):
     user = message.from_user
     if not await is_player(user.id):
@@ -471,7 +471,7 @@ async def _bal(client,message):
 
  # --------------------------------------------------------------------------------- #
    
-@Hiroko.on_message(filters.command("set dalcs"))
+@Celestia.on_message(filters.command("set dalcs"))
 async def _bal(client,message):
     user = message.from_user
     if user.id not in SUPREME_USERS:
