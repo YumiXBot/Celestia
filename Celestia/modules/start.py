@@ -5,7 +5,7 @@ from pyrogram import Client, filters, enums
 from Hiroko import Hiroko
 from pyrogram.errors import MessageNotModified
 from pyrogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
-
+from Hiroko.Helper.hiroko_text import ACTION_TEXT,AFK_TEXT,WELCOME_TEXT,GAMES_TEXT,IMAGES_TEXT,GROUP_TEXT,STICKER_TEXT,MISC_TEXT,EXTRA_TEXT,CHATGPT_TEXT,MUSIC_TEXT,WAIFU_TEXT       
 
 
 
@@ -30,11 +30,10 @@ START_IMG = (
 
 START_TEXT = """
 **ʜᴇʏ ᴛʜᴇʀᴇ [{}](tg://user?id={}) ɴɪᴄᴇ ᴛᴏ ᴍᴇᴇᴛ ʏᴏᴜ !**
-━━━━━━━━━━━━━━━━━━━━━━**
-๏ ɪ ᴀᴍ ˹ʜɪꝛᴏᴋᴏ ꝛᴏʙᴏᴛ˼ ᴀɴᴅ ɪ ʜᴀᴠᴇ sᴘᴇᴄɪᴀʟ ғᴇᴀᴛᴜʀᴇs
+━━━━━━━━━━━━━━━━━━━━━━
+**`๏ ɪ ᴀᴍ ˹ʜɪꝛᴏᴋᴏ ꝛᴏʙᴏᴛ˼ ᴀɴᴅ ɪ ʜᴀᴠᴇ sᴘᴇᴄɪᴀʟ ғᴇᴀᴛᴜʀᴇs
 ๏ ɪ ᴀᴍ ᴅɪғғᴇʀᴇɴᴛ ғʀᴏᴍ ᴀɴᴏᴛʜᴇʀ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ ʙᴏᴛs
-
-๏ ᴄʟɪᴄᴋ ᴏɴ ᴛʜᴇ ʜᴇʟᴩ ʙᴜᴛᴛᴏɴ ᴛᴏ ɢᴇᴛ ɪɴғᴏʀᴍᴀᴛɪᴏɴ ᴀʙᴏᴜᴛ ᴍʏ ᴍᴏᴅᴜʟᴇs ᴀɴᴅ ᴄᴏᴍᴍᴀɴᴅs**
+`**
 """
 
 
@@ -44,37 +43,30 @@ HELP_TEXT = """**
 » ˹ʜɪꝛᴏᴋᴏ ꝛᴏʙᴏᴛ˼ ᴄᴏᴏʟ ᴏʀ ᴇxᴄʟᴜsɪᴠᴇ ғᴇᴀᴛᴜʀᴇs 
 """
 
-DEVS_SECTION = """
-** ˹ʜɪꝛᴏᴋᴏ ꝛᴏʙᴏᴛ˼ ᴅᴇᴠs ᴏʀ ᴍᴀɪɴᴛᴀɪɴᴇʀ sᴇᴄᴛɪᴏɴ**
-"""
+
 
 # ------------------------------------------------------------------------------- #
 
 hiroko_buttons = [              
                 [
-                    InlineKeyboardButton("ᴀғᴋ", callback_data="maintainer_"),   
-                    InlineKeyboardButton("ᴀᴄᴛɪᴏɴ", callback_data="maintainer_"),
-                    InlineKeyboardButton("ғᴜɴ", callback_data="maintainer_")
+                    InlineKeyboardButton("ᴀᴄᴛɪᴏɴ", callback_data="maintainer_"),   
+                    InlineKeyboardButton("ᴀғᴋ", callback_data="afk_"),
+                    InlineKeyboardButton("ᴡᴇʟᴄᴏᴍᴇ", callback_data="maintainer_")
                 ],
                 [
-                    InlineKeyboardButton("ɢᴀᴍᴇs", callback_data="maintainer_"),   
-                    InlineKeyboardButton("ɪᴍᴀɢᴇs", callback_data="maintainer_"),
-                    InlineKeyboardButton("ɢʀᴏᴜᴘs", callback_data="maintainer_")
+                    InlineKeyboardButton("ɢᴀᴍᴇs", callback_data="games_"),   
+                    InlineKeyboardButton("ɪᴍᴀɢᴇs", callback_data="images_"),
+                    InlineKeyboardButton("ɢʀᴏᴜᴘs", callback_data="groups_")
                 ],
                 [
-                    InlineKeyboardButton("ᴄʜᴀᴛʙᴏᴛ", callback_data="maintainer_"),   
-                    InlineKeyboardButton("ᴍɪsᴄ", callback_data="maintainer_"),
-                    InlineKeyboardButton("ɪᴍᴘᴏsᴛᴇʀ", callback_data="maintainer_")
+                    InlineKeyboardButton("sᴛɪᴄᴋᴇʀ", callback_data="sticker_"),   
+                    InlineKeyboardButton("ᴍɪsᴄ", callback_data="misc_"),
+                    InlineKeyboardButton("ᴇxᴛʀᴀ", callback_data="extra_")
                 ],
                 [
-                    InlineKeyboardButton("ᴄʜᴀᴛɢᴘᴛ", callback_data="maintainer_"),   
-                    InlineKeyboardButton("ᴀɪ", callback_data="maintainer_"),
-                    InlineKeyboardButton("ᴍᴜsɪᴄ", callback_data="maintainer_")
-                ],
-                [
-                    InlineKeyboardButton("ᴡᴇʟᴄᴏᴍᴇ", callback_data="maintainer_"),   
-                    InlineKeyboardButton("ɴᴏᴛᴇs", callback_data="maintainer_"),
-                    InlineKeyboardButton("ғɪʟᴛᴇʀs", callback_data="maintainer_")
+                    InlineKeyboardButton("ᴄʜᴀᴛɢᴘᴛ", callback_data="chatgpt_"),   
+                    InlineKeyboardButton("ᴡᴀɪғᴜ", callback_data="waifu_"),
+                    InlineKeyboardButton("ᴍᴜsɪᴄ", callback_data="music_")
                 ],
                 [
                     InlineKeyboardButton("⟲ ʙᴀᴄᴋ ⟳", callback_data="home_"),
@@ -88,20 +80,6 @@ back_buttons  = [[
                 ]]
 
 
-devs_buttons  = [[
-                    InlineKeyboardButton("ᴋɪᴛᴏ", url="https://t.me/KIRITO1240"),
-                    InlineKeyboardButton("ɪᴍᴏʀᴛᴀʟ", url="https://t.me/ImmortalsKingX"),                    
-                ],
-                [
-                    InlineKeyboardButton("ɪsʜɪᴋᴋɪ", url="https://t.me/ishikki_Akabane"),
-                    InlineKeyboardButton("ʟᴇᴠɪ", url="https://t.me/LeviAckerman1709"), 
-                ],
-                [
-              
-                    InlineKeyboardButton("⟲ ʙᴀᴄᴋ ⟳", callback_data="home_"),                    
-                ]  
-                ]
-
 # ------------------------------------------------------------------------------- #
 
 
@@ -112,11 +90,11 @@ async def start(client: Client, message: Message):
                 InlineKeyboardButton("➕ ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ➕", url=f"https://t.me/{BOT_USERNAME}?startgroup=true")
             ],
             [
-                InlineKeyboardButton("✨ sᴜᴘᴘᴏʀᴛ ✨", url="https://t.me/DevsOops"),
-                InlineKeyboardButton("🎓 ᴍᴀɪɴᴛᴀɪɴᴇʀ", callback_data="hiroko_devs"),
+                InlineKeyboardButton("sᴜᴘᴘᴏʀᴛ", url="https://t.me/DevsOops"),
+                InlineKeyboardButton("ᴍᴀɪɴᴛᴀɪɴᴇʀ", url="https://t.me/AnonDeveloper"),
             ],
             [
-                InlineKeyboardButton("📚 ʜᴇʟᴘ ᴀɴᴅ ᴄᴏᴍᴍᴀɴᴅs 📚", callback_data="help_")
+                InlineKeyboardButton("ᴄᴏᴍᴍᴀɴᴅs", callback_data="help_")
             ]    
         ]
                                     
@@ -147,11 +125,11 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 InlineKeyboardButton("➕ ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ➕", url=f"https://t.me/{BOT_USERNAME}?startgroup=true")
             ],
             [
-                InlineKeyboardButton("✨ sᴜᴘᴘᴏʀᴛ ✨", url="https://t.me/TheNixaSupport"),
-                InlineKeyboardButton("🎓 ᴍᴀɪɴᴛᴀɪɴᴇʀ", callback_data="hiroko_devs"),
+                InlineKeyboardButton("sᴜᴘᴘᴏʀᴛ", url="https://t.me/DevsOops"),
+                InlineKeyboardButton("ᴍᴀɪɴᴛᴀɪɴᴇʀ", url="https::/t.me/AnonDeveloper"),
             ],
             [
-                InlineKeyboardButton("📚 ʜᴇʟᴘ ᴀɴᴅ ᴄᴏᴍᴍᴀɴᴅs 📚", callback_data="help_")
+                InlineKeyboardButton("ᴄᴏᴍᴍᴀɴᴅs", callback_data="help_")
             ]    
         ]
         reply_markup = InlineKeyboardMarkup(buttons)
@@ -178,15 +156,139 @@ async def cb_handler(client: Client, query: CallbackQuery):
 
 
 
-    elif query.data=="hiroko_devs":        
-        reply_markup = InlineKeyboardMarkup(devs_buttons)
+    elif query.data=="action_":        
+        reply_markup = InlineKeyboardMarkup(back_buttons)
         try:
             await query.edit_message_text(
-                DEVS_SECTION.format(query.from_user.first_name, query.from_user.id),
+                ACTION_TEXT.format(query.from_user.first_name, query.from_user.id),
                 reply_markup=reply_markup
             )
         except MessageNotModified:
             pass
+          
+    elif query.data=="afk_":        
+        reply_markup = InlineKeyboardMarkup(back_buttons)
+        try:
+            await query.edit_message_text(
+                AFK_TEXT.format(query.from_user.first_name, query.from_user.id),
+                reply_markup=reply_markup
+            )
+        except MessageNotModified:
+            pass
+
+
+
+
+    elif query.data=="welcome_":        
+        reply_markup = InlineKeyboardMarkup(back_buttons)
+        try:
+            await query.edit_message_text(
+                WELCOME_TEXT.format(query.from_user.first_name, query.from_user.id),
+                reply_markup=reply_markup
+            )
+        except MessageNotModified:
+            pass
+          
+    elif query.data=="games_":        
+        reply_markup = InlineKeyboardMarkup(back_buttons)
+        try:
+            await query.edit_message_text(
+                GAMES_TEXT.format(query.from_user.first_name, query.from_user.id),
+                reply_markup=reply_markup
+            )
+        except MessageNotModified:
+            pass
+
+
+    elif query.data=="images_":        
+        reply_markup = InlineKeyboardMarkup(back_buttons)
+        try:
+            await query.edit_message_text(
+                IMAGES_TEXT.format(query.from_user.first_name, query.from_user.id),
+                reply_markup=reply_markup
+            )
+        except MessageNotModified:
+            pass
+          
+    elif query.data=="groups_":        
+        reply_markup = InlineKeyboardMarkup(back_buttons)
+        try:
+            await query.edit_message_text(
+                GROUP_TEXT.format(query.from_user.first_name, query.from_user.id),
+                reply_markup=reply_markup
+            )
+        except MessageNotModified:
+            pass
+
+
+
+
+    elif query.data=="sticker_":        
+        reply_markup = InlineKeyboardMarkup(back_buttons)
+        try:
+            await query.edit_message_text(
+                STICKER_TEXT.format(query.from_user.first_name, query.from_user.id),
+                reply_markup=reply_markup
+            )
+        except MessageNotModified:
+            pass
+          
+    elif query.data=="misc_":        
+        reply_markup = InlineKeyboardMarkup(back_buttons)
+        try:
+            await query.edit_message_text(
+                MISC_TEXT.format(query.from_user.first_name, query.from_user.id),
+                reply_markup=reply_markup
+            )
+        except MessageNotModified:
+            pass
+
+
+
+
+    elif query.data=="extra_":        
+        reply_markup = InlineKeyboardMarkup(back_buttons)
+        try:
+            await query.edit_message_text(
+                EXTRA_TEXT.format(query.from_user.first_name, query.from_user.id),
+                reply_markup=reply_markup
+            )
+        except MessageNotModified:
+            pass
+          
+    elif query.data=="chatgpt_":        
+        reply_markup = InlineKeyboardMarkup(back_buttons)
+        try:
+            await query.edit_message_text(
+                CHATGPT_TEXT.format(query.from_user.first_name, query.from_user.id),
+                reply_markup=reply_markup
+            )
+        except MessageNotModified:
+            pass
+
+
+    elif query.data=="music_":        
+        reply_markup = InlineKeyboardMarkup(back_buttons)
+        try:
+            await query.edit_message_text(
+                MUSIC_TEXT.format(query.from_user.first_name, query.from_user.id),
+                reply_markup=reply_markup
+            )
+        except MessageNotModified:
+            pass
+          
+    elif query.data=="waifu_":        
+        reply_markup = InlineKeyboardMarkup(back_buttons)
+        try:
+            await query.edit_message_text(
+                WAIFU_TEXT.format(query.from_user.first_name, query.from_user.id),
+                reply_markup=reply_markup
+            )
+        except MessageNotModified:
+            pass
+
+
+  
   
 # ------------------------------------------------------------------------------- #
 
@@ -203,4 +305,3 @@ async def cb_handler(client: Client, query: CallbackQuery):
         except:
             pass
           
-
