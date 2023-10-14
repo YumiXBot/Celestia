@@ -2,8 +2,8 @@ import time, random
 from asyncio import sleep as rest
 from pyrogram import Client, filters
 from pyrogram.types import Message
-from Hiroko import boot as tim
-from Hiroko import Hiroko
+from Celestia import boot as tim
+from Celestia import Celestia
 from config import OWNER_ID as owner
 from config import SUDO_USERS as sudo
 from pyrogram import filters, __version__
@@ -64,7 +64,7 @@ sudo.append(owner)
 
 # ------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command(["ping"], prefixes=["/", "!"]))
+@Celestia.on_message(filters.command(["ping"], prefixes=["/", "!"]))
 async def ping(Client, m: Message):
     start_time = time.time()
     sender = m.from_user
@@ -107,7 +107,7 @@ Button = InlineKeyboardMarkup(
 
 
 
-@Hiroko.on_message(filters.command("alive"))
+@Celestia.on_message(filters.command("alive"))
 async def alive(_,msg:Message):
     start_time = time.time()
     sender = msg.from_user
