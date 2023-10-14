@@ -4,7 +4,7 @@ from search_engine_parser.core.engines.google import Search as GoogleSearch
 from search_engine_parser.core.engines.stackoverflow import \
     Search as StackSearch
 from search_engine_parser.core.exceptions import NoResultsFound, NoResultsOrTrafficError
-from Hiroko import Hiroko
+from Celestia import Celestia
 from pyrogram import filters
 
 
@@ -60,8 +60,8 @@ def btn(text, value, type="callback_data"):
 
 
 
-@Hiroko.on_message(filters.command('google'))
-async def search_(hiroko: Hiroko, msg: Message):
+@Celestia.on_message(filters.command('google'))
+async def search_(celestia: Celestia, msg: Message):
     split = msg.text.split(None, 1)
     if len(split) == 1:
         return await msg.reply_text("**ɢɪᴠᴇ ǫᴜᴇʀʏ ᴛᴏ sᴇᴀʀᴄʜ**")
@@ -129,8 +129,8 @@ async def search_(hiroko: Hiroko, msg: Message):
 
 
 
-@Hiroko.on_message(filters.command('stack'))
-async def stack_search_(hiroko: Hiroko, msg: Message):
+@Celestia.on_message(filters.command('stack'))
+async def stack_search_(celestia: Celestia, msg: Message):
     split = msg.text.split(None, 1)
     if len(split) == 1:
         return await msg.reply_text("**ɢɪᴠᴇ ǫᴜᴇʀʏ ᴛᴏ sᴇᴀʀᴄʜ**")
