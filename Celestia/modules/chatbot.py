@@ -153,7 +153,7 @@ demote = ["demote"]
 # ========================================= #
 
 
-@Hiroko.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter)
+@Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter)
 async def restriction_celestia(celestia :Celestia, message):
     reply = message.reply_to_message
     chat_id = message.chat.id
