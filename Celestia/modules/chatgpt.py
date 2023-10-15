@@ -52,7 +52,7 @@ async def chat(celestia :Celestia, message):
             text = x    
             tts = gTTS(text, lang='en')
             tts.save('output.mp3')
-            await hiroko.send_voice(chat_id=message.chat.id, voice='output.mp3')
+            await celestia.send_voice(chat_id=message.chat.id, voice='output.mp3')
             os.remove('output.mp3')            
             
     except Exception as e:
