@@ -2,6 +2,13 @@ import re
 import requests
 from pyrogram import filters
 from Celestia import Celestia
+from pyrogram.types import Message
+import string, random, time
+import httpx
+from datetime import datetime
+
+
+
 
 @Celestia.on_message(filters.command("bin", prefixes="."))
 async def check_bin(client, message):
@@ -9,15 +16,15 @@ async def check_bin(client, message):
         command_parts = message.text.split(' ')
         
         if len(command_parts) != 2:
-            x = await message.reply("Usage: Send a message with '.bin [BIN_NUMBER]' to get BIN information.")
+            await message.reply("Usage: Send a message with '.bin [BIN_NUMBER]' to get BIN information.")
             return
 
         bin_number = command_parts[1]
         _BIN = re.sub(r'[^0-9]', '', bin_number)
         _res = requests.get(f'http://binchk-api.vercel.app/bin={_BIN}')
         
-        await x.edit("Wait...")
-        
+        x = await message.reply("Wait...")
+
         if _res.status_code == 200:
             res = _res.json()
             msg = f"""
@@ -31,35 +38,12 @@ async def check_bin(client, message):
             Currency⇢ **{res["currency"]}**
             Country⇢ **{res["country"]}({res["code"]})**
             """
-            await x.edit(msg)
+            await x.edit_text(msg)
         else:
-            await x.edit("API request failed. Please try again later.")
+            await x.edit_text("API request failed. Please try again later.")
     except Exception as e:
-        await x.edit(f"An error occurred: {str(e)}")
+        await x.edit_text(f"An error occurred: {str(e)}")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-from pyrogram import Client, filters
-from pyrogram.types import Message
-import string, random, time
-from Celestia import Celestia
-import httpx, re
-from datetime import datetime
 
 
 
