@@ -1,6 +1,13 @@
+from typing import Dict, List, Union
+from config import MONGO_URL
+from motor.motor_asyncio import AsyncIOMotorClient as MongoCli
 
 
-notes = dbname["notes"] 
+mongo = MongoCli(MONGO_URL).Rankings
+
+notes = mongo.notes
+
+
 
 async def SaveNote(chat_id, note_name, content, text, data_type):
     GetNotes = await notes.find_one(
