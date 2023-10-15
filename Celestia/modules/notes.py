@@ -5,11 +5,12 @@ from Celestia.Helper.database.notesdb import *
 from Celestia.Helper.notes_func import GetNoteMessage, exceNoteMessageSender, privateNote_and_admin_checker
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup , Message , CallbackQuery
 from pyrogram.enums import ChatMemberStatus
+from Celestia.Helper.cust_p_filters import admin_filter
 
 
 
 
-@Celestia.on_message(filters.command("save", COMMAND_HANDLER) & filters.group)
+@Celestia.on_message(filters.command("save", COMMAND_HANDLER) & filters.group & admin_filter)
 async def _save(client, message):
     chat_id = message.chat.id
     chat_title = message.chat.title
@@ -28,7 +29,7 @@ async def _save(client, message):
 
 
 
-@Celestia.on_message(filters.command("get", COMMAND_HANDLER) & filters.group)
+@Celestia.on_message(filters.command("get", COMMAND_HANDLER) & filters.group & admin_filter)
 async def _getnote(client, message):
     chat_id = message.chat.id
     if not len(message.command) >= 2:
@@ -39,7 +40,7 @@ async def _getnote(client, message):
     await send_note(message, note_name)
     
 
-@Celestia.on_message(filters.regex(pattern=(r"^#[^\s]+")) & filters.group)
+@Celestia.on_message(filters.regex(pattern=(r"^#[^\s]+")) & filters.group & admin_filter)
 async def regex_get_note(client, message):
     chat_id = message.chat.id
     if message.from_user:
@@ -51,7 +52,7 @@ async def regex_get_note(client, message):
 PRIVATE_NOTES_TRUE = ['on', 'true', 'yes', 'y']
 PRIVATE_NOTES_FALSE = ['off', 'false', 'no', 'n']
 
-@Celestia.on_message(filters.command("privatenotes", COMMAND_HANDLER) & filters.group)
+@Celestia.on_message(filters.command("privatenotes", COMMAND_HANDLER) & filters.group & admin_filter)
 async def PrivateNote(client, message):
     chat_id = message.chat.id
     if len(message.command) >= 2:
@@ -89,7 +90,7 @@ async def PrivateNote(client, message):
                 quote=True
             )
             
-@Celestia.on_message(filters.command("clear", COMMAND_HANDLER) & filters.group)
+@Celestia.on_message(filters.command("clear", COMMAND_HANDLER) & filters.group & admin_filter)
 async def Clear_Note(client, message):
     chat_id = message.chat.id 
     if not (
@@ -117,7 +118,7 @@ async def Clear_Note(client, message):
         )
 
 
-@Celestia.on_message(filters.command("clearall", COMMAND_HANDLER) & filters.group)
+@Celestia.on_message(filters.command("clearall", COMMAND_HANDLER) & filters.group & admin_filter)
 async def ClearAll_Note(client, message):
     owner_id = message.from_user.id
     chat_id = message.chat.id 
@@ -164,7 +165,7 @@ async def ClearAllCallback(client, callback_query: CallbackQuery):
     else:
         await callback_query.answer("Only admins can execute this command!")
                          
-@Celestia.on_message(filters.command(['notes', 'saved']) & filters.group)
+@Celestia.on_message(filters.command(['notes', 'saved']) & filters.group & admin_filter)
 async def Notes(client, message):
     
     chat_id = message.chat.id
