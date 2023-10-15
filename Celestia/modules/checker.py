@@ -47,7 +47,6 @@ async def check_bin(client, message):
 
 
 
-"""
 
 from pyrogram import Client, filters
 from pyrogram.types import Message
@@ -70,26 +69,6 @@ async def post(url: str, pdata):
 
 
 
-
-@Celestia.on_message(filters.command("bin", prefixes="."))
-async def check_bin(client, message):
-    a = message.text.split(' ', 1)[1]
-    _BIN = re.sub(r'[^0-9]', '', a)
-    _res = await get(f'http://binchk-api.vercel.app/bin={_BIN}')
-    res = _res.json()
-    msg = f"""
-BIN: `{_BIN}`
-Brand⇢ **{res["brand"]}**
-Type⇢ **{res["type"]}**
-Level⇢ **{res["level"]}**
-Bank⇢ **{res["bank"]}**
-Phone⇢ **{res["phone"]}**
-Flag⇢ **{res["flag"]}**
-Currency⇢ **{res["currency"]}**
-Country⇢ **{res["country"]}({res["code"]})**
-""
-    await message.edit(msg)
-    
 
 
 
@@ -216,6 +195,6 @@ async def start_st(client, message):
     await st_charge(client, message)
 
 
-"""
+
 
 
