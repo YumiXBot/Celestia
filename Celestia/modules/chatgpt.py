@@ -33,11 +33,11 @@ async def chat(celestia :Celestia, message):
 
 
 @Celestia.on_message(filters.command(["assis"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
-async def chat(hiroko :Hiroko, message):
+async def chat(celestia :Celestia, message):
     
     try:
         start_time = time.time()
-        await hiroko.send_chat_action(message.chat.id, ChatAction.TYPING)
+        await celestia.send_chat_action(message.chat.id, ChatAction.TYPING)
         if len(message.command) < 2:
             await message.reply_text(
             "**ʜᴇʟʟᴏ sɪʀ**\n**ᴇxᴀᴍᴘʟᴇ:-**`.assis How to set girlfriend ?`")
