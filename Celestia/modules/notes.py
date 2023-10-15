@@ -1,7 +1,7 @@
 from Celestia import Celestia
 from config import BOT_USERNAME, COMMAND_HANDLER
 from pyrogram import filters
-from Celestia.Helper.database.notes_db import *
+from Celestia.Helper.database.notesdb import *
 from Celestia.Helper.notes_func import GetNoteMessage, exceNoteMessageSender, privateNote_and_admin_checker
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup , Message , CallbackQuery
 from pyrogram.enums import ChatMemberStatus
