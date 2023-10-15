@@ -5,8 +5,8 @@ from io import BytesIO
 from config import SUDO_USERS
 from pyrogram import *
 from pyrogram.types import *
-from Hiroko import Hiroko
-from Hiroko.SQL import DB, cusr
+from Celestia import Celestia
+from Celestia.Helper.database.sqldb import DB, cusr
 
 
 
@@ -43,7 +43,7 @@ DB.commit()
 
 # ==================================================================== #
 
-@Hiroko.on_message(filters.command(["addwaifu"]) & filters.user(SUDO_USERS))
+@Celestia.on_message(filters.command(["addwaifu"]) & filters.user(SUDO_USERS))
 async def add_waifus(_, message):
     if len(message.text) < 10:
         return await message.reply("** ʜᴇʟʟᴏ ʜᴏᴛᴛɪᴇ, ᴘʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴛʜᴇ ᴡᴀɪғᴜ ᴅᴇᴛᴀɪʟs ɪɴ ᴛʜᴇ ғᴏʀᴍᴀᴛ**: /addwaifu photo+name-anime+rarity")
@@ -80,10 +80,10 @@ async def add_waifus(_, message):
         print(f"Error {e}")
         return await message.reply("**ғᴀʟɪᴇᴅ ᴄʜᴇᴄᴋ ғᴏʀᴍᴀᴛ ᴀɢᴀɪɴ.**")
     await message.reply_photo(photo=photo,caption="**ᴡᴀɪғᴜ ᴀᴅᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ɪɴ ʏᴏᴜʀ ᴡᴀɪғᴜs ᴅᴀᴛᴀʙᴀsᴇ.🎉**")
-    await Hiroko.send_photo(-1001936480103, photo=photo, reply_markup=InlineKeyboardMarkup([[
+    await Celestia.send_photo(-1001936480103, photo=photo, reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
-    await Hiroko.send_message(-1001946875647, text=f"**ᴡᴀɪғᴜ ᴜᴘʟᴏᴀᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴡᴀɪғᴜs ᴅᴏᴍᴀɪɴ**[🎉]({photo})", reply_markup=InlineKeyboardMarkup([[
+    await Celestia.send_message(-1001946875647, text=f"**ᴡᴀɪғᴜ ᴜᴘʟᴏᴀᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴡᴀɪғᴜs ᴅᴏᴍᴀɪɴ**[🎉]({photo})", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
 
@@ -94,7 +94,7 @@ async def add_waifus(_, message):
 # ======================================================================= #
 
 
-@Hiroko.on_message(filters.group, group=11)
+@Celestia.on_message(filters.group, group=11)
 async def _watcher(_, message):
     chat_id = message.chat.id
     if not message.from_user:
@@ -135,7 +135,7 @@ async def _watcher(_, message):
 
 # ==================================================================== #
 
-@Hiroko.on_message(filters.command("grab", prefixes="/"))
+@Celestia.on_message(filters.command("grab", prefixes="/"))
 async def grab_waifus(client, message):
     chat_id = message.chat.id
     if chat_id not in DICT or not DICT[chat_id]['name']:
@@ -172,7 +172,7 @@ rarity_colour = [
 ]
 
 
-@Hiroko.on_message(filters.command(["mywaifu","myharem"], prefixes="/"))
+@Celestia.on_message(filters.command(["mywaifu","myharem"], prefixes="/"))
 async def my_waifus(client, message):
     user_id = str(message.from_user.id)
     
