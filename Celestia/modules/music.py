@@ -116,8 +116,8 @@ async def generate_cover(requested_by, title, views, duration, thumbnail):
                 await f.close()
 
     image = Image.open(f"./background.png")
-    black = Image.open("Hiroko/Helper/resources/black.jpg")
-    img = Image.open("Hiroko/Helper/resources/music.png")
+    black = Image.open("Celestia/Helper/resources/black.jpg")
+    img = Image.open("Celestia/Helper/resources/music.png")
     image5 = changeImageSize(1280, 720, img)
     image1 = changeImageSize(1280, 720, image)
     image1 = image1.filter(ImageFilter.BoxBlur(10))
@@ -154,13 +154,13 @@ async def generate_cover(requested_by, title, views, duration, thumbnail):
     image2.paste(image5, (0,0), mask = image5)
 
     
-    font1 = ImageFont.truetype(r'Hiroko/Helper/resources/robot.otf', 30)
-    font2 = ImageFont.truetype(r'Hiroko/Helper/resources/robot.otf', 60)
-    font3 = ImageFont.truetype(r'Hiroko/Helper/resources/robot.otf', 49)
-    font4 = ImageFont.truetype(r'Hiroko/Helper/resources/hiroko.ttf', 35)
+    font1 = ImageFont.truetype(r'Celestia/Helper/resources/robot.otf', 30)
+    font2 = ImageFont.truetype(r'Celestia/Helper/resources/robot.otf', 60)
+    font3 = ImageFont.truetype(r'Celestia/Helper/resources/robot.otf', 49)
+    font4 = ImageFont.truetype(r'Celestia/Helper/resources/hiroko.ttf', 35)
 
     image4 = ImageDraw.Draw(image2)
-    image4.text((10, 10), "HIROKO MUSIC", fill="white", font = font1, align ="left") 
+    image4.text((10, 10), "CELESTIA MUSIC", fill="white", font = font1, align ="left") 
     image4.text((670, 150), "NOW PLAYING", fill="white", font = font2, stroke_width=2, stroke_fill="white", align ="left") 
 
     
