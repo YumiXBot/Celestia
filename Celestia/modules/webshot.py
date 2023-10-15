@@ -5,7 +5,7 @@ import requests
 from aiohttp import ClientSession
 from pyrogram import filters
 from pyrogram.types import *
-from Hiroko import Hiroko
+from Celestia import Celestia
 
 button = InlineKeyboardMarkup([[
             InlineKeyboardButton("⌯ ᴄʟᴏsᴇ ⌯", callback_data="close_data")
@@ -59,7 +59,7 @@ async def eor(msg: Message, **kwargs):
     return await func(**{k: v for k, v in kwargs.items() if k in spec})
 
 
-@Hiroko.on_message(filters.command(["webss", "ss", "webshot"]))
+@Celestia.on_message(filters.command(["webss", "ss", "webshot"]))
 async def take_ss(_, message: Message):
     if len(message.command) < 2:
         return await eor(message, text="**ɢɪᴠᴇ ᴀ ᴜʀʟ ᴛᴏ ғᴇᴛᴄʜ sᴄʀᴇᴇɴsʜᴏᴛ.**")
