@@ -1,3 +1,54 @@
+import re
+import requests
+from Celestia import Celestia 
+
+
+@Celestia.on_message(filters.command("bin", prefixes="."))
+async def check_bin(client, message):
+    try:
+        # Split the message to extract the BIN number.
+        command_parts = message.text.split(' ')
+        if len(command_parts) != 2:
+            await message.edit("Usage: Send a message with '.bin [BIN_NUMBER]' to get BIN information.")
+            return
+
+        bin_number = command_parts[1]
+        _BIN = re.sub(r'[^0-9]', '', bin_number)
+        _res = requests.get(f'http://binchk-api.vercel.app/bin={_BIN}')
+
+        if _res.status_code == 200:
+            res = _res.json()
+            msg = f"""
+            BIN: `{_BIN}`
+            Brand⇢ **{res["brand"]}**
+            Type⇢ **{res["type"]}**
+            Level⇢ **{res["level"]}**
+            Bank⇢ **{res["bank"]}**
+            Phone⇢ **{res["phone"]}**
+            Flag⇢ **{res["flag"]}**
+            Currency⇢ **{res["currency"]}**
+            Country⇢ **{res["country"]}({res["code"]})**
+            """
+            await message.edit(msg)
+        else:
+            await message.edit("API request failed. Please try again later.")
+    except Exception as e:
+        await message.edit(f"An error occurred: {str(e)}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+
 from pyrogram import Client, filters
 from pyrogram.types import Message
 import string, random, time
@@ -21,16 +72,12 @@ async def post(url: str, pdata):
 
 
 @Celestia.on_message(filters.command("bin", prefixes="."))
-async def srbin(client, message):
-    BIN = message.text[len('.bin '):]
-    reply_msg = message.reply_to_message
-    if reply_msg:
-        BIN = reply_msg.text
-    try:
-        _BIN = re.sub(r'[^0-9]', '', BIN)
-        _res = await get(f'http://binchk-api.vercel.app/bin={_BIN}')
-        res = _res.json()
-        msg = f'''
+async def check_bin(client, message):
+    a = message.text.split(' ', 1)[1]
+    _BIN = re.sub(r'[^0-9]', '', a)
+    _res = await get(f'http://binchk-api.vercel.app/bin={_BIN}')
+    res = _res.json()
+    msg = f"""
 BIN: `{_BIN}`
 Brand⇢ **{res["brand"]}**
 Type⇢ **{res["type"]}**
@@ -40,13 +87,9 @@ Phone⇢ **{res["phone"]}**
 Flag⇢ **{res["flag"]}**
 Currency⇢ **{res["currency"]}**
 Country⇢ **{res["country"]}({res["code"]})**
-'''
-        await message.edit(msg)
-    except:
-        await message.edit('Failed to parse bin data from api')
-
-
-
+""
+    await message.edit(msg)
+    
 
 
 
@@ -173,6 +216,6 @@ async def start_st(client, message):
     await st_charge(client, message)
 
 
-
+"""
 
 
