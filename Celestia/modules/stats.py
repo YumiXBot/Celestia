@@ -67,11 +67,11 @@ button = InlineKeyboardMarkup(
 async def _kk(_, message):
     chat = message.chat
     for members in message.new_chat_members:
-        if members.id == 6552685718:
+        if members.id == 5997219860:
             count = await Celestia.get_chat_members_count(chat.id)
 
             msg = (
-                f"📝 ʜɪʀᴏᴋᴏ ʀᴏʙᴏᴛ ᴀᴅᴅᴇᴅ ɪɴ ᴀ ɴᴇᴡ ɢʀᴏᴜᴘ\n\n"
+                f"📝 ᴄєʟєѕтɪᴀ ʙᴏᴛ ᴀᴅᴅᴇᴅ ɪɴ ᴀ ɴᴇᴡ ɢʀᴏᴜᴘ\n\n"
                 f"🍂 ᴄʜᴀᴛ ɪᴅ: {message.chat.id}\n"
                 f"🔐 ᴄʜᴀᴛ ᴜsᴇʀɴᴀᴍᴇ: @{message.chat.username}\n"
                 f"📌 ᴄʜᴀᴛ ɴᴀᴍᴇ: {message.chat.title}\n"
