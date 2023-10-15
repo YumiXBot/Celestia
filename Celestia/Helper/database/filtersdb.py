@@ -1,6 +1,12 @@
+from typing import Dict, List, Union
+from config import MONGO_URL
+from motor.motor_asyncio import AsyncIOMotorClient as MongoCli
 
 
-filters = dbname["filters"] 
+mongo = MongoCli(MONGO_URL).Rankings
+
+filters = mongo.filters
+
 
 async def add_filter_db(chat_id: int, filter_name: str, content: str, text: str, data_type: int):
    filter_data = await filters.find_one(
