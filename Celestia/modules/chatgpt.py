@@ -3,6 +3,8 @@ import openai
 from pyrogram import filters
 from Celestia import Celestia
 from pyrogram.enums import ChatAction, ParseMode
+from gtts import gTTS
+
 
 
 
