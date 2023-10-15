@@ -3,16 +3,7 @@ import requests
 from Celestia import Celestia
 
 
-@Celestia.on_message(filters.command("start"))
-def start_command(client, message):
-    chat_id = message.chat.id
-    username = message.from_user.username
-    message_id = message.message_id
-    client.send_message(
-        chat_id,
-        f"─ Switchblade Checker Panel ─\n⁕ Registered as ➞ @{username}\n⁕ Use ➞ /cmds to show available commands.\n⁕ Owner ➞ @pentagrvm | Update Logs ➞ @switchbladeupdate",
-        reply_to_message_id=message_id
-    )
+
 
 @Celestia.on_message(filters.command("cmds"))
 def cmds_command(client, message):
