@@ -1,21 +1,23 @@
 import re
 import requests
-from Celestia import Celestia 
-
+from pyrogram import filters
+from Celestia import Celestia
 
 @Celestia.on_message(filters.command("bin", prefixes="."))
 async def check_bin(client, message):
     try:
-        # Split the message to extract the BIN number.
         command_parts = message.text.split(' ')
+        
         if len(command_parts) != 2:
-            await message.edit("Usage: Send a message with '.bin [BIN_NUMBER]' to get BIN information.")
+            x = await message.reply("Usage: Send a message with '.bin [BIN_NUMBER]' to get BIN information.")
             return
 
         bin_number = command_parts[1]
         _BIN = re.sub(r'[^0-9]', '', bin_number)
         _res = requests.get(f'http://binchk-api.vercel.app/bin={_BIN}')
-
+        
+        await x.edit("Wait...")
+        
         if _res.status_code == 200:
             res = _res.json()
             msg = f"""
@@ -29,11 +31,15 @@ async def check_bin(client, message):
             Currency⇢ **{res["currency"]}**
             Country⇢ **{res["country"]}({res["code"]})**
             """
-            await message.edit(msg)
+            await x.edit(msg)
         else:
-            await message.edit("API request failed. Please try again later.")
+            await x.edit("API request failed. Please try again later.")
     except Exception as e:
-        await message.edit(f"An error occurred: {str(e)}")
+        await x.edit(f"An error occurred: {str(e)}")
+
+
+
+
 
 
 
