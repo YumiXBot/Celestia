@@ -1,7 +1,7 @@
 from config import COMMAND_HANDLER
 from pyrogram import filters
 from pyrogram.types import *
-from Hiroko import Hiroko
+from Celestia import Celestia
 from gpytranslate import Translator
 
 # ------------------------------------------------------------------------------- #
@@ -10,7 +10,7 @@ trans = Translator()
 
 # ------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command(["trans", "tr"],COMMAND_HANDLER))
+@Celestia.on_message(filters.command(["trans", "tr"],COMMAND_HANDLER))
 async def translate(_, message) -> None:
     reply_msg = message.reply_to_message
     if not reply_msg:
