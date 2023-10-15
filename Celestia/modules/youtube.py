@@ -8,12 +8,12 @@ from youtube_search import YoutubeSearch
 from yt_dlp import YoutubeDL
 from pyrogram import filters
 from pyrogram.types import *
-from Hiroko import Hiroko
+from Celestia import Celestia
 
 
 # ------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command("video",COMMAND_HANDLER))
+@Celestia.on_message(filters.command("video",COMMAND_HANDLER))
 async def vsong(client, message):
     ydl_opts = {
         "format": "best",
@@ -74,7 +74,7 @@ ydl_opts = {
 
 # ------------------------------------------------------------------------------- #
 
-@Hiroko.on_message(filters.command("song",COMMAND_HANDLER))
+@Celestia.on_message(filters.command("song",COMMAND_HANDLER))
 def download_song(_, message):
     query = " ".join(message.command[1:])  
     print(query)
