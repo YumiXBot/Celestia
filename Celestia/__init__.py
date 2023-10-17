@@ -1,7 +1,6 @@
 import asyncio
 import logging
 import time
-from pyrogram import *
 from pytgcalls import PyTgCalls
 from importlib import import_module
 from os import environ, getenv, listdir, path
@@ -9,6 +8,8 @@ from dotenv import load_dotenv
 from pyrogram import Client
 from config import API_ID, API_HASH, BOT_TOKEN, SESSION_STRING
 import config
+
+
 
 loop = asyncio.get_event_loop()
 load_dotenv()
