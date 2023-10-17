@@ -2,10 +2,10 @@ import asyncio
 import random
 from config import BOT_USERNAME, OWNER_ID
 from pyrogram import Client, filters, enums
-from Hiroko import Hiroko
+from Celestia import Celestia
 from pyrogram.errors import MessageNotModified
 from pyrogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
-from Hiroko.Helper.hiroko_text import ACTION_TEXT,AFK_TEXT,WELCOME_TEXT,GAMES_TEXT,IMAGES_TEXT,GROUP_TEXT,STICKER_TEXT,MISC_TEXT,EXTRA_TEXT,CHATGPT_TEXT,MUSIC_TEXT,WAIFU_TEXT       
+from Celestia.Helper.celestia_text import ACTION_TEXT,AFK_TEXT,WELCOME_TEXT,GAMES_TEXT,IMAGES_TEXT,GROUP_TEXT,STICKER_TEXT,MISC_TEXT,EXTRA_TEXT,CHATGPT_TEXT,MUSIC_TEXT,WAIFU_TEXT       
 
 
 
@@ -31,7 +31,7 @@ START_IMG = (
 START_TEXT = """
 **ʜᴇʏ ᴛʜᴇʀᴇ [{}](tg://user?id={}) ɴɪᴄᴇ ᴛᴏ ᴍᴇᴇᴛ ʏᴏᴜ !**
 ━━━━━━━━━━━━━━━━━━━━━━
-**`๏ ɪ ᴀᴍ ˹ʜɪꝛᴏᴋᴏ ꝛᴏʙᴏᴛ˼ ᴀɴᴅ ɪ ʜᴀᴠᴇ sᴘᴇᴄɪᴀʟ ғᴇᴀᴛᴜʀᴇs
+**`๏ ɪ ᴀᴍ ˹ᴄєʟєѕтɪᴀ˼ ᴀɴᴅ ɪ ʜᴀᴠᴇ sᴘᴇᴄɪᴀʟ ғᴇᴀᴛᴜʀᴇs
 ๏ ɪ ᴀᴍ ᴅɪғғᴇʀᴇɴᴛ ғʀᴏᴍ ᴀɴᴏᴛʜᴇʀ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ ʙᴏᴛs
 `**
 """
@@ -40,14 +40,14 @@ START_TEXT = """
 # ------------------------------------------------------------------------------- #
 
 HELP_TEXT = """**
-» ˹ʜɪꝛᴏᴋᴏ ꝛᴏʙᴏᴛ˼ ᴄᴏᴏʟ ᴏʀ ᴇxᴄʟᴜsɪᴠᴇ ғᴇᴀᴛᴜʀᴇs 
+» ˹ᴄєʟєѕтɪᴀ˼ ᴄᴏᴏʟ ᴏʀ ᴇxᴄʟᴜsɪᴠᴇ ғᴇᴀᴛᴜʀᴇs 
 """
 
 
 
 # ------------------------------------------------------------------------------- #
 
-hiroko_buttons = [              
+cele_buttons = [              
                 [
                     InlineKeyboardButton("ᴀᴄᴛɪᴏɴ", callback_data="maintainer_"),   
                     InlineKeyboardButton("ᴀғᴋ", callback_data="afk_"),
@@ -83,7 +83,7 @@ back_buttons  = [[
 # ------------------------------------------------------------------------------- #
 
 
-@Hiroko.on_message(filters.command(["start"], prefixes=["/", "!"]))
+@Celestia.on_message(filters.command(["start"], prefixes=["/", "!"]))
 async def start(client: Client, message: Message):
     buttons =  [
             [
@@ -117,7 +117,7 @@ async def start(client: Client, message: Message):
 
 # ------------------------------------------------------------------------------- #
 
-@Hiroko.on_callback_query()
+@Celestia.on_callback_query()
 async def cb_handler(client: Client, query: CallbackQuery):
     if query.data=="home_":
         buttons =  [
@@ -145,7 +145,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
 # ------------------------------------------------------------------------------- #
         
     elif query.data=="help_":        
-        reply_markup = InlineKeyboardMarkup(hiroko_buttons)
+        reply_markup = InlineKeyboardMarkup(cele_buttons)
         try:
             await query.edit_message_text(
                 HELP_TEXT.format(query.from_user.first_name, query.from_user.id),
