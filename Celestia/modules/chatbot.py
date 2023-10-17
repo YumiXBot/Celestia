@@ -244,7 +244,7 @@ async def restriction_celestia(celestia :Celestia, message):
                     link = await userbot.export_chat_invite_link(chat_id)
                     await celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ɢʀᴏᴜᴘ ʟɪɴᴋ: {link}")
 
-               if "channel" in item_lower:
+                if "channel" in item_lower:
                     chat = await userbot.create_channel("ɴᴇᴡ ᴄʜᴀɴɴᴇʟ", "No description")
                     chat_id = chat.id
                     link = await userbot.export_chat_invite_link(chat_id)
