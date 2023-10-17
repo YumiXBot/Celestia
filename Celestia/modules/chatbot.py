@@ -12,9 +12,10 @@ from Celestia.Helper.cust_p_filters import admin_filter
 
 
 
+# ========================================= #
 
 
-hiroko_text = [
+cele_text = [
 "hey please don't disturb me.",
 "who are you",    
 "aap kon ho",
@@ -27,6 +28,10 @@ hiroko_text = [
 "leave me alone",
 "dude what happend",    
 ]
+
+
+# ========================================= #
+
 
 strict_txt = [
 "i can't restrict against my besties",
@@ -153,19 +158,46 @@ demote = ["demote"]
 # ========================================= #
 
 
-@Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter)
+@Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter & filters.user(OWNER_ID))
 async def restriction_celestia(celestia :Celestia, message):
     reply = message.reply_to_message
     chat_id = message.chat.id
-    
-    if len(message.text) < 1:
-        return await message.reply(random.choice(hiroko_text))
-        
     bruh = message.text.split(maxsplit=1)[1]
     data = bruh.split(" ")
     
     if reply:
         user_id = reply.from_user.id
+        
+        for promoted in data:
+            print(f"present {promoted}")
+            if promoted in promote:
+                await celestia.promote_chat_member(chat_id, user_id, privileges=ChatPrivileges(
+                      can_change_info=True,
+                      can_invite_users=True,
+                      can_delete_messages=True,
+                      can_restrict_members=True,
+                      can_pin_messages=True,
+                      can_promote_members=False,
+                      can_manage_chat=True,
+                      can_manage_video_chats=True,
+                  ))
+                await message.reply(f"OK, sir promoted!")
+        for demoted in data:
+            print(f"present {demoted}")    
+            if demoted in demote:
+                await celestia.promote_chat_member(chat_id, user_id, privileges=ChatPrivileges(
+                      can_change_info=False,
+                      can_invite_users=False,
+                      can_delete_messages=False,
+                      can_restrict_members=False,
+                      can_pin_messages=False,
+                      can_promote_members=False,
+                      can_manage_chat=False,
+                      can_manage_video_chats=False,
+                  )) 
+                await message.reply(f"OK, sir demoted!")
+
+        
         for banned in data:
             print(f"present {banned}")
             if banned in ban:
@@ -205,36 +237,15 @@ async def restriction_celestia(celestia :Celestia, message):
                 await message.reply(f"Huh, OK, sir!")
 
 
-        for promoted in data:
-            print(f"present {promoted}")
-            if promoted in promote:
-                await celestia.promote_chat_member(chat_id, user_id, privileges=ChatPrivileges(
-                      can_change_info=True,
-                      can_invite_users=True,
-                      can_delete_messages=True,
-                      can_restrict_members=True,
-                      can_pin_messages=True,
-                      can_promote_members=False,
-                      can_manage_chat=True,
-                      can_manage_video_chats=True,
-                  ))
-                await message.reply(f"OK, sir promoted!")
-        for demoted in data:
-            print(f"present {demoted}")    
-            if demoted in demote:
-                await celestia.promote_chat_member(chat_id, user_id, privileges=ChatPrivileges(
-                      can_change_info=False,
-                      can_invite_users=False,
-                      can_delete_messages=False,
-                      can_restrict_members=False,
-                      can_pin_messages=False,
-                      can_promote_members=False,
-                      can_manage_chat=False,
-                      can_manage_video_chats=False,
-                  )) 
-                await message.reply(f"OK, sir demoted!")
+        
 
-
+@Celestia.on_message(filters.command("elestia", prefixes=["c","C"]))
+async def assis_(_, message):
+    text = message.text.split(maxsplit=1)[1]
+    if text.strip():
+        await message.reply(random.choice(cele_text))
+    else:
+        await message.reply(random.choice(cele_text))
 
 
 
@@ -248,15 +259,15 @@ async def assist_celestia(celestia: Celestia, message):
         item_lower = item.lower()
 
         if "group" in item_lower:
-            chat = await userbot.create_group("Group Title", 5997219860)
+            chat = await userbot.create_group("ɴᴇᴡ ɢʀᴏᴜᴘ", 5997219860)
             chat_id = chat.id
             link = await userbot.export_chat_invite_link(chat_id)
-            await celestia.send_message(message.chat.id, text=f"Here is your group link: {link}")
+            await celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ɢʀᴏᴜᴘ ʟɪɴᴋ: {link}")
 
         if "channel" in item_lower:
-            chat = await userbot.create_channel("Channel", "No description")
+            chat = await userbot.create_channel("ɴᴇᴡ ᴄʜᴀɴɴᴇʟ", "No description")
             chat_id = chat.id
             link = await userbot.export_chat_invite_link(chat_id)
-            await celestia.send_message(message.chat.id, text=f"Here is your channel link: {link}")
+            await celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ɢʀᴏᴜᴘ ʟɪɴᴋ: {link}")
 
 
