@@ -241,7 +241,7 @@ async def restriction_celestia(celestia :Celestia, message):
 
 
 
-@Celestia.on_message(filters.command("celu", prefixes=["c","C"]))
+@Celestia.on_message(filters.command("elu", prefixes=["c","C"]))
 async def assis_(_, message):
     bruh = message.text.split(maxsplit=1)[1]
     data = bruh.split(" ")
