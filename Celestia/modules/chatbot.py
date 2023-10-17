@@ -235,34 +235,33 @@ async def restriction_celestia(celestia :Celestia, message):
                 permissions = ChatPermissions(can_send_messages=True)
                 await message.chat.restrict_member(user_id, permissions)
                 await message.reply(f"Huh, OK, sir!")
-        if message.from_user.id in owner:
-            for item in data:
-                item_lower = item.lower()
-                if "group" in item_lower:
-                    chat = await userbot.create_group("ɴᴇᴡ ɢʀᴏᴜᴘ", 5997219860)
-                    chat_id = chat.id
-                    link = await userbot.export_chat_invite_link(chat_id)
-                    await celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ɢʀᴏᴜᴘ ʟɪɴᴋ: {link}")
+        
 
-                if "channel" in item_lower:
-                    chat = await userbot.create_channel("ɴᴇᴡ ᴄʜᴀɴɴᴇʟ", "No description")
-                    chat_id = chat.id
-                    link = await userbot.export_chat_invite_link(chat_id)
-                    await celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ɢʀᴏᴜᴘ ʟɪɴᴋ: {link}")
+        
+
+@Celestia.on_message(filters.command("celu", prefixes=["c","C"]))
+async def assis_(_, message):
+    bruh = message.text.split(maxsplit=1)[1]
+    data = bruh.split(" ")
+    
+    if message.from_user.id in owner:
+        for item in data:
+            item_lower = item.lower()
+            if "group" in item_lower:
+                chat = await userbot.create_group("ɴᴇᴡ ɢʀᴏᴜᴘ", 5997219860)
+                chat_id = chat.id
+                link = await userbot.export_chat_invite_link(chat_id)
+                await Celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ɢʀᴏᴜᴘ ʟɪɴᴋ: {link}")
+
+            if "channel" in item_lower:
+                chat = await userbot.create_channel("ɴᴇᴡ ᴄʜᴀɴɴᴇʟ", "No description")
+                chat_id = chat.id
+                link = await userbot.export_chat_invite_link(chat_id)
+                await Celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ᴄʜᴀɴɴᴇʟ ʟɪɴᴋ: {link}")
+
 
 
  
-
-        
-"""
-@Celestia.on_message(filters.command("elestia", prefixes=["c","C"]))
-async def assis_(_, message):
-    text = message.text.split(maxsplit=1)[1]
-    if text.strip():
-        await message.reply(random.choice(cele_text))
-    else:
-        await message.reply(random.choice(cele_text))
-"""
 
 
  
