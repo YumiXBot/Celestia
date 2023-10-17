@@ -9,7 +9,7 @@ from Celestia.Helper.database import *
 from pyrogram.enums import ChatMemberStatus, ChatType
 from Celestia.Helper.cust_p_filters import admin_filter
 
-
+owner = [6280048819, 6691393517, 5465943450]
 
 
 # ========================================= #
