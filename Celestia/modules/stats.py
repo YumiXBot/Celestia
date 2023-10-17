@@ -63,7 +63,7 @@ button = InlineKeyboardMarkup(
 # --------------------------------------------------------------------------------- #
 
 
-@Celestia.on_message(filters.new_chat_members, group=2)
+@Celestia.on_message(filters.new_chat_members, group=1)
 async def _kk(_, message):
     chat = message.chat
     for members in message.new_chat_members:
