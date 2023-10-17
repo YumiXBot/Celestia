@@ -2,8 +2,7 @@ from pyrogram import filters, Client
 from config import OWNER_ID
 from Celestia import Celestia
 import random
-from Celestia.Helper.database.chatsdb import get_served_chats
-from Celestia.Helper.database.usersdb import get_served_users
+from Celestia.Helper.database import *
 from pyrogram.types import (
     Message,
     CallbackQuery,
@@ -36,17 +35,39 @@ photo = [
 
 
 
+@Celestia.on_message(group=10)
+async def chat_watcher_func(_, message):
+    if message.from_user:
+        us_in_db = await get_user(message.from_user.id)
+        if not us_in_db:
+            await add_user(message.from_user.id)
+
+    chat_id = (message.chat.id if message.chat.id != message.from_user.id else None)
+
+
+
+    if not chat_id:
+        return
+
+    in_db = await get_chat(chat_id)
+    if not in_db:
+        await add_chat(chat_id)
+
+
+
 # --------------------------------------------------------------------------------- #
+
 
 @Celestia.on_message(filters.command("stats") & filters.user(OWNER_ID))
 async def stats(cli: Client, message: Message):
-    users = len(await get_served_users())
-    chats = len(await get_served_chats())
+    users = len(await get_users())
+    chats = len(await get_chats())
     await message.reply_text(
         f"""ᴛᴏᴛᴀʟ sᴛᴀᴛs ᴏғ {(await cli.get_me()).mention} :
 
 ➻ ᴄʜᴀᴛs : {chats}
-➻ ᴜsᴇʀs : {users}"""
+➻ ᴜsᴇʀs : {users}
+"""
     )
     
 # --------------------------------------------------------------------------------- #
@@ -60,24 +81,26 @@ button = InlineKeyboardMarkup(
     ])
 
 
+
+
 # --------------------------------------------------------------------------------- #
 
 
-@Celestia.on_message(filters.new_chat_members, group=1)
-async def _kk(_, message):
+@Celestia.on_message(filters.new_chat_members, group=2)
+async def chat_alter(celestia :Celestia, message):
     chat = message.chat
     for members in message.new_chat_members:
-        if members.id == 5997219860:
-            count = await Celestia.get_chat_members_count(chat.id)
+        if members.id == 6565729549:
+            count = await celestia.get_chat_members_count(chat.id)
 
             msg = (
-                f"📝 ᴄєʟєѕтɪᴀ ʙᴏᴛ ᴀᴅᴅᴇᴅ ɪɴ ᴀ ɴᴇᴡ ɢʀᴏᴜᴘ\n\n"
+                f"📝 ᴄєʟєѕтɪᴀ 💰 ᴀᴅᴅᴇᴅ ɪɴ ᴀ ɴᴇᴡ ɢʀᴏᴜᴘ\n\n"
                 f"🍂 ᴄʜᴀᴛ ɪᴅ: {message.chat.id}\n"
                 f"🔐 ᴄʜᴀᴛ ᴜsᴇʀɴᴀᴍᴇ: @{message.chat.username}\n"
                 f"📌 ᴄʜᴀᴛ ɴᴀᴍᴇ: {message.chat.title}\n"
                 f"📈 ɢʀᴏᴜᴘ ᴍᴇᴍʙᴇʀs: {count}"
             )
-            await Celestia.send_photo(-1001328686560, photo=random.choice(photo), caption=msg, reply_markup=button)
+            await celestia.send_photo(-1001328686560, photo=random.choice(photo), caption=msg, reply_markup=button)
 
 
 
