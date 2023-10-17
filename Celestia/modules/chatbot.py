@@ -158,7 +158,7 @@ demote = ["demote"]
 # ========================================= #
 
 
-@Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter & filters.user(OWNER_ID))
+@Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter)
 async def restriction_celestia(celestia :Celestia, message):
     reply = message.reply_to_message
     chat_id = message.chat.id
@@ -239,6 +239,8 @@ async def restriction_celestia(celestia :Celestia, message):
 
         
 
+
+
 @Celestia.on_message(filters.command("celu", prefixes=["c","C"]))
 async def assis_(_, message):
     bruh = message.text.split(maxsplit=1)[1]
@@ -260,8 +262,3 @@ async def assis_(_, message):
                 await Celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ᴄʜᴀɴɴᴇʟ ʟɪɴᴋ: {link}")
 
 
-
- 
-
-
- 
