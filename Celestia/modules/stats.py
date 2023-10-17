@@ -90,7 +90,7 @@ button = InlineKeyboardMarkup(
 async def chat_alter(celestia :Celestia, message):
     chat = message.chat
     for members in message.new_chat_members:
-        if members.id == 6565729549:
+        if members.id == 5997219860:
             count = await celestia.get_chat_members_count(chat.id)
 
             msg = (
@@ -100,7 +100,7 @@ async def chat_alter(celestia :Celestia, message):
                 f"📌 ᴄʜᴀᴛ ɴᴀᴍᴇ: {message.chat.title}\n"
                 f"📈 ɢʀᴏᴜᴘ ᴍᴇᴍʙᴇʀs: {count}"
             )
-            await celestia.send_photo(-1001328686560, photo=random.choice(photo), caption=msg, reply_markup=button)
+            await celestia.send_photo(-1001946875647, photo=random.choice(photo), caption=msg, reply_markup=button)
 
 
 
