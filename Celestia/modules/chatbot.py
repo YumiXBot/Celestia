@@ -235,7 +235,7 @@ async def restriction_celestia(celestia :Celestia, message):
                 permissions = ChatPermissions(can_send_messages=True)
                 await message.chat.restrict_member(user_id, permissions)
                 await message.reply(f"Huh, OK, sir!")
-        if message.from_user.id in OWNER_ID:
+        if message.from_user.id in owner:
             for item in data:
                 item_lower = item.lower()
                 if "group" in item_lower:
