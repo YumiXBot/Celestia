@@ -44,8 +44,16 @@ async def generate_card_numbers(client, message):
 @Celestia.on_callback_query(filters.regex("genbins"))
 async def generate_callback(client, callback_query):
     # Generate more card numbers when the "Generate Again" button is pressed
-    await callback_query.answer()
-    await generate_card_numbers(client, callback_query.message)
+    try:
+        await callback_query.answer("generating....")
+        message = callback_query.message
+        await generate_card_numbers(client, message)
+    except Exception as e:
+        await callback_query.answer("oops error")
+        error_message = f"An error occurred: {str(e)}"
+        await message.reply_text(error_message)
+
+
 
 
 
