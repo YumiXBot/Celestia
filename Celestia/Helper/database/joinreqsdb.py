@@ -1,5 +1,13 @@
+from typing import Dict, List, Union
+from config import MONGO_URL
+from motor.motor_asyncio import AsyncIOMotorClient as MongoCli
 
-jreq = dbname["jrequests"] 
+
+mongo = MongoCli(MONGO_URL).Rankings
+
+jreq = mongo.joinreqs
+
+
 
 
 async def add_join(chat_id : int):
