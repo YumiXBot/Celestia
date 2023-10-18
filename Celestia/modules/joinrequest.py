@@ -5,6 +5,7 @@ from pyrogram.enums import *
 from Celestia import Celestia
 from config import SUDO_USERS, COMMAND_HANDLER
 from Celestia.Helper.database import *
+from Celestia.Helper.cust_p_filters import admin_filter
 
 
 
@@ -105,7 +106,7 @@ async def decline_join_req(celestia, cq: CallbackQuery):
     
 
 
-@Celestia.on_message(filters.command(["joinreq"], COMMAND_HANDLER))
+@Celestia.on_message(filters.command(["joinreq"], COMMAND_HANDLER) & admin_filter)
 async def set_requests(_, message):
     chat = message.chat
     if len(message.command) == 1:
