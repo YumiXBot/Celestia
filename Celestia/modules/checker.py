@@ -59,20 +59,20 @@ async def generate_callback(client, callback_query):
 
 
 
+
 def generate_credit_card(bin, count=10):
     card_numbers = []
     bin_length = len(bin)
     if bin.isdigit() and bin_length == 6:
         for _ in range(count):
             cc = bin + "".join([str(random.randint(0, 9)) for _ in range(10)])
-            date = "".join([str(random.randint(0, 2), str(random.randint(0, 9))])
-            year = "".join([str(random.randint(2, 2), str(random.randint(5, 9))])  # Ensure year is not greater than 2029
+            date = "".join([str(random.randint(0, 2)) + str(random.randint(0, 9))])
+            year = "".join([str(random.randint(2, 2)) + str(random.randint(5, 9)])  # Ensure year is not greater than 2029
             cvv = "".join([str(random.randint(0, 9)) for _ in range(3)])
             card_info = f"{cc}|{date}|{year}|{cvv}"
             card_numbers.append(card_info)
         return card_numbers
     return []
-
 
 @Celestia.on_message(filters.command("gencc"))
 async def generate_credit_cards(client, message):
@@ -92,10 +92,9 @@ async def generate_credit_cards(client, message):
     else:
         await message.reply_text("Invalid command. Use: /gencc 736373")
 
-
 @Celestia.on_callback_query(filters.regex("gencc"))
 async def generate_cc_callback(client, callback_query):
-    await callback_query answer()
+    await callback_query.answer()
     message = callback_query.message
     bin = message.text.split('\n')[1].split()[2]
     card_numbers = generate_credit_card(bin)
@@ -107,8 +106,6 @@ async def generate_cc_callback(client, callback_query):
             [[InlineKeyboardButton("Generate More CC", callback_data="gencc")]]
         )
         await message.reply_text(text, reply_markup=reply_markup)
-
-
 
 
 
