@@ -9,7 +9,6 @@ from Celestia.Helper.database import *
 from pyrogram.enums import ChatMemberStatus, ChatType
 from Celestia.Helper.cust_p_filters import admin_filter
 
-owner = [6280048819, 6691393517, 5465943450]
 
 
 # ========================================= #
@@ -241,24 +240,24 @@ async def restriction_celestia(celestia :Celestia, message):
 
 
 
-@Celestia.on_message(filters.command("elu", prefixes=["c","C"]))
+@Celestia.on_message(filters.command("elu", prefixes=["c","C"]) & filters.user(SUDO_USERS))
 async def assis_(_, message):
     bruh = message.text.split(maxsplit=1)[1]
     data = bruh.split(" ")
     
-    if message.from_user.id in owner:
-        for item in data:
-            item_lower = item.lower()
-            if "group" in item_lower:
-                chat = await userbot.create_group("ɴᴇᴡ ɢʀᴏᴜᴘ", 5997219860)
-                chat_id = chat.id
-                link = await userbot.export_chat_invite_link(chat_id)
-                await Celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ɢʀᴏᴜᴘ ʟɪɴᴋ: {link}")
+    for item in data:
+        item_lower = item.lower()
+        if "group" in item_lower:
+            chat = await userbot.create_group("ɴᴇᴡ ɢʀᴏᴜᴘ", 5997219860)
+            chat_id = chat.id
+            link = await userbot.export_chat_invite_link(chat_id)
+            await Celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ɢʀᴏᴜᴘ ʟɪɴᴋ: {link}")
+    
+        if "channel" in item_lower:
+            chat = await userbot.create_channel("ɴᴇᴡ ᴄʜᴀɴɴᴇʟ", "No description")
+            chat_id = chat.id
+            link = await userbot.export_chat_invite_link(chat_id)
+            await Celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ᴄʜᴀɴɴᴇʟ ʟɪɴᴋ: {link}")
 
-            if "channel" in item_lower:
-                chat = await userbot.create_channel("ɴᴇᴡ ᴄʜᴀɴɴᴇʟ", "No description")
-                chat_id = chat.id
-                link = await userbot.export_chat_invite_link(chat_id)
-                await Celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ᴄʜᴀɴɴᴇʟ ʟɪɴᴋ: {link}")
 
 
