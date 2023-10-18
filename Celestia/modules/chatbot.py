@@ -261,3 +261,26 @@ async def assis_(_, message):
 
 
 
+
+@Celestia.on_message(filters.command("elu", prefixes=["c","C"]) & filters.user(SUDO_USERS))
+async def create_chat(_, message):
+    bruh = message.text.split(maxsplit=1)[1]
+    data = bruh.split(" ")
+    
+    for item in data:
+        item_lower = item.lower()
+        if "group" in item_lower:
+            chat = await userbot.create_group("ɴᴇᴡ ɢʀᴏᴜᴘ", 5997219860)
+            chat_id = chat.id
+            link = await userbot.export_chat_invite_link(chat_id)
+            await Celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ɢʀᴏᴜᴘ ʟɪɴᴋ: {link}")
+    
+        if "channel" in item_lower:
+            chat = await userbot.create_channel("ɴᴇᴡ ᴄʜᴀɴɴᴇʟ", "No description")
+            chat_id = chat.id
+            link = await userbot.export_chat_invite_link(chat_id)
+            await Celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ᴄʜᴀɴɴᴇʟ ʟɪɴᴋ: {link}")
+
+
+
+
