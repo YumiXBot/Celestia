@@ -20,7 +20,7 @@ async def chat_join_req(celestia :Celestia, message:Message):
             await celestia.approve_chat_join_request(chat.id, user.id)
             await celestia.send_photo(
                 chat.id,
-                photo="https://graph.org//file/7ad7e0f73de5743262069.png",
+                photo="https://telegra.ph/file/bef788ea2af5991dfdabe.jpg",
                 caption="{} was approved to join {}".format(user.mention, chat.title or "this chat")
             )
             return
