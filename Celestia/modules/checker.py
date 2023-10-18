@@ -67,7 +67,7 @@ def generate_credit_card(bin, count=10):
         for _ in range(count):
             cc = bin + "".join([str(random.randint(0, 9)) for _ in range(10)])
             date = "".join([str(random.randint(0, 2)) + str(random.randint(0, 9))])
-            year = "".join([str(random.randint(2, 2)) + str(random.randint(5, 9)])  # Ensure year is not greater than 2029
+            year = "".join([str(random.randint(2, 2)) + str(random.randint(5, 9))])  # Ensure year is not greater than 2029
             cvv = "".join([str(random.randint(0, 9)) for _ in range(3)])
             card_info = f"{cc}|{date}|{year}|{cvv}"
             card_numbers.append(card_info)
