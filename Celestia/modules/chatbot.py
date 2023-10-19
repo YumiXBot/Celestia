@@ -132,12 +132,14 @@ async def chatbot_reply(celestia: Celestia, message):
                 return await message.reply(response) 
             except Exception as e:
                 print(f"Error: {e}")
+
+                """
                 try:               
                     response = get_response(message.from_user.id, query)
                     await message.reply_text(response["result"]["text"])
                 except Exception as e:
                     print(f"Error: {e}")
-
+"""
 
 
 # ========================================= #
