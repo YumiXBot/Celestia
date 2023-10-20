@@ -1,4 +1,4 @@
-import os, time
+import os, time, requests
 import openai
 from pyrogram import filters
 from Celestia import Celestia
@@ -32,6 +32,40 @@ async def chat(celestia :Celestia, message):
             await message.reply_text(f"{x}")     
     except Exception as e:
         await message.reply_text(f"**ᴇʀʀᴏʀ**: {e} ")        
+
+
+
+
+@Celestia.on_message(filters.command(["deep"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
+async def chat(celestia: Celestia, message):
+    try:
+        await celestia.send_chat_action(message.chat.id, ChatAction.TYPING)
+        if len(message.command) < 2:
+            await message.reply_text(
+                "**ʜᴇʟʟᴏ sɪʀ**\n**ᴇxᴀᴍᴘʟᴇ:-** Please provide text after the .deep command"
+            )
+        else:
+            a = message.text.split(' ', 1)[1]
+
+            data = {
+                'text': a,  
+            }
+
+            headers = {
+                'api-key': '9133bea4-ddf1-40d0-bcac-089e0fbacb4f',
+            }
+
+            r = requests.post("https://api.deepai.org/api/text-generator", data=data, headers=headers)
+            response = r.json()
+            answer_text = response['output']
+            await message.reply_text(f"{answer_text}")
+    except Exception as e:
+        await message.reply_text(f"**ᴇʀʀᴏʀ**: {e} ")
+
+
+
+
+
 
 
 @Celestia.on_message(filters.command(["assis"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
