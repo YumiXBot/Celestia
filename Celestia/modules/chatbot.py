@@ -5,6 +5,7 @@ from config import SUDO_USERS, OWNER_ID
 from Celestia import *
 from pyrogram import * 
 from pyrogram.types import *
+from lexica import Client
 from Celestia.Helper.database import *
 from pyrogram.enums import ChatMemberStatus, ChatType
 from Celestia.Helper.cust_p_filters import admin_filter
