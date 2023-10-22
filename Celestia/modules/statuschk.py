@@ -12,7 +12,7 @@ CHANNEL_ID = [-1001934794766]
 async def main_status():
     async with userbot
         await Celestia.start()
-        await Celestia.send_message(-1001802990747, stats checking started")
+        await Celestia.send_message(-1001802990747, "stats checking started")
         while True:
             print("ᴄʜᴇᴄᴋɪɴɢ...")
             xxx_teletips = "<u>**🏷 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ {chat_title} ɪɴғᴏʀᴍᴀᴛɪᴏɴ ᴄʜᴀɴɴᴇʟ**</u>\n\n 📈 | <u>**ʀᴇᴀʟ ᴛɪᴍᴇ ʙᴏᴛ's sᴛᴀᴛᴜs 🍂**</u>".format(chat_title="Your Chat Title")  # Replace "Your Chat Title" with the actual chat title.
