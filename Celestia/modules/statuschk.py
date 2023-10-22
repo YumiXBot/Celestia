@@ -4,7 +4,7 @@ from pyrogram.errors import FloodWait
 from config import SUDO_USERS 
 from Celestia import Celestia, userbot
 
-BOT_LIST = []
+BOT_LIST = [5997219860, 6796545941]
 MESSAGE_ID = [32]
 GROUP_ID = [-1001802990747]
 CHANNEL_ID = [-1001934794766]
