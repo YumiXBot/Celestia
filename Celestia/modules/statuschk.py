@@ -35,7 +35,7 @@ async def main_status():
                                 await Celestia.send_message(int(GROUP_ID), f"**ᴋʏᴀ ᴋᴀʀ ʀᴀʜ ʜᴀɪ ʙʜᴀɪ, 😡\n[{bot_info.first_name}](tg://user?id={bot_info.id}) ʙᴀɴᴅ ᴘᴀᴅᴀ ʜᴀɪ ᴵ ᴡᴏʜ ᴛᴏʜ ᴀᴄᴄʜᴀ ʜᴜᴀ ᴍᴀɪɴᴇ ᴅᴇᴋʜ ʟɪʏᴀ**")
                             except Exception:
                                 pass  # Handle this exception appropriately.
-                        await app.read_chat_history(bot)
+                        await userbot.read_chat_history(bot)
                     else:
                         xxx_teletips += f"\n\n╭⎋ **[{bot_info.first_name}](tg://user?id={bot_info.id})**\n╰⊚ **sᴛᴀᴛᴜs: ᴏɴʟɪɴᴇ ✨**"
                         await userbot.read_chat_history(bot)
@@ -49,7 +49,7 @@ async def main_status():
             print(f"ʟᴀsᴛ ᴄʜᴇᴄᴋᴇᴅ ᴏɴ: {last_update}")
             await asyncio.sleep(14400)
 
-userbot.run(main_status())
-
+userbot.(main_status()
+userbot.start
 
 
