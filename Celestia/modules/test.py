@@ -5,8 +5,8 @@ from config import SUDO_USERS
 from Celestia import Celestia, userbot
 
 BOT_LIST = [5997219860, 6796545941]
-GROUP_ID = [-1001802990747]
-CHANNEL_ID = [-1001934794766]
+GROUP_ID = -1001802990747
+CHANNEL_ID = -1001934794766
 
 @Celestia.on_message(filters.command("botstats") & filters.user(SUDO_USERS))
 async def bot_status_command(_, message):
@@ -18,9 +18,9 @@ async def bot_status_command(_, message):
             await asyncio.sleep(7)
             yyy_teletips = await userbot.send_message(bot_id, "/start")
             await asyncio.sleep(15)
-            zzz_teletips = userbot.get_chat_history(bot_id, limit=1)
+            zzz_teletips = await userbot.get_chat_history(bot_id, limit=1)
             async for ccc in zzz_teletips:
-                if yyy_teletips.id == ccc.id:
+                if yyy_teletips.message_id == ccc.message_id:
                     offline_bots.append(bot_info.first_name)
                 else:
                     online_bots.append(bot_info.first_name)
@@ -32,4 +32,14 @@ async def bot_status_command(_, message):
     offline_bots_text = "\n".join([f"❌ {bot_name}" for bot_name in offline_bots])
     message_text = f"**Online Bots:**\n{online_bots_text}\n\n**Offline Bots:**\n{offline_bots_text}"
     await message.reply_text(message_text)
+
+async def main_status():
+    async with userbot:
+        await Celestia.start()
+        await userbot.send_message(GROUP_ID, "Bot is online and ready!")
+
+
+    asyncio.get_event_loop().run_until_complete(main_status())
+
+
 
