@@ -50,6 +50,6 @@ async def main_status():
             await asyncio.sleep(14400)
 
 userbot.(main_status()
-userbot.start
+
 
 
