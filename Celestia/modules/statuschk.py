@@ -49,7 +49,7 @@ async def main_status():
             print(f"ʟᴀsᴛ ᴄʜᴇᴄᴋᴇᴅ ᴏɴ: {last_update}")
             await asyncio.sleep(14400)
 
-userbot.(main_status()
+userbot.run(main_status()
 
 
 
