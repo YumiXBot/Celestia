@@ -10,7 +10,9 @@ GROUP_ID = [-1001802990747]
 CHANNEL_ID = [-1001934794766]
 
 async def main_status():
-    async with userbot:
+    async with userbot
+        await Celestia.start()
+        await Celestia.send_message(-1001802990747, stats checking started")
         while True:
             print("ᴄʜᴇᴄᴋɪɴɢ...")
             xxx_teletips = "<u>**🏷 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ {chat_title} ɪɴғᴏʀᴍᴀᴛɪᴏɴ ᴄʜᴀɴɴᴇʟ**</u>\n\n 📈 | <u>**ʀᴇᴀʟ ᴛɪᴍᴇ ʙᴏᴛ's sᴛᴀᴛᴜs 🍂**</u>".format(chat_title="Your Chat Title")  # Replace "Your Chat Title" with the actual chat title.
@@ -49,7 +51,9 @@ async def main_status():
             print(f"ʟᴀsᴛ ᴄʜᴇᴄᴋᴇᴅ ᴏɴ: {last_update}")
             await asyncio.sleep(14400)
 
-#userbot.run(main_status()
+
+asyncio.get_event_loop().run_until_complete(main_status())
+
 
 
 
