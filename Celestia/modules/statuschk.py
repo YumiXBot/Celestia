@@ -5,9 +5,9 @@ from config import SUDO_USERS
 from Celestia import Celestia, userbot
 
 BOT_LIST = []
-MESSAGE_ID = []
-GROUP_ID = []
-CHANNEL_ID = []
+MESSAGE_ID = [32]
+GROUP_ID = [-1001802990747]
+CHANNEL_ID = [-1001934794766]
 
 
 async def main_status():
@@ -42,10 +42,10 @@ async def main_status():
                     except FloodWait as e:
                         ttm = re.findall("\d{0,5}", str(e))
                         await asyncio.sleep(int(ttm))
-                time = datetime.datetime.now(pytz.timezone(f"{TIME_ZONE}"))
+                time = datetime.datetime.now(pytz.timezone(f"Asia/Kolkata"))
                 last_update = time.strftime(f"%d %b %Y at %I:%M %p")
-                xxx_teletips += f"\n\n✅ <u>ʟᴀsᴛ ᴄʜᴇᴄᴋᴇᴅ ᴏɴ:</u>\n**ᴅᴀᴛᴇ & ᴛɪᴍᴇ: {last_update}**\n**ᴛɪᴍᴇ ᴢᴏɴᴇ: ({TIME_ZONE})**\n\n<i><u>♻️ ʀᴇғʀᴇsʜᴇs ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ ᴡɪᴛʜɪɴ 4 ʜᴏᴜʀꜱ.</u></i>\n\n<i>**๏ ᴘᴏᴡᴇʀᴇᴅ ʙʏ sᴜᴍɪᴛ ʏᴀᴅᴀᴠ ๏**</i>"
-                await userbot.edit_message_text(int(CHANNEL_OR_GROUP_ID), MESSAGE_ID, xxx_teletips)
+                xxx_teletips += f"\n\n✅ <u>ʟᴀsᴛ ᴄʜᴇᴄᴋᴇᴅ ᴏɴ:</u>\n**ᴅᴀᴛᴇ & ᴛɪᴍᴇ: {last_update}**\n**ᴛɪᴍᴇ ᴢᴏɴᴇ: ("Asia/Kolkata")**\n\n<i><u>♻️ ʀᴇғʀᴇsʜᴇs ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ ᴡɪᴛʜɪɴ 4 ʜᴏᴜʀꜱ.</u></i>\n\n<i>**๏ ᴘᴏᴡᴇʀᴇᴅ ʙʏ sᴜᴍɪᴛ ʏᴀᴅᴀᴠ ๏**</i>"
+                await userbot.edit_message_text(int(CHANNEL_ID), MESSAGE_ID, xxx_teletips)
                 print(f"ʟᴀsᴛ ᴄʜᴇᴄᴋᴇᴅ ᴏɴ: {last_update}")                
                 await asyncio.sleep(14400)
                         
