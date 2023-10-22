@@ -77,7 +77,7 @@ def get_response(user_id, query):
 
 # ========================================= #
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 completion = openai.Completion()
 
