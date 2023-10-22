@@ -55,6 +55,6 @@ async def main_status():
             print(f"ʟᴀsᴛ ᴄʜᴇᴄᴋᴇᴅ ᴏɴ: {last_update}")
             await asyncio.sleep(14400)
 
-asyncio.get_event_loop().run_until_complete(main_status())
+asyncio.run(main_status())
 
 
