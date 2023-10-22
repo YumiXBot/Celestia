@@ -13,41 +13,36 @@ MESSAGE_ID = 33
 GROUP_ID = -1001802990747
 CHANNEL_ID = -1001934794766
 
+async def check_bot_status(bot_id):
+    try:
+        bot_info = await userbot.get_users(bot_id)
+        yyy_teletips = await userbot.send_message(bot_id, "/start")
+        aaa = yyy_teletips.message_id
+        await asyncio.sleep(15)
+        zzz_teletips = await userbot.get_chat_history(bot_id, limit=1)
+        async for ccc in zzz_teletips:
+            bbb = ccc.message_id
+        if aaa == bbb:
+            return f"{bot_info.first_name}: offline"
+        else:
+            return f"{bot_info.first_name}: online"
+    except FloodWait as e:
+        ttm = re.findall(r"\d{0,5}", str(e))
+        await asyncio.sleep(int(ttm[0]))
+        return f"FloodWait: {ttm[0]} seconds"
+    except Exception as e:
+        return f"Error: {e}"
+
 async def main_status():
     async with userbot:
         await Celestia.start()
         await Celestia.send_message(GROUP_ID, "stats checking started")
         while True:
             print("ᴄʜᴇᴄᴋɪɴɢ...")
+            status_messages = await asyncio.gather(*(check_bot_status(bot_id) for bot_id in BOT_LIST))
             xxx_teletips = "<u>**🏷 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ Your Chat Title ɪɴғᴏʀᴍᴀᴛɪᴏɴ ᴄʜᴀɴɴᴇʟ**</u>\n\n 📈 | <u>**ʀᴇᴀʟ ᴛɪᴍᴇ ʙᴏᴛ's sᴛᴀᴛᴜs 🍂**</u>"
-            for bot in BOT_LIST:
-                await asyncio.sleep(7)
-                try:
-                    bot_info = await userbot.get_users(bot)
-                except Exception:
-                    bot_info = bot
-
-                try:
-                    yyy_teletips = await userbot.send_message(bot, "/start")
-                    aaa = yyy_teletips.message_id
-                    await asyncio.sleep(15)
-                    zzz_teletips = await userbot.get_chat_history(bot, limit=1)
-                    async for ccc in zzz_teletips:
-                        bbb = ccc.message_id
-                    if aaa == bbb:
-                        xxx_teletips += f"\n\n╭⎋ **[{bot_info.first_name}](tg://user?id={bot_info.id})**\n╰⊚ **sᴛᴀᴛᴜs: ᴏғғʟɪɴᴇ ❄**"
-                        for bot_admin_id in SUDO_USERS:
-                            try:
-                                await Celestia.send_message(GROUP_ID, f"**ᴋʏᴀ ᴋᴀʀ ʀᴀʜ ʜᴀɪ ʙʜᴀɪ, 😡\n[{bot_info.first_name}](tg://user?id={bot_info.id}) ʙᴀɴᴅ ᴘᴀᴅᴀ ʜᴀɪ ᴵ ᴡᴏʜ ᴛᴏʜ ᴀᴄᴄʜᴀ ʜᴜᴀ ᴍᴀɪɴᴇ ᴅᴇᴋʜ ʟɪʏᴀ**")
-                            except Exception:
-                                pass  # Handle this exception appropriately.
-                        await userbot.read_chat_history(bot)
-                    else:
-                        xxx_teletips += f"\n\n╭⎋ **[{bot_info.first_name}](tg://user?id={bot_info.id})**\n╰⊚ **sᴛᴀᴛᴜs: ᴏɴʟɪɴᴇ ✨**"
-                        await userbot.read_chat_history(bot)
-                except FloodWait as e:
-                    ttm = re.findall(r"\d{0,5}", str(e))
-                    await asyncio.sleep(int(ttm[0]))
+            for status in status_messages:
+                xxx_teletips += f"\n\n{status}"
             time = datetime.datetime.now(pytz.timezone("Asia/Kolkata"))
             last_update = time.strftime("%d %b %Y at %I:%M %p")
             xxx_teletips += f"\n\n✅ <u>ʟᴀsᴛ ᴄʜᴇᴄᴋᴇᴅ ᴏɴ:</u>\n**ᴅᴀᴛᴇ & ᴛɪᴍᴇ: {last_update}**\n**ᴛɪᴍᴇ ᴢᴏɴᴇ: (Asia/Kolkata)**\n\n<i><u>♻️ ʀᴇғʀᴇsʜᴇs ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ ᴡɪᴛʜɪɴ 4 ʜᴏᴜʀꜱ.</u></i>\n\n<i>**๏ ᴘᴏᴡᴇʀᴇᴅ ʙʏ sᴜᴍɪᴛ ʏᴀᴅᴀᴠ ๏**</i>"
@@ -55,6 +50,11 @@ async def main_status():
             print(f"ʟᴀsᴛ ᴄʜᴇᴄᴋᴇᴅ ᴏɴ: {last_update}")
             await asyncio.sleep(14400)
 
-asyncio.run(main_status())
+
+    try:
+        asyncio.run(main_status())
+    except Exception as e:
+        print(f"Error: {e}")
+
 
 
