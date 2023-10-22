@@ -10,4 +10,4 @@ BOT_TOKEN = getenv("BOT_TOKEN", "5997219860:AAGstFLBkn1NZ6GlgTLulOdsfPxplIzPQQs"
 OWNER_ID = int(getenv("OWNER_ID", "6280048819"))
 SUDO_USERS = list(map(int, getenv("SUDO_USERS", "6280048819 6691393517 5465943450").split()))
 MONGO_URL = getenv("MONGO_URL", "mongodb+srv://Hiroko:Hiroko@cluster0.1hztkgz.mongodb.net/?retryWrites=true&w=majority")
-SESSION_STRING = getenv("SESSION_STRING", "BQBnHjY97pLO30lOWLJnuersAhW8LiFhcKymqGUguUrEjJOc6p1agZ6tgo5OFHVAJxqnlAAzAJNL4qHJiCRQurv9a0VXX02h2ZW0ohgoyIpwcWkNqsL0ThZJRCuhjth67T3-59nFaaauYUXvTx5xqpy0C_Jinlj_GutFBvzv06x6yNA5ibEK8ZvPOMWq-aD5y82-j6nZwR_xb-ZL-sDIYfSslN-FJI0t5eqq9DfMz_31iQaSVyTIcfbvsgIIni8O_VUeeUqa-3awI1a4iHbVSa1a6t6KaCuDnk2CN9Xx8VO8AdIkMO4HbOtjSg9umAZwNARQ9By23-heXpbPt3uTJGAAAAAWwKSlsA")
+SESSION_STRING = getenv("SESSION_STRING", "BQGZtJEASZs4Gx8ldmZ4usHpaOL_fzqvqVGdEV_GURyHGczzbvQSqAXyydlv-kt9O_C0cF9F1Gzh3MWLQNZ-ls1icSZKPexNlOryzXO9WyTYPwlUjt5_cUc3Z61xwuZ7jtJ5uVvW6nUdiF-LsE7a3-xuUmKdbRomeLbd-xDBOgx7fX7bt7oevzOIfmYXD1H-GX4-q990O346iPVwJNfZxF9yna19lsfqf_e2aLo38HrB7NywWYnzebhPIiVupCs67VMnGg8WnCbQXR4eHbxilIRiEL7mwywsyn5PGQtrNMvil8HrFor8dbrZQ-nJTAXeVVe1Pkox0wKhjq5g9ik8cRZvz9rffAAAAAFsCkpbAA")
