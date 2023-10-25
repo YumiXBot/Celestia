@@ -9,6 +9,7 @@ async def bots_chk(celestia, message):
     msg = await message.reply("Checking bot stats...")
     response = ""
     for bot_username in BOT_LIST:
+        await asyncio.sleep(0.5)
         try:
             bot = await userbot.get_users(bot_username)
             bot_id = bot.id
@@ -21,8 +22,8 @@ async def bots_chk(celestia, message):
                     response += f"╭⎋ [{bot.first_name}](tg://user?id={bot.id})\n╰⊚ **Status: Online ✨**\n\n"
                 else:
                     response += f"╭⎋ {bot_username}\n╰⊚ **Status: Offline ❄**\n\n"
-        except Exception:
-            response += f"╭⎋ {bot_username}\n╰⊚ **Status: Error ❌**\n\n"
+        except Exception as e:
+            response += f"╭⎋ {bot_username}\n╰⊚ **Status: Error {e} ❌**\n\n"
     
     await msg.edit_text(response)
 
