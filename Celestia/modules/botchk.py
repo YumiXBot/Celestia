@@ -12,11 +12,11 @@ async def bots_chk(celestia, message):
         try:
             bot = await userbot.get_users(bot_username)
             bot_id = bot.id
-            bot_info = await userbot.send_message(bot, "/start")
+            bot_info = await userbot.send_message(bot_id, "/start")
             bot_check = await userbot.get_chat_history(bot, limit=1)
             for bot_message in bot_check:
                 if bot_message.from_user.id == bot_id:
-                    response += f"╭⎋ [{bot.first_name}](tg://user?id={bot.id})\n╰⊚ **Status: Online ✨**\n"
+                    response += f"\n╭⎋ [{bot.first_name}](tg://user?id={bot.id})\n╰⊚ **Status: Online ✨**\n"
                 else:
                     response += f"╭⎋ {bot_username}\n╰⊚ **Status: Offline ❄**\n"
         except Exception:
