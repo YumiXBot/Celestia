@@ -1,32 +1,31 @@
 import asyncio
 from pyrogram import filters
 from Celestia import Celestia, userbot
-from config import OWNER_ID
+from config import SUDO_USERS
 
 BOT_LIST = ["CelestiaXBot", "ZuliAiBot", "KAYAMATMUSICBOT"]
 
-@Celestia.on_message(filters.command("botschk")& filters.user(OWNER_ID))
+
+
+@Celestia.on_message(filters.command("botschk") & filters.user(SUDO_USERS))
 async def bots_chk(celestia, message):
     msg = await message.reply("Checking bot stats...")
     response = ""
     for bot_username in BOT_LIST:
-        await asyncio.sleep(0.5)
         try:
             bot = await userbot.get_users(bot_username)
             bot_id = bot.id
-            await asyncio.sleep(0.5)
-            bot_info = await userbot.send_message(bot_id, "/start")
-            await asyncio.sleep(3)
-            bot_check = await userbot.get_chat_history(bot_id, limit=1)
-            for bot_message in bot_check:
+            bot_info = await userbot.send_message(bot, "/start")
+            async for bot_message in userbot.get_chat_history(bot, limit=1):
                 if bot_message.from_user.id == bot_id:
                     response += f"╭⎋ [{bot.first_name}](tg://user?id={bot.id})\n╰⊚ **Status: Online ✨**\n\n"
                 else:
                     response += f"╭⎋ {bot_username}\n╰⊚ **Status: Offline ❄**\n\n"
-        except Exception as e:
-            response += f"╭⎋ {bot_username}\n╰⊚ **Status: Error {e} ❌**\n\n"
+        except Exception:
+            response += f"╭⎋ {bot_username}\n╰⊚ **Status: Error ❌**\n"
     
     await msg.edit_text(response)
+
 
 
 
