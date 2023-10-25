@@ -3,14 +3,14 @@ from pyrogram import filters
 from Celestia import Celestia, userbot
 from config import SUDO_USERS
 
-BOT_LIST = ["CelestiaXBot", "ZuliAiBot", "KAYAMATMUSICBOT"]
+BOT_LIST = ["CelestiaXBot", "ZuliAiBot"]
 
 
 
 @Celestia.on_message(filters.command("botschk") & filters.user(SUDO_USERS))
 async def bots_chk(celestia, message):
-    msg = await message.reply_photo(photo="https://telegra.ph/file/48578068b7574bb25a529.jpg", caption="**ᴄʜᴇᴄᴋɪɴɢ ʙᴏᴛs sᴛᴀᴛs ᴀʟɪᴠᴇ ɪʀ ᴅᴇᴀᴅ...**")
-    response = "**ʙᴏᴛs sᴛᴀᴛᴜs ᴅᴇᴀᴅ ᴏʀ ᴀʟɪᴠᴇ ᴄʜᴇᴄᴋᴇʀ**\n"
+    msg = await message.reply_photo(photo="https://telegra.ph/file/48578068b7574bb25a529.jpg", caption="**ᴄʜᴇᴄᴋɪɴɢ ʙᴏᴛs sᴛᴀᴛs ᴀʟɪᴠᴇ ᴏʀ ᴅᴇᴀᴅ...**")
+    response = "**ʙᴏᴛs sᴛᴀᴛᴜs ᴅᴇᴀᴅ ᴏʀ ᴀʟɪᴠᴇ ᴄʜᴇᴄᴋᴇʀ**\n\n"
     for bot_username in BOT_LIST:
         try:
             bot = await userbot.get_users(bot_username)
