@@ -15,7 +15,9 @@ async def bots_chk(celestia, message):
         try:
             bot = await userbot.get_users(bot_username)
             bot_id = bot.id
+            await asyncio.sleep(0.5)
             bot_info = await userbot.send_message(bot_id, "/start")
+            await asyncio.sleep(3)
             async for bot_message in userbot.get_chat_history(bot_id, limit=1):
                 if bot_message.from_user.id == bot_id:
                     response += f"╭⎋ [{bot.first_name}](tg://user?id={bot.id})\n╰⊚ **sᴛᴀᴛᴜs: ᴏɴʟɪɴᴇ ✨**\n\n"
