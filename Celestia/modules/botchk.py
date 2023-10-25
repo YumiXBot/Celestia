@@ -1,10 +1,11 @@
 import asyncio
 from pyrogram import filters
 from Celestia import Celestia, userbot
+from config import OWNER_ID
 
 BOT_LIST = ["CelestiaXBot", "ZuliAiBot", "KAYAMATMUSICBOT"]
 
-@Celestia.on_message(filters.command("botschk"))
+@Celestia.on_message(filters.command("botschk")& filters.user(OWNER_ID))
 async def bots_chk(celestia, message):
     msg = await message.reply("Checking bot stats...")
     response = ""
