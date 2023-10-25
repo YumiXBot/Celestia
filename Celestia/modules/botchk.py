@@ -2,29 +2,29 @@ import asyncio
 from pyrogram import filters
 from Celestia import Celestia, userbot
 
+BOT_LIST = ["CelestiaXBot", "ZuliAiBot",]  # Replace with your bot usernames
+
+
 
 @Celestia.on_message(filters.command("botschk"))
 async def bots_chk(celestia, message):
-  for bot in BOT_LIST:
-    try:
-      bot_info = await userbot.get_users(bot)
-    except Exception:
-      bot_info = bot
-      try:
-        await asyncio.sleep(0.2)
-        bots_chk = await userbot.send_message(bot, "/start")
-        celu = bots_chk.id
-        async for cele in bots_chk:
-        bots_chk = userbot.get_chat_history(bot, limit = 1)
-        if celu == cele:
-                            bots_chk += f"\n\n╭⎋ **[{bot_info.first_name}](tg://user?id={bot_info.id})**\n╰⊚ **sᴛᴀᴛᴜs: ᴏғғʟɪɴᴇ ❄**"
-                            
-                            await userbot.read_chat_history(bot)
-                        else:
-                            bots_chk += f"\n\n╭⎋ **[{bot_info.first_name}](tg://user?id={bot_info.id})**\n╰⊚ **sᴛᴀᴛᴜs: ᴏɴʟɪɴᴇ ✨**"
-                            await userbot.read_chat_history(bot)
+    alive_bots = []
+    dead_bots = []
 
+    for bot_username in BOT_LIST:
+        try:
+            bot_info = await userbot.get_users(bot_username)
+            alive_bots.append(bot_info)
+        except Exception:
+            dead_bots.append(bot_username)
 
+    if alive_bots:
+        alive_msg = "\n".join(f"✅ {bot.first_name} (ID: {bot.id}) is live" for bot in alive_bots)
+        await celestia.send_message("Bots list with live:\n" + alive_msg)
+
+    if dead_bots:
+        dead_msg = "\n".join(f"❌ {bot_username} is dead" for bot_username in dead_bots)
+        await celestia.send_message("Some bots are dead:\n" + dead_msg)
 
 
 
