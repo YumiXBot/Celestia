@@ -18,8 +18,6 @@ async def get_welcome_img(
     bg_path: str,
     font_path: str,
     user_id: int | str,
-    name: str,
-    username: str,
     profile_path: str = None,
 ):
     bg = Image.open(bg_path)
