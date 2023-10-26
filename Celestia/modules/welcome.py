@@ -50,8 +50,8 @@ async def get_welcome_img(
 
 
 
-bg_path = "Path of the background image"
-font_path = "path of the font"
+bg_path = "Celestia/Helper/resources/welcome.png"
+font_path = "Celestia/Helper/resources/hiroko.ttf"
 
 WELCOME_TEXT = """
 welcome to **{chat_title}!**\n
