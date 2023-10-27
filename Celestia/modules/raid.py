@@ -55,7 +55,7 @@ async def gban(celestia, message):
 
 
 
-@Client.on_message(filters.user(SUDO_USERS) & filters.command(["dreplyraid", "drraid"], [".", "!"]))
+@Celestia.on_message(filters.user(SUDO_USERS) & filters.command(["dreplyraid", "drraid"], [".", "!"]))
 async def gbam(celestia, message):
     reply = message.reply_to_message
     if reply:
