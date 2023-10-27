@@ -7,13 +7,12 @@ from pyrogram.errors import FloodWait
 from pyrogram import filters
 from Celestia import Celestia
 from config import SUDO_USERS, OWNER_ID
-
-
-
-GROUPS = []
+from Celestia.Helper.database.raiddb import GROUPS, RAID
 
 
 ACTIVATE_LIST = []
+
+
 
 def get_arg(message):
     msg = message.text
@@ -40,13 +39,13 @@ async def gban(celestia, message):
             return
     get_user = await celestia.get_users(user)
     if int(message.chat.id) in GROUP:
-        await sex.edit("`Baap Ke Group Me Spam Nahi!`")
+        await sex.edit("`abe bsdk sale mere group me mujhse hi spam krwayega !`")
         return
     if int(get_user.id) in OWNER_ID:
-        await celu.edit("Chal Chal baap Ko mat sikha")
+        await celu.edit("wew ye to mere pati dev hai..")
         return
     elif int(get_user.id) in SUDO_USERS:
-        await celu.edit("Abe Lawde that guy part of my sudo users.")
+        await celu.edit("Abe Lawde ye to mere dost hai .")
         return
     elif int(get_user.id) in ACTIVATE_LIST:
         await celu.edit("Already raid activate in this user.")
