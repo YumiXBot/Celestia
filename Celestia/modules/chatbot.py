@@ -13,13 +13,6 @@ from Celestia.Helper.cust_p_filters import admin_filter
 
 
 
-def get_arg(message):
-    msg = message.text
-    msg = msg.replace(" ", "", 1) if msg[1] == " " else msg
-    split = msg[1:].replace("\n", " \n").split(" ")
-    if " ".join(split[1:]).strip() == "":
-        return ""
-    return " ".join(split[1:])
 
 # ========================================= #
 
@@ -178,13 +171,6 @@ async def restriction_celestia(celestia :Celestia, message):
     
     if reply:
         user_id = reply.from_user.id
-    else:
-        user = get_arg(message)
-        if not user:
-            await message.reply("**sir sir..?**")
-            return
-            user_id = await celestia.get_users(user)
-        
         
         for promoted in data:
             print(f"present {promoted}")
