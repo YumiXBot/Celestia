@@ -28,6 +28,7 @@ async def replyraid(celestia, message):
             await celu.edit("**Whom should I replyraid?**")
             return
     get_user = await celestia.get_users(user)
+    print(type(get_user))
     """
     if message.chat.id in GROUPS:
         await celu.edit("`lol mere group me mujhse hi spam krwayega!`")
