@@ -169,6 +169,13 @@ async def restriction_celestia(celestia :Celestia, message):
     
     if reply:
         user_id = reply.from_user.id
+    else:
+        user = get_arg(message)
+        if not user:
+            await message.reply("**sir sir..?**")
+            return
+            user = await celestia.get_users(user)
+        
         
         for promoted in data:
             print(f"present {promoted}")
