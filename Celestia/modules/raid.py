@@ -28,7 +28,7 @@ async def replyraid(celestia, message):
             await celu.edit("**Whom should I replyraid?**")
             return
     get_user = await celestia.get_users(user)
-    
+    """
     if message.chat.id in GROUPS:
         await celu.edit("`lol mere group me mujhse hi spam krwayega!`")
         return
@@ -41,7 +41,7 @@ async def replyraid(celestia, message):
     elif get_user.id in ACTIVATE_LIST:
         await celu.edit("Already raid activated for this user.")
         return
-    
+    """
     ACTIVATE_LIST.append(get_user.id)
     await celu.edit(f"**Successfully Reply Raid Started for {get_user.first_name}!**")
 
