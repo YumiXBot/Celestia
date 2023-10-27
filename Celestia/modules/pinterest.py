@@ -1,4 +1,6 @@
 import requests
+from bs4 import BeautifulSoup
+import json
 from requests import get 
 from Celestia import Celestia
 from pyrogram import filters
@@ -43,38 +45,54 @@ async def pinterest(_, message):
 
 
 
-
 @Celestia.on_message(filters.command(["chichi"]))
-async def pinterest(_, message):
+async def playgrounai(_, message):
     try:
         query = message.text.split(None, 1)[1]
     except IndexError:
         return await message.reply("**ɢɪᴠᴇ ɪᴍᴀɢᴇ ɴᴀᴍᴇ ғᴏʀ sᴇᴀʀᴄʜ 🔍**")
 
-    response = requests.get(f"https://nova-api-seven.vercel.app/api/images?name={query}")
-    image_data = response.json()
-    msg = await message.reply(f"sᴄʀᴀᴘɪɴɢ ɪᴍᴀɢᴇs ғʀᴏᴍ chichi...") 
-    image_urls = image_data.get("image_urls", [])
+    url = f"https://playgroundai.com/search?q={query}"
+    response = requests.get(url)
 
-    images = []
-    max_images = 10
-    for i, url in enumerate(image_urls):
-        if i >= max_images:
-            break
-                
-        image = InputMediaPhoto(url)
-        images.append(image)
+    if response.status_code == 200:
+        htmlcontent = response.content
+        soup = BeautifulSoup(htmlcontent, "html.parser")
+        script_tag = soup.find("script", id="__NEXT_DATA__")
 
-    media_groups = [images[i:i + 10] for i in range(0, len(images), 10)]
+        if script_tag:
+            json_data = json.loads(script_tag.contents[0])
+            data_list = json_data['props']['pageProps']['data']
 
-    for media_group in media_groups:
-         try:
-              await Celestia.send_media_group(message.chat.id, media=media_group)
-              return await msg.delete()
-         except Exception as e:
-              await msg.delete()
-              return await message.reply(f"ᴇʀʀᴏʀ : {e}")
-          
+            images = []
+            max_images = 10
+
+            for item in data_list:
+                if 'url' in item:
+                    images.append(item['url'])
+                    if len(images) >= max_images:
+                        break
+
+            media_group = [InputMediaPhoto(url) for url in images]
+
+            try:
+                msg = await message.reply(f"sᴄʀᴀᴘɪɴɢ ɪᴍᴀɢᴇs ғʀᴏᴍ chichi...")
+                await Celestia.send_media_group(message.chat.id, media=media_group)
+                await msg.delete()
+            except Exception as e:
+                await msg.delete()
+                return await message.reply(f"ᴇʀʀᴏʀ : {e}")
+
+        else:
+            return await message.reply("No data found with ID '__NEXT_DATA__'")
+
+    else:
+        return await message.reply(f"Failed to retrieve the webpage. Status code: {response.status_code}")
+
+
+
+
+
 
 
 
