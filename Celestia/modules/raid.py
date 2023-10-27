@@ -1,4 +1,4 @@
-import asyncio, random, asyncio, time
+import random, asyncio, time
 from typing import Tuple
 from traceback import format_exc
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
