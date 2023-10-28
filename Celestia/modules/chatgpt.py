@@ -113,7 +113,7 @@ async def chatbase_ai(celestia :Celestia, message):
 
 
 
-@Celestia.on_message(filters.command(["assistant"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
+@Celestia.on_message(filters.command(["ssistant", "ssis"],  prefixes=["a","A"]))
 async def chatbase_ai(celestia :Celestia, message):
     
     try:
