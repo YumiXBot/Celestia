@@ -39,7 +39,8 @@ async def chat(celestia :Celestia, message):
             await message.reply_text(f"{x}")     
     except Exception as e:
         print(f"{e}")
-        await message.reply_text(backup_gpt(f"{x}"))
+        response = await backup_gpt(a)
+        await message.reply_text(f{"response"})
                 
 
 
