@@ -56,16 +56,23 @@ def main(prompt: str) -> str:
 
 
 
-async def bing_ai(query):
-    try:
-        response = await g4f.ChatCompletion.create_async(
-            model=g4f.models.default,
-            messages=[{"role": "user", "content": query}],
-            provider=g4f.Provider.ChatgptAi
+def bing_(query):
+    response = await g4f.ChatCompletion.create_async(
+       model=g4f.models.default,
+       messages=[{"role": "user", "content": query}],
+       provider=g4f.Provider.ChatgptAi
         )
-        return response
-    except Exception as e:
-        return f"Error: {e}"
+    return response
+    
+
+def Llama2_(query):
+    response = await g4f.ChatCompletion.create_async(
+      model=g4f.models.default,
+      messages=[{"role": "user", "content": query}],
+      provider=g4f.Provider.Llama2
+        )
+    return response
+    
 
 
 # ========================================= #
@@ -127,10 +134,15 @@ async def chatbot_reply(celestia: Celestia, message):
             except Exception as e:
                 print(f"Error: {e}")
                 try:
-                    response = await bing_ai(query)
+                    response = await Llama2_(query)
                     await message.reply_text(response["result"]["text"])
                 except Exception as e:
-                    print(f"Error: {e}")
+                    print(f"Error: {e}")                   
+                    try:
+                        response = await bing_(query)
+                        await message.reply_text(response["result"]["text"])
+                    except Exception as e:
+                        print(f"Error: {e}")
 
 
 # ========================================= #
@@ -235,28 +247,6 @@ async def restriction_celestia(celestia :Celestia, message):
 
 @Celestia.on_message(filters.command("elu", prefixes=["c","C"]) & filters.user(SUDO_USERS))
 async def assis_(_, message):
-    bruh = message.text.split(maxsplit=1)[1]
-    data = bruh.split(" ")
-    
-    for item in data:
-        item_lower = item.lower()
-        if "group" in item_lower:
-            chat = await userbot.create_group("ɴᴇᴡ ɢʀᴏᴜᴘ", 5997219860)
-            chat_id = chat.id
-            link = await userbot.export_chat_invite_link(chat_id)
-            await Celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ɢʀᴏᴜᴘ ʟɪɴᴋ: {link}")
-    
-        if "channel" in item_lower:
-            chat = await userbot.create_channel("ɴᴇᴡ ᴄʜᴀɴɴᴇʟ", "No description")
-            chat_id = chat.id
-            link = await userbot.export_chat_invite_link(chat_id)
-            await Celestia.send_message(message.chat.id, text=f"ʜᴇʟʟᴏ sɪʀ \n\nʜᴇʀᴇ ɪs ʏᴏᴜʀ ɴᴇᴡ ᴄʜᴀɴɴᴇʟ ʟɪɴᴋ: {link}")
-
-
-
-
-@Celestia.on_message(filters.command("elu", prefixes=["c","C"]) & filters.user(SUDO_USERS))
-async def create_chat(_, message):
     bruh = message.text.split(maxsplit=1)[1]
     data = bruh.split(" ")
     
