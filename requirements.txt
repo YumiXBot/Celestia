@@ -6,7 +6,6 @@ aiohttp==3.8.4
 apscheduler
 bs4==0.0.1
 blackpink
-bardapi
 psycopg2
 gpytranslate
 matplotlib==3.7.1
@@ -39,3 +38,4 @@ carbon
 lexica-api
 pykeyboard
 g4f
+pandas
