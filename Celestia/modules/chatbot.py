@@ -9,7 +9,7 @@ from lexica import Client
 from Celestia.Helper.database import *
 from pyrogram.enums import ChatMemberStatus, ChatType
 from Celestia.Helper.cust_p_filters import admin_filter
-
+import g4f
 
 
 
@@ -55,26 +55,17 @@ def main(prompt: str) -> str:
     return response["content"].strip()
 
 
-# ========================================= #
 
-
-api_key = "BLUE-AI-25154789-6280048819-123-white-kazu-6280048819"
-
-def get_response(user_id, query):
-    params = {
-        "user_id": user_id,
-        "query": query,
-        "BOT_ID": 5997219860
-    }
-
-    headers = {
-        "api_key": api_key
-        
-    }
-
-    response = requests.get("https://blue-api.vercel.app/chatbot1", params=params, headers=headers)
-    return response.json()
-
+async def bing_ai(query):
+    try:
+        response = await g4f.ChatCompletion.create_async(
+            model=g4f.models.default,
+            messages=[{"role": "user", "content": query}],
+            provider=g4f.Provider.ChatgptAi
+        )
+        return response
+    except Exception as e:
+        return f"Error: {e}"
 
 
 # ========================================= #
@@ -135,14 +126,11 @@ async def chatbot_reply(celestia: Celestia, message):
                 return await message.reply(response) 
             except Exception as e:
                 print(f"Error: {e}")
-
-                """
-                try:               
-                    response = get_response(message.from_user.id, query)
+                try:
+                    response = await bing_ai(query)
                     await message.reply_text(response["result"]["text"])
                 except Exception as e:
                     print(f"Error: {e}")
-"""
 
 
 # ========================================= #
