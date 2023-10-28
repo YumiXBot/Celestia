@@ -18,8 +18,6 @@ openai.api_key = "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"
 async def chat(celestia :Celestia, message):
     
     try:
-        start_time = time.time()
-        await celestia.send_chat_action(message.chat.id, ChatAction.TYPING)
         if len(message.command) < 2:
             await message.reply_text(
             "**ʜᴇʟʟᴏ sɪʀ**\n**ᴇxᴀᴍᴘʟᴇ:-**`.ask How to set girlfriend ?`")
@@ -39,7 +37,6 @@ async def chat(celestia :Celestia, message):
 @Celestia.on_message(filters.command(["deep"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
 async def chat(celestia: Celestia, message):
     try:
-        await celestia.send_chat_action(message.chat.id, ChatAction.TYPING)
         if len(message.command) < 2:
             await message.reply_text(
                 "**ʜᴇʟʟᴏ sɪʀ**\n**ᴇxᴀᴍᴘʟᴇ:-** Please provide text after the .deep command"
@@ -67,11 +64,9 @@ async def chat(celestia: Celestia, message):
 
 
 @Celestia.on_message(filters.command(["bing"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
-async def chat(celestia :Celestia, message):
+async def bing_ai(celestia :Celestia, message):
     
     try:
-        start_time = time.time()
-        await celestia.send_chat_action(message.chat.id, ChatAction.TYPING)
         if len(message.command) < 2:
             await message.reply_text(
             "**ʜᴇʟʟᴏ sɪʀ**\n**ᴇxᴀᴍᴘʟᴇ:-**`.bing How to set girlfriend ?`")
@@ -87,7 +82,43 @@ async def chat(celestia :Celestia, message):
         await message.reply_text(f"**ᴇʀʀᴏʀ**: {e} ")        
 
 
+@Celestia.on_message(filters.command(["chatbase"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
+async def chatbase_ai(celestia :Celestia, message):
+    
+    try:
+        if len(message.command) < 2:
+            await message.reply_text(
+            "**ʜᴇʟʟᴏ sɪʀ**\n**ᴇxᴀᴍᴘʟᴇ:-**`.ChatBase How to set girlfriend ?`")
+        else:
+            query = message.text.split(' ', 1)[1]
+            response = await g4f.ChatCompletion.create_async(
+            model=g4f.models.default,
+            messages=[{"role": "user", "content": query}],  
+            provider=g4f.Provider.ChatBase
+            )
+            await message.reply_text(f"{response}")     
+    except Exception as e:
+        await message.reply_text(f"**ᴇʀʀᴏʀ**: {e} ")        
 
+
+
+@Celestia.on_message(filters.command(["gpt"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
+async def gpt_ai(celestia :Celestia, message):
+    
+    try:
+        if len(message.command) < 2:
+            await message.reply_text(
+            "**ʜᴇʟʟᴏ sɪʀ**\n**ᴇxᴀᴍᴘʟᴇ:-**`.gpt How to set girlfriend ?`")
+        else:
+            query = message.text.split(' ', 1)[1]
+            response = await g4f.ChatCompletion.create_async(
+            model=g4f.models.default,
+            messages=[{"role": "user", "content": query}],  
+            provider=g4f.Provider.ChatgptAi
+            )
+            await message.reply_text(f"{response}")     
+    except Exception as e:
+        await message.reply_text(f"**ᴇʀʀᴏʀ**: {e} ")        
 
 
 
@@ -95,8 +126,6 @@ async def chat(celestia :Celestia, message):
 async def chat(celestia :Celestia, message):
     
     try:
-        start_time = time.time()
-        await celestia.send_chat_action(message.chat.id, ChatAction.TYPING)
         if len(message.command) < 2:
             await message.reply_text(
             "**ʜᴇʟʟᴏ sɪʀ**\n**ᴇxᴀᴍᴘʟᴇ:-**`.assis How to set girlfriend ?`")
