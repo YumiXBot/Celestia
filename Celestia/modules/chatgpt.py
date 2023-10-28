@@ -102,6 +102,27 @@ async def chatbase_ai(celestia :Celestia, message):
 
 
 
+@Celestia.on_message(filters.command(["assistant"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
+async def chatbase_ai(celestia :Celestia, message):
+    
+    try:
+        if len(message.command) < 2:
+            await message.reply_text(
+            "**ʜᴇʟʟᴏ sɪʀ**\n**ᴇxᴀᴍᴘʟᴇ:-**`.assistant How to set girlfriend ?`")
+        else:
+            query = message.text.split(' ', 1)[1]
+            response = await g4f.ChatCompletion.create_async(
+            model=g4f.models.default,
+            messages=[{"role": "user", "content": query}],  
+            provider=g4f.Provider.Llama2
+            )
+            await message.reply_text(f"{response}")     
+    except Exception as e:
+        await message.reply_text(f"**ᴇʀʀᴏʀ**: {e} ")        
+
+
+
+
 @Celestia.on_message(filters.command(["gpt"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
 async def gpt_ai(celestia :Celestia, message):
     
