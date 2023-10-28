@@ -38,4 +38,4 @@ carbon
 lexica-api
 pykeyboard
 g4f
-pandas
+
