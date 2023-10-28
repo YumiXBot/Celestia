@@ -1,5 +1,5 @@
 import os, time, requests
-import openai
+import openai, g4f
 from pyrogram import filters
 from Celestia import Celestia
 from pyrogram.enums import ChatAction, ParseMode
@@ -62,6 +62,29 @@ async def chat(celestia: Celestia, message):
     except Exception as e:
         await message.reply_text(f"**ᴇʀʀᴏʀ**: {e} ")
 
+
+
+
+
+@Celestia.on_message(filters.command(["bing"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
+async def chat(celestia :Celestia, message):
+    
+    try:
+        start_time = time.time()
+        await celestia.send_chat_action(message.chat.id, ChatAction.TYPING)
+        if len(message.command) < 2:
+            await message.reply_text(
+            "**ʜᴇʟʟᴏ sɪʀ**\n**ᴇxᴀᴍᴘʟᴇ:-**`.bing How to set girlfriend ?`")
+        else:
+            query = message.text.split(' ', 1)[1]
+            response = await g4f.ChatCompletion.create_async(
+            model=g4f.models.default,
+            messages=[{"role": "user", "content": query}],  
+            provider=g4f.Provider.Bing
+            )
+            await message.reply_text(f"{response}")     
+    except Exception as e:
+        await message.reply_text(f"**ᴇʀʀᴏʀ**: {e} ")        
 
 
 
