@@ -9,6 +9,15 @@ from gtts import gTTS
 
 
 
+async def backup_gpt(query):
+    response = await g4f.ChatCompletion.create_async(
+        model=g4f.models.default,
+        messages=[{"role": "user", "content": query}],
+        provider=g4f.Provider.GPTalk
+    )
+    return response
+
+
 openai.api_key = "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"
 
 
@@ -29,7 +38,9 @@ async def chat(celestia :Celestia, message):
             x=resp['choices'][0]["message"]["content"]
             await message.reply_text(f"{x}")     
     except Exception as e:
-        await message.reply_text(f"**ᴇʀʀᴏʀ**: {e} ")        
+        print(f"{e}")
+        await message.reply_text(backup_gpt(f"{x}"))
+                
 
 
 
