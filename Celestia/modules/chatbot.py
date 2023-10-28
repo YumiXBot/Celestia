@@ -136,12 +136,12 @@ async def chatbot_reply(celestia: Celestia, message):
                 print(f"Error: {e}")
                 try:
                     response = await Llama2_(query)
-                    await message.reply_text(response["result"]["text"])
+                    await message.reply_text(response)
                 except Exception as e:
                     print(f"Error: {e}")                   
                     try:
                         response = await bing_(query)
-                        await message.reply_text(response["result"]["text"])
+                        await message.reply_text(response)
                     except Exception as e:
                         print(f"Error: {e}")
 
