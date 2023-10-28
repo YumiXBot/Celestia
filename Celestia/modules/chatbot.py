@@ -56,22 +56,23 @@ def main(prompt: str) -> str:
 
 
 
-def bing_(query):
+async def bing_(query):
     response = await g4f.ChatCompletion.create_async(
-       model=g4f.models.default,
-       messages=[{"role": "user", "content": query}],
-       provider=g4f.Provider.ChatgptAi
-        )
+        model=g4f.models.default,
+        messages=[{"role": "user", "content": query}],
+        provider=g4f.Provider.ChatgptAi
+    )
     return response
-    
 
-def Llama2_(query):
+
+async def Llama2_(query):
     response = await g4f.ChatCompletion.create_async(
-      model=g4f.models.default,
-      messages=[{"role": "user", "content": query}],
-      provider=g4f.Provider.Llama2
-        )
+        model=g4f.models.default,
+        messages=[{"role": "user", "content": query}],
+        provider=g4f.Provider.Llama2
+    )
     return response
+
     
 
 
