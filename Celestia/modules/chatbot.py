@@ -9,7 +9,7 @@ from lexica import Client
 from Celestia.Helper.database import *
 from pyrogram.enums import ChatMemberStatus, ChatType
 from Celestia.Helper.cust_p_filters import admin_filter
-import g4f
+#import g4f
 
 
 
@@ -55,7 +55,7 @@ def main(prompt: str) -> str:
     return response["content"].strip()
 
 
-
+"""
 async def bing_(query):
     response = await g4f.ChatCompletion.create_async(
         model=g4f.models.default,
@@ -73,7 +73,7 @@ async def Llama2_(query):
     )
     return response
 
-    
+"""    
 
 
 # ========================================= #
@@ -134,6 +134,7 @@ async def chatbot_reply(celestia: Celestia, message):
                 return await message.reply(response) 
             except Exception as e:
                 print(f"Error: {e}")
+                """
                 try:
                     response = await Llama2_(query)
                     await message.reply_text(response)
@@ -145,7 +146,7 @@ async def chatbot_reply(celestia: Celestia, message):
                     except Exception as e:
                         print(f"Error: {e}")
 
-
+         """
 # ========================================= #
 
 
