@@ -33,6 +33,5 @@ yt_dlp
 carbon
 lexica-api
 pykeyboard
-elevenlabs
-
+g4f
 
