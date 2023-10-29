@@ -35,7 +35,7 @@ wikipedia
 youtube_search
 yt_dlp
 carbon
-lexica-api
+git+https://github.com/Qewertyy/LexicaAPI
 pykeyboard
 g4f
 elevenlabs
