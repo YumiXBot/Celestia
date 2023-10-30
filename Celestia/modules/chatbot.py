@@ -55,7 +55,7 @@ def main(prompt: str) -> str:
     return response["content"].strip()
 
 
-"""
+
 async def bing_(query):
     response = await g4f.ChatCompletion.create_async(
         model=g4f.models.default,
@@ -73,12 +73,12 @@ async def Llama2_(query):
     )
     return response
 
-"""    
+    
 
 
 # ========================================= #
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 completion = openai.Completion()
 
