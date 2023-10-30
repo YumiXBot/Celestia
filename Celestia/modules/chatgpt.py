@@ -46,7 +46,7 @@ async def chat(celestia :Celestia, message):
 
 
 @Celestia.on_message(filters.command(["deep"], prefixes=["+", ".", "/", "-", "?", "$", "#", "&"]))
-async def chat(celestia: Celestia, message: Message):
+async def chat(celestia, message):
     try:
         if len(message.command) < 2:
             await message.reply_text(
