@@ -45,9 +45,8 @@ async def chat(celestia :Celestia, message):
 
 
 
-
-@Celestia.on_message(filters.command(["deep"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
-async def chat(celestia: Celestia, message):
+@Celestia.on_message(filters.command(["deep"], prefixes=["+", ".", "/", "-", "?", "$", "#", "&"]))
+async def chat(celestia: Celestia, message: Message):
     try:
         if len(message.command) < 2:
             await message.reply_text(
@@ -55,7 +54,6 @@ async def chat(celestia: Celestia, message):
             )
         else:
             a = message.text.split(' ', 1)[1]
-
             data = {
                 'text': a,  
             }
@@ -66,11 +64,15 @@ async def chat(celestia: Celestia, message):
 
             r = requests.post("https://api.deepai.org/api/text-generator", data=data, headers=headers)
             response = r.json()
-            answer_text = response['output']
-            await message.reply_text(f"{answer_text}")
-    except Exception as e:
-        await message.reply_text(f"**ᴇʀʀᴏʀ**: {e} ")
 
+            if 'output' in response:
+                answer_text = response['output']
+                await message.reply_text(f"{answer_text}")
+            else:
+                await message.reply_text("Failed to generate text. Please try again later.")
+
+    except Exception as e:
+        await message.reply_text(f"**ᴇʀʀᴏʀ**: {e}")
 
 
 
