@@ -3,7 +3,7 @@ import openai, g4f, random
 from pyrogram import filters
 from Celestia import Celestia
 from pyrogram.enums import ChatAction, ParseMode
-from Celestia.modules.chatbot import cele_txt
+from Celestia.modules.chatbot import cele_text
 
 
 
