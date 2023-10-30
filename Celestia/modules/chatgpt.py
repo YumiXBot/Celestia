@@ -1,9 +1,9 @@
 import os, time, requests
-import openai, g4f
+import openai, g4f, random
 from pyrogram import filters
 from Celestia import Celestia
 from pyrogram.enums import ChatAction, ParseMode
-
+from Celestia.modules.chatbot import cele_txt
 
 
 
@@ -119,8 +119,8 @@ async def chatbase_ai(celestia :Celestia, message):
     
     try:
         if len(message.command) < 2:
-            await message.reply_text(
-            "**ʜᴇʟʟᴏ sɪʀ**\n**ᴇxᴀᴍᴘʟᴇ:-**`.assistant How to set girlfriend ?`")
+            await message.reply_text(random.choice(cele_txt))
+            
         else:
             query = message.text.split(' ', 1)[1]
             response = await g4f.ChatCompletion.create_async(
