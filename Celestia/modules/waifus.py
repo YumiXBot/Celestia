@@ -6,7 +6,7 @@ from config import SUDO_USERS
 from pyrogram import *
 from pyrogram.types import *
 from Celestia import Celestia
-from Celestia.Helper.database.sqldb import DB, cusr
+from Celestia.Helper.database.waifusdb import DB, cusr
 
 
 
