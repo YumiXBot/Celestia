@@ -119,7 +119,7 @@ async def chatbase_ai(celestia :Celestia, message):
     
     try:
         if len(message.command) < 2:
-            await message.reply_text(random.choice(cele_txt))
+            await message.reply_text(random.choice(cele_text))
             
         else:
             query = message.text.split(' ', 1)[1]
