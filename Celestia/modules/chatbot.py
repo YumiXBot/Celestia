@@ -9,7 +9,7 @@ from lexica import Client
 from Celestia.Helper.database import *
 from pyrogram.enums import ChatMemberStatus, ChatType
 from Celestia.Helper.cust_p_filters import admin_filter
-#import g4f
+import g4f
 
 
 
