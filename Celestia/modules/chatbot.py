@@ -78,7 +78,7 @@ async def Llama2_(query):
 
 # ========================================= #
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 completion = openai.Completion()
 
