@@ -59,7 +59,7 @@ async def chat(celestia, message):
             }
 
             headers = {
-                'api-key': '9133bea4-ddf1-40d0-bcac-089e0fbacb4f',
+                'api-key': 'c8e3d7fc-1f7e-455b-8019-5c1b7f21047a',
             }
 
             r = requests.post("https://api.deepai.org/api/text-generator", data=data, headers=headers)
