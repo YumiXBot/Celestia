@@ -59,14 +59,15 @@ def profile_command(client, message):
 
     character_data = user_database[user_id]
     user_profile = f"""
-༶•┈┈┈┈┈┈┈┈┈┈┈•༶
-     USER PROFILE
-༶•┈┈┈┈┈┈┈┈┈┈┈•༶
-
-⬢ Name : {character_data['name']}
-⬢ Health : {character_data['health']}
-⬢ Celeus : {character_data['celeus']}
-⬢ Player ID : {character_data['player_id']}
+┏━━━━━━━━━━━━━━━━━
+┣ Umm Player profile 
+┗━━━━━━━━━━━━━━━━━
+┏━━━━⦿
+┣⬢ Name : {character_data['name']}
+┣⬢ Health : {character_data['health']}
+┣⬢ Celeus : {character_data['celeus']}
+┣⬢ Player ID : {character_data['player_id']}
+┗━━━━━━━━━⦿
 
 ┏━⦿
 ┣ Exp : {character_data['experience']}
