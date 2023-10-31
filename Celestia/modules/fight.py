@@ -5,6 +5,8 @@ from Celestia import Celestia
 user_database = {}
 user_state = {}
 
+photo = "https://telegra.ph/file/ce3f8731e74c6a75a8321.jpg"
+
 @Celestia.on_message(filters.command("character"))
 def character_creation(client, message):
     user_id = message.from_user.id
@@ -17,7 +19,7 @@ def character_creation(client, message):
     if character_name:
         user_database[user_id] = {"Name": character_name, "health": 100}
         user_state[user_id] = "character_created"
-        client.send_message(message.chat.id, f"Character '{character_name}' created! You can now use the /fight command.")
+        client.send_message(message.chat.id, f"Character {character_name} created! You can now use the /fight command.")
 
 @Celestia.on_message(filters.command("fight", prefixes="/"))
 def fight_command(client, message):
