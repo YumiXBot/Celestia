@@ -30,7 +30,7 @@ def character_creation(client, message):
     if character_name:
         user_database[user_id] = {"name": character_name, "health": 100, "rank": "Novice Traveler", "partner": None, "family": None, "celeus": 10000}    
         user_state[user_id] = "character_created"
-        client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", f"Character {character_name} created! You can now use the /fight command.")
+        client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", text=f"Character {character_name} created! You can now use the /fight command.")
 
 
 
@@ -52,7 +52,7 @@ def profile_command(client, message):
     profile_message += f"Family: {character_data['family']}\n"
     profile_message += f"Celeus: {character_data['celeus']}\n"
 
-    client.send_message(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", profile_message)
+    client.send_message(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", text=profile_message)
 
 
 
