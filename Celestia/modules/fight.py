@@ -81,11 +81,47 @@ def profile_command(client, message):
 ┣ Total Battles : {character_data['total_win']}
 ┗━━━━━━━━━⦿
 """
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton("Family", callback_data="family_profile"),
+         InlineKeyboardButton("Shop", callback_data="open_shop")]
+    ])
 
     client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
 
 
+"""
 
+@Celestia.on_callback_query(filters.regex("confirm_partner"))
+def family_profile(client, message):
+    user_id = query.from_user.id
+
+    if user_id not in user_database:
+        client.send_message(message.chat.id, "You haven't created a character yet. Use the /character command to create one.")
+        return
+
+    character_data = user_database[user_id]
+    character_family = user_family[user_id]
+    user_profile = f"""
+┏━━━━━━━━━━━━━━━━━
+┣ Player family profile 
+┗━━━━━━━━━━━━━━━━━
+
+┏━⦿
+┣⬢ Name : {character_data['name']}
+┣⬢ Health : {character_data['health']}
+┣⬢ Celeus : {character_data['celeus']}
+┣ Partner : {character_family['partner']}
+┣ Friends : {character_family['friends']}
+┣ Son : {character_family['son']}
+┣ Daughter : {character_family['daughter']}
+┣ Sister : {character_family['sister']}
+┗━━━━━━━━━⦿
+"""
+    
+    client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
+
+
+"""
 
 
 
