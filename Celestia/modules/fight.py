@@ -32,17 +32,17 @@ def character_creation(client, message):
         user_state[user_id] = "character_created"
         client.send_message(message.chat.id, f"Character {character_name} created! You can now use the /fight command.")
 
+
 @Celestia.on_message(filters.command("fight", prefixes="/"))
 def fight_command(client, message):
-    user_id = message.from_user.id
-    celu = await message.reply_text("**Processing**")
+    user_id = message.from_user.id    
     reply = message.reply_to_message
     if reply:
         target_user_id = reply.from_user.id
     else:
         target_user_id = get_arg(message)
         if not target_user_id:
-            await celu.edit("**Whom should I fight?**")
+            await message.reply("**Whom should I fight?**")
 
     if user_id not in user_database:
         client.send_message(message.chat.id, "Please create your character first using the /character command.")
