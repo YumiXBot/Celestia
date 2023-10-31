@@ -5,7 +5,18 @@ from Celestia import Celestia
 user_database = {}
 user_state = {}
 
-photo = "https://telegra.ph/file/ce3f8731e74c6a75a8321.jpg"
+
+
+def get_arg(message):
+    msg = message.text
+    msg = msg.replace(" ", "", 1) if msg[1] == " " else msg
+    split = msg[1:].replace("\n", " \n").split(" ")
+    if " ".join(split[1:]).strip() == "":
+        return ""
+    return " ".join(split[1:])
+
+
+
 
 @Celestia.on_message(filters.command("character"))
 def character_creation(client, message):
@@ -24,16 +35,17 @@ def character_creation(client, message):
 @Celestia.on_message(filters.command("fight", prefixes="/"))
 def fight_command(client, message):
     user_id = message.from_user.id
+    celu = await message.reply_text("**Processing**")
+    reply = message.reply_to_message
+    if reply:
+        target_user_id = reply.from_user.id
+    else:
+        target_user_id = get_arg(message)
+        if not target_user_id:
+            await celu.edit("**Whom should I fight?**")
 
     if user_id not in user_database:
         client.send_message(message.chat.id, "Please create your character first using the /character command.")
-        return
-
-    target_user_id = None
-    try:
-        target_user_id = int(message.command[1])
-    except (IndexError, ValueError):
-        client.send_message(message.chat.id, "Please specify a valid target user using `/fight user_id`.")
         return
 
     if target_user_id not in user_database:
