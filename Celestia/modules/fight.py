@@ -64,7 +64,7 @@ def fight_command(client, message):
     initiating_user_health -= damage_target
     target_user_health -= damage_initiator
 
-    winner = user_id if initiating_user_health > target_user_health else target_user_id
+    winner = user_id if initiating_user_health > target_user_health else target_user.id
 
     result_message = f"{name} dealt {damage_initiator} damage. {target_user.first_name} dealt {damage_target} damage.\n"
     result_message += f"{name} has {initiating_user_health} health. {target_user.first_name} has {target_user_health} health.\n"
