@@ -101,7 +101,7 @@ def family_profile(client, message):
 
     character_data = user_database[user_id]
     character_family = user_family[user_id]
-    user_profile = f"""
+    user_profile = f
 ┏━━━━━━━━━━━━━━━━━
 ┣ Player family profile 
 ┗━━━━━━━━━━━━━━━━━
@@ -116,7 +116,7 @@ def family_profile(client, message):
 ┣ Daughter : {character_family['daughter']}
 ┣ Sister : {character_family['sister']}
 ┗━━━━━━━━━⦿
-"""
+
     
     client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
 
