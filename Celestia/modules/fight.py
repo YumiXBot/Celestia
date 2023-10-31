@@ -107,16 +107,16 @@ def set_partner_command(client, message):
     reply = message.reply_to_message
     if reply:
         user = reply.from_user
-#    else:
-#        await message.reply("Please reply to the user you want to set as a partner.")
- #       return
+    else:
+        message.reply("Please reply to the user you want to set as a partner.")
+        return
 
     if user_id not in user_database:
-        await message.reply("Please create your character first using the /character command.")
+        message.reply("Please create your character first using the /character command.")
         return
 
     if user.id not in user_database:
-        await message.reply("Target user not found in the database.")
+        message.reply("Target user not found in the database.")
         return
 
     user_family[user_id] = {
