@@ -52,7 +52,7 @@ def profile_command(client, message):
     profile_message += f"Family: {character_data['family']}\n"
     profile_message += f"Celeus: {character_data['celeus']}\n"
 
-    client.send_message(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=profile_message)
+    client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=profile_message)
 
 
 
