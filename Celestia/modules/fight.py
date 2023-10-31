@@ -107,9 +107,9 @@ def set_partner_command(client, message):
     reply = message.reply_to_message
     if reply:
         user = reply.from_user
-    else:
-        await message.reply("Please reply to the user you want to set as a partner.")
-        return
+#    else:
+#        await message.reply("Please reply to the user you want to set as a partner.")
+ #       return
 
     if user_id not in user_database:
         await message.reply("Please create your character first using the /character command.")
@@ -132,6 +132,8 @@ def set_partner_command(client, message):
          InlineKeyboardButton("🔵 NO", callback_data="cancel_partner")]
     ])
     message.reply_text(f"Congratulations! You are now partners with {user.first_name}.", reply_markup=reply_markup)
+
+
 
 
 
