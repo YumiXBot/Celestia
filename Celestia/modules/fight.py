@@ -2,16 +2,17 @@ from pyrogram import Client, filters
 import random
 from Celestia import Celestia
 
-
-
 user_database = {}
 user_state = {}
-
-
 
 @Celestia.on_message(filters.command("character"))
 def character_creation(client, message):
     user_id = message.from_user.id
+
+    if user_id in user_database:
+        client.send_message(message.chat.id, "You have already chosen a character.")
+        return
+
     character_name = " ".join(message.command[1:])
     if character_name:
         user_database[user_id] = {"Name": character_name, "health": 100}
@@ -21,6 +22,7 @@ def character_creation(client, message):
 @Celestia.on_message(filters.command("fight", prefixes="/"))
 def fight_command(client, message):
     user_id = message.from_user.id
+
     if user_id not in user_database:
         client.send_message(message.chat.id, "Please create your character first using the /character command.")
         return
@@ -32,13 +34,11 @@ def fight_command(client, message):
         client.send_message(message.chat.id, "Please specify a valid target user using `/fight user_id`.")
         return
 
-    initiating_user = user_id
-
     if target_user_id not in user_database:
         client.send_message(message.chat.id, "Target user not found in the database.")
         return
 
-    initiating_user_health = user_database[initiating_user]["health"]
+    initiating_user_health = user_database[user_id]["health"]
     target_user_health = user_database[target_user_id]["health"]
 
     damage_initiator = random.randint(10, 30)
@@ -47,12 +47,14 @@ def fight_command(client, message):
     initiating_user_health -= damage_target
     target_user_health -= damage_initiator
 
-    winner = initiating_user if initiating_user_health > target_user_health else target_user_id
+    winner = user_id if initiating_user_health > target_user_health else target_user_id
 
-    result_message = f"{initiating_user} dealt {damage_initiator} damage. {target_user_id} dealt {damage_target} damage.\n"
-    result_message += f"{initiating_user} has {initiating_user_health} health. {target_user_id} has {target_user_health} health.\n"
+    result_message = f"{user_id} dealt {damage_initiator} damage. {target_user_id} dealt {damage_target} damage.\n"
+    result_message += f"{user_id} has {initiating_user_health} health. {target_user_id} has {target_user_health} health.\n"
     result_message += f"The winner is {winner}!"
 
     client.send_message(message.chat.id, result_message)
 
-app.run()
+
+
+
