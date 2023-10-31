@@ -57,7 +57,7 @@ def profile_command(client, message):
     user_id = message.from_user.id
 
     if user_id not in user_database:
-        client.send_message(message.chat.id, "You haven't created a character yet. Use the /character command to create one.")
+        await message.reply("You haven't created a character yet. Use the /character command to create one.")
         return
 
     character_data = user_database[user_id]
@@ -86,22 +86,24 @@ def profile_command(client, message):
          InlineKeyboardButton("Shop", callback_data="open_shop")]
     ])
 
-    client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
+    await message.reply_photo(photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile, reply_markup=reply_markup)
 
 
-"""
+
+
+
 
 @Celestia.on_callback_query(filters.regex("confirm_partner"))
-def family_profile(client, message):
+def family_profile(client, query):
     user_id = query.from_user.id
 
     if user_id not in user_database:
-        client.send_message(message.chat.id, "You haven't created a character yet. Use the /character command to create one.")
+        await query.reply("You haven't created a character yet. Use the /character command to create one.")
         return
 
     character_data = user_database[user_id]
     character_family = user_family[user_id]
-    user_profile = f
+    user_profile = f"""
 ┏━━━━━━━━━━━━━━━━━
 ┣ Player family profile 
 ┗━━━━━━━━━━━━━━━━━
@@ -116,12 +118,15 @@ def family_profile(client, message):
 ┣ Daughter : {character_family['daughter']}
 ┣ Sister : {character_family['sister']}
 ┗━━━━━━━━━⦿
-
-    
-    client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
-
-
 """
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton("Back", callback_data="back_profile"),
+         InlineKeyboardButton("Shop", callback_data="open_shop")]
+    ])
+    
+    await query.reply_photo(photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
+
+
 
 
 
