@@ -134,47 +134,38 @@ def set_partner_command(client, message):
 
 
 @Celestia.on_callback_query(filters.regex("confirm_partner"))
-def callback_confirm_partner(client, query):
-    reply = quer.message.reply_to_message
+async def callback_confirm_partner(client, query):
+    reply = query.message.reply_to_message
     if reply:
         partner_id = reply.from_user
+        partner_name = partner_id.first_name  # Get partner's first name
     else:
-        query.answer("bhkk bsdk")
+        await query.answer("Sorry, couldn't find a partner to confirm.")
+        return
     
     if partner_id:
-        query.answer(f"You've confirmed {partner_name} as your partner!")
-        message.reply("Done!!")
-    
-    
-
+        await query.answer(f"You've confirmed {partner_name} as your partner!")
+        await query.message.reply("Done!!")
 
 
 @Celestia.on_callback_query(filters.regex("cancel_partner"))
-def callback_cancel_partner(client, query):
-    reply = quer.message.reply_to_message
+async def callback_cancel_partner(client, query):
+    reply = query.message.reply_to_message
     if reply:
         partner_id = reply.from_user
+        partner_name = partner_id.first_name  # Get partner's first name
     else:
-        query.answer("bhkk bsdk")
+        await query.answer("Sorry, couldn't find a partner to cancel.")
+        return
     
     if partner_id:
-        query.answer(f"reject krdiua  {partner_name} !")
-        message.reply("rejected!!")
-    
-    
+        await query.answer(f"You've rejected {partner_name} as your partner!")
+        await query.message.reply("Rejected!!")
 
 
 
 
-                            
-
-
-
-
-
-    
-
-
+                
 
 @Celestia.on_message(filters.command("fight", prefixes="/"))
 def fight_command(client, message):
