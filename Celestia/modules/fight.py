@@ -30,7 +30,7 @@ def character_creation(client, message):
     if character_name:
         user_database[user_id] = {"Name": character_name, "health": 100}
         user_state[user_id] = "character_created"
-        client.send_message(message.chat.id, f"Character {character_name} created! You can now use the /fight command.")
+        client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", f"Character {character_name} created! You can now use the /fight command.")
 
 
 @Celestia.on_message(filters.command("fight", prefixes="/"))
