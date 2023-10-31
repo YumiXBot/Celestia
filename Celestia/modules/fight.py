@@ -2,9 +2,6 @@ from pyrogram import Client, filters
 import random
 from Celestia import Celestia
 
-user_database = {}
-user_state = {}
-
 
 
 def get_arg(message):
@@ -15,6 +12,26 @@ def get_arg(message):
         return ""
     return " ".join(split[1:])
 
+
+
+user_database = {
+    user_id: {
+        "name": character_name, 
+        "health": 100, 
+        "rank": "Novice Traveler", 
+        "partner": None, 
+        "experience": "[▰▱▱▱▱]",
+        "level": 1,
+        "celeus": 10000,
+        "location": None,
+        "battle_win": 0,
+        "total_win": 0,
+        "player_id": user_id
+    }
+}
+
+
+user_state = {}
 
 
 
@@ -28,10 +45,17 @@ def character_creation(client, message):
 
     character_name = " ".join(message.command[1:])
     if character_name:
-        user_database[user_id] = {"name": character_name, "health": 100, "rank": "Novice Traveler", "partner": None, "family": None, "celeus": 10000}    
+        user_database[user_id] = {
+            "name": character_name,
+            "health": 100,
+            "rank": "Novice Traveler",
+            "partner": None,
+            "experience": "[▰▱▱▱▱]",
+            "level": 1,
+            "celeus": 10000
+        }
         user_state[user_id] = "character_created"
         client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=f"Character {character_name} created! You can now use the /fight command.")
-
 
 
 
@@ -44,21 +68,27 @@ def profile_command(client, message):
         return
 
     character_data = user_database[user_id]
-    profile_message = f"**Character Profile**\n"
-    profile_message += f"Name: {character_data['name']}\n"
-    profile_message += f"Health: {character_data['health']}\n"
-    profile_message += f"Rank: {character_data['rank']}\n"
-    profile_message += f"Partner: {character_data['partner']}\n"
-    profile_message += f"Family: {character_data['family']}\n"
-    profile_message += f"Celeus: {character_data['celeus']}\n"
+    user_profile = f"""
+༶•┈┈┈┈┈┈┈┈┈┈┈•༶
+     USER PROFILE
+༶•┈┈┈┈┈┈┈┈┈┈┈•༶
 
-    client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=profile_message)
+⬢ Name : {character_data['name']}
+⬢ Health : {character_data['health']}
+⬢ Celeus : {character_data['celeus']}
+⬢ Player ID : {character_data['player_id']}
 
+┏━⦿
+┣ Exp : {character_data['experience']}
+┣ Level : {character_data['level']}
+┣ Rank : {character_data['rank']}
+┣ Location : {character_data['location']}
+┣ Battles Win : {character_data['battle_win']}
+┣ Total Battles : {character_data['total_win']}
+┗━━━━━━━━━⦿
+"""
 
-
-
-
-
+    client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
 
 
 
