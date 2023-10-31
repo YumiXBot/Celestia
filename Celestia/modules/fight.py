@@ -42,7 +42,7 @@ def fight_command(client, message):
     else:
         target_user_id = get_arg(message)
         if not target_user_id:
-            client.send_message(message.chat.id "**Whom should I fight?**")
+            client.send_message(message.chat.id, "**Whom should I fight?**")
             return
 
     if user_id not in user_database:
