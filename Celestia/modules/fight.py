@@ -35,13 +35,15 @@ def character_creation(client, message):
 
 @Celestia.on_message(filters.command("fight", prefixes="/"))
 def fight_command(client, message):
-    user_id = message.from_user.id    
+    user_id = message.from_user.id
+    name = message.from_user.first_name
+    
     reply = message.reply_to_message
     if reply:
-        target_user_id = reply.from_user.id
+        target_user = reply.from_user
     else:
-        target_user_id = get_arg(message)
-        if not target_user_id:
+        target_user = get_arg(message)
+        if not target_user:
             client.send_message(message.chat.id, "**Whom should I fight?**")
             return
 
@@ -54,7 +56,7 @@ def fight_command(client, message):
         return
 
     initiating_user_health = user_database[user_id]["health"]
-    target_user_health = user_database[target_user_id]["health"]
+    target_user_health = user_database[target_user.id]["health"]
 
     damage_initiator = random.randint(10, 30)
     damage_target = random.randint(10, 30)
@@ -64,8 +66,8 @@ def fight_command(client, message):
 
     winner = user_id if initiating_user_health > target_user_health else target_user_id
 
-    result_message = f"{user_id} dealt {damage_initiator} damage. {target_user_id} dealt {damage_target} damage.\n"
-    result_message += f"{user_id} has {initiating_user_health} health. {target_user_id} has {target_user_health} health.\n"
+    result_message = f"{name} dealt {damage_initiator} damage. {target_user.first_name} dealt {damage_target} damage.\n"
+    result_message += f"{name} has {initiating_user_health} health. {target_user.first_name} has {target_user_health} health.\n"
     result_message += f"The winner is {winner}!"
 
     client.send_message(message.chat.id, result_message)
