@@ -1,19 +1,15 @@
 from pyrogram import Client, filters
 import random
+from Celestia import Celestia
 
-app = Client("your_bot")
+
 
 user_database = {}
 user_state = {}
 
-@Celestia.on_message(filters.command("character", prefixes="/"))
-def character_command(client, message):
-    user_id = message.from_user.id
-    if user_id not in user_state or user_state[user_id] != "character_created":
-        user_state[user_id] = "character_creation"
-        client.send_message(message.chat.id, "Create your character by using `/character {character name}`.")
 
-@Celestia.on_message(filters.create(lambda _, msg: msg.from_user.id in user_state and user_state[msg.from_user.id] == "character_creation"))
+
+@Celestia.on_message(filters.command("character"))
 def character_creation(client, message):
     user_id = message.from_user.id
     character_name = " ".join(message.command[1:])
