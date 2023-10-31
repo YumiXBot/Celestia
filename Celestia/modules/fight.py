@@ -51,7 +51,7 @@ def fight_command(client, message):
         client.send_message(message.chat.id, "Please create your character first using the /character command.")
         return
 
-    if target_user_id not in user_database:
+    if target_user.id not in user_database:
         client.send_message(message.chat.id, "Target user not found in the database.")
         return
 
