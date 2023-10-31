@@ -57,7 +57,7 @@ def profile_command(client, message):
     user_id = message.from_user.id
 
     if user_id not in user_database:
-        await message.reply("You haven't created a character yet. Use the /character command to create one.")
+        message.reply("You haven't created a character yet. Use the /character command to create one.")
         return
 
     character_data = user_database[user_id]
@@ -86,7 +86,7 @@ def profile_command(client, message):
          InlineKeyboardButton("Shop", callback_data="open_shop")]
     ])
 
-    await message.reply_photo(photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile, reply_markup=reply_markup)
+    message.reply_photo(photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile, reply_markup=reply_markup)
 
 
 
@@ -98,7 +98,7 @@ def family_profile(client, query):
     user_id = query.from_user.id
 
     if user_id not in user_database:
-        await query.reply("You haven't created a character yet. Use the /character command to create one.")
+        query.reply("You haven't created a character yet. Use the /character command to create one.")
         return
 
     character_data = user_database[user_id]
@@ -124,7 +124,7 @@ def family_profile(client, query):
          InlineKeyboardButton("Shop", callback_data="open_shop")]
     ])
     
-    await query.reply_photo(photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
+    query.reply_photo(photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
 
 
 
