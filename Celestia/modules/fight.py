@@ -1,6 +1,7 @@
-from pyrogram import Client, filters
 import random
 from Celestia import Celestia
+from pyrogram import filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 
@@ -16,6 +17,8 @@ def get_arg(message):
 
 
 user_database = {}
+
+user_family = {}
 
 user_state = {}
 
@@ -62,7 +65,7 @@ def profile_command(client, message):
 ┏━━━━━━━━━━━━━━━━━
 ┣ Umm Player profile 
 ┗━━━━━━━━━━━━━━━━━
-┏━━━━⦿
+┏━⦿
 ┣⬢ Name : {character_data['name']}
 ┣⬢ Health : {character_data['health']}
 ┣⬢ Celeus : {character_data['celeus']}
@@ -82,6 +85,89 @@ def profile_command(client, message):
     client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
 
 
+
+
+
+
+
+
+
+
+
+
+user_partners = {}
+
+
+
+@Celestia.on_message(filters.command("setpartner"))
+def set_partner_command(client, message):
+    user_id = message.from_user.id
+    name = message.from_user.first_name
+
+    reply = message.reply_to_message
+    if reply:
+        user = reply.from_user
+    else:
+        await message.reply("Please reply to the user you want to set as a partner.")
+        return
+
+    if user_id not in user_database:
+        await message.reply("Please create your character first using the /character command.")
+        return
+
+    if user.id not in user_database:
+        await message.reply("Target user not found in the database.")
+        return
+
+    user_family[user_id] = {
+        "partner": user.id,
+        "son": None,
+        "daughter": None,
+        "brothers": None,
+        "sister": None
+    }
+
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
+         InlineKeyboardButton("🔵 NO", callback_data="cancel_partner")]
+    ])
+    message.reply_text(f"Congratulations! You are now partners with {user.first_name}.", reply_markup=reply_markup)
+
+
+
+
+@Celestia.on_callback_query(filters.regex("confirm_partner"))
+def callback_confirm_partner(client, callback_query):
+    user_id = callback_query.from_user.id
+    partner_id = user_family[user_id]["partner"]
+    
+    if partner_id:
+        partner_name = user_partners.get(partner_id, "your partner")
+        callback_query.answer(f"You've confirmed {partner_name} as your partner!")
+    else:
+        callback_query.answer("Your partner is not set. Please set a partner first.")
+    
+    
+
+
+
+@Celestia.on_callback_query(filters.regex("cancel_partner"))
+def callback_cancel_partner(client, callback_query):
+    user_id = callback_query.from_user.id
+    user_family[user_id]["partner"] = None
+    callback_query.answer("You've canceled your partner selection.")
+
+
+
+
+
+                            
+
+
+
+
+
+    
 
 
 
