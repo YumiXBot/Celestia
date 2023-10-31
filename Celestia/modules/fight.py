@@ -28,9 +28,38 @@ def character_creation(client, message):
 
     character_name = " ".join(message.command[1:])
     if character_name:
-        user_database[user_id] = {"Name": character_name, "health": 100}
+        user_database[user_id] = {"name": character_name, "health": 100, "rank": "Novice Traveler", "partner": None, "family": None, "celeus": 10000}    
         user_state[user_id] = "character_created"
         client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", f"Character {character_name} created! You can now use the /fight command.")
+
+
+
+
+@Celestia.on_message(filters.command("profile", prefixes="/"))
+def profile_command(client, message):
+    user_id = message.from_user.id
+
+    if user_id not in user_database:
+        client.send_message(message.chat.id, "You haven't created a character yet. Use the /character command to create one.")
+        return
+
+    character_data = user_database[user_id]
+    profile_message = f"**Character Profile**\n"
+    profile_message += f"Name: {character_data['name']}\n"
+    profile_message += f"Health: {character_data['health']}\n"
+    profile_message += f"Rank: {character_data['rank']}\n"
+    profile_message += f"Partner: {character_data['partner']}\n"
+    profile_message += f"Family: {character_data['family']}\n"
+    profile_message += f"Celeus: {character_data['celeus']}\n"
+
+    client.send_message(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", profile_message)
+
+
+
+
+
+
+
 
 
 @Celestia.on_message(filters.command("fight", prefixes="/"))
