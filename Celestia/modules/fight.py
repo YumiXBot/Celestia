@@ -14,22 +14,8 @@ def get_arg(message):
 
 
 
-user_database = {
-    user_id: {
-        "name": character_name, 
-        "health": 100, 
-        "rank": "Novice Traveler", 
-        "partner": None, 
-        "experience": "[▰▱▱▱▱]",
-        "level": 1,
-        "celeus": 10000,
-        "location": None,
-        "battle_win": 0,
-        "total_win": 0,
-        "player_id": user_id
-    }
-}
 
+user_database = {}
 
 user_state = {}
 
@@ -52,7 +38,11 @@ def character_creation(client, message):
             "partner": None,
             "experience": "[▰▱▱▱▱]",
             "level": 1,
-            "celeus": 10000
+            "celeus": 10000,
+            "location": None,
+            "battle_win": 0,
+            "total_win": 0,
+            "player_id": user_id
         }
         user_state[user_id] = "character_created"
         client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=f"Character {character_name} created! You can now use the /fight command.")
@@ -89,6 +79,8 @@ def profile_command(client, message):
 """
 
     client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
+
+
 
 
 
