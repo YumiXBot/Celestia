@@ -94,11 +94,6 @@ def profile_command(client, message):
 
 
 
-
-user_partners = {}
-
-
-
 @Celestia.on_message(filters.command("setpartner"))
 def set_partner_command(client, message):
     user_id = message.from_user.id
@@ -120,7 +115,7 @@ def set_partner_command(client, message):
         return
 
     user_family[user_id] = {
-        "partner": user.id,
+        "partner": None,
         "son": None,
         "daughter": None,
         "brothers": None,
@@ -139,26 +134,34 @@ def set_partner_command(client, message):
 
 
 @Celestia.on_callback_query(filters.regex("confirm_partner"))
-def callback_confirm_partner(client, callback_query):
-    user_id = callback_query.from_user.id
-    partner_id = user_family[user_id]["partner"]
+def callback_confirm_partner(client, query):
+    reply = quer.message.reply_to_message
+    if reply:
+        partner_id = reply.from_user
+    else:
+        query.answer("bhkk bsdk")
     
     if partner_id:
-        partner_name = user_partners.get(partner_id, "your partner")
-        callback_query.answer(f"You've confirmed {partner_name} as your partner!")
-    else:
-        callback_query.answer("Your partner is not set. Please set a partner first.")
+        query.answer(f"You've confirmed {partner_name} as your partner!")
+        message.reply("Done!!")
     
     
 
 
 
 @Celestia.on_callback_query(filters.regex("cancel_partner"))
-def callback_cancel_partner(client, callback_query):
-    user_id = callback_query.from_user.id
-    user_family[user_id]["partner"] = None
-    callback_query.answer("You've canceled your partner selection.")
-
+def callback_cancel_partner(client, query):
+    reply = quer.message.reply_to_message
+    if reply:
+        partner_id = reply.from_user
+    else:
+        query.answer("bhkk bsdk")
+    
+    if partner_id:
+        query.answer(f"reject krdiua  {partner_name} !")
+        message.reply("rejected!!")
+    
+    
 
 
 
