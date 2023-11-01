@@ -139,7 +139,7 @@ async def callback_confirm_partner(client, query):
         partner_name = partner.first_name  # Get partner's first name
 
 
-    if partner.id:
+    if partner.id == user_id:
         user_family[user_id]["partner"] = partner.id
 
         await query.answer(f"You've confirmed {partner_name} as your partner!")
@@ -157,7 +157,7 @@ async def callback_cancel_partner(client, query):
         partner_name = partner.first_name  # Get partner's first name
     
 
-    if partner.id:
+    if partner.id == user_id:
         user_family[query.from_user.id]["partner"] = None
         await query.answer(f"You've rejected {partner_name} as your partner!")
         await query.message.reply("Rejected!")
@@ -167,12 +167,13 @@ async def callback_cancel_partner(client, query):
         return
         
 
+
 @Celestia.on_callback_query(filters.regex("family_profile"))
-def family_profile(client, query):
+async def family_profile(client, query):
     user_id = query.from_user.id
 
     if user_id not in user_database:
-        query.reply("You haven't created a character yet. Use the /character command to create one.")
+        await query.answer("You haven't created a character yet. Use the /character command to create one.")
         return
 
     character_data = user_database[user_id]
@@ -200,7 +201,9 @@ def family_profile(client, query):
          InlineKeyboardButton("Shop", callback_data="open_shop")]
     ])
 
-    query.reply_photo(photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile, reply_markup=reply_markup)
+    media = InputMediaPhoto(media="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile, reply_markup=reply_markup)
+    
+    await query.edit_message_media(media=media)
 
 
 
