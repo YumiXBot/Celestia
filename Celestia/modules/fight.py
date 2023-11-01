@@ -92,45 +92,43 @@ def profile_command(client, message):
 
 
 
+
 @Celestia.on_message(filters.command("setpartner"))
 def set_partner_command(client, message):
     user_id = message.from_user.id
     name = message.from_user.first_name
     reply = message.reply_to_message
 
-    
     if user_id not in user_database:
         message.reply("Please create your character first using the /character command.")
         return
-        
-    
+
     if reply:
         user = reply.from_user
         if user.id not in user_database:
-        message.reply("Target user not found in the database.")
-        return
-        
+            message.reply("Target user not found in the database.")
+            return
+
         user_family[user_id] = {
             "partner": None,
             "friends": [],
             "son": [],
             "daughter": [],
             "sister": []  
-          }
+        }
 
         reply_markup = InlineKeyboardMarkup([
-          [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
-           InlineKeyboardButton("🔵 NO", callback_data="cancel_partner")]
-         ])
+            [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
+             InlineKeyboardButton("🔵 NO", callback_data="cancel_partner")]
+        ])
         message.reply_text(f"Congratulations! You are now partners with {user.first_name}.", reply_markup=reply_markup)
-    
+
     else:
         message.reply("Please reply to the user you want to set as a partner.")
-        return
+
 
     
-
-    
+   
 
 @Celestia.on_callback_query(filters.regex("confirm_partner"))
 async def callback_confirm_partner(client, query):
