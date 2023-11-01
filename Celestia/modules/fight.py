@@ -19,7 +19,13 @@ def get_arg(message):
 
 user_database = {}
 
-user_family = {}
+user_family = {
+            "partner": None,
+            "friends": [],
+            "son": [],
+            "daughter": [],
+            "sister": []  
+        }
 
 user_state = {}
 
@@ -109,13 +115,7 @@ def set_partner_command(client, message):
             message.reply("Target user not found in the database.")
             return
 
-        user_family[user_id] = {
-            "partner": None,
-            "friends": [],
-            "son": [],
-            "daughter": [],
-            "sister": []  
-        }
+        user_family[user_id] = user.id
 
         reply_markup = InlineKeyboardMarkup([
             [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
@@ -134,17 +134,13 @@ def set_partner_command(client, message):
 
 @Celestia.on_callback_query(filters.regex("confirm_partner"))
 async def callback_confirm_partner(client, query):
-    reply = query.message.reply_to_message
+    partner_id = user_family["user_id"]
     user_id = query.from_user.id
-    if reply:
-        partner = reply.from_user
-        partner_name = partner.first_name  # Get partner's first name
+    
+    if partner_id == user_id:
+        user_family[user_id]["partner"] = partner_id
 
-
-    if partner.id == user_id:
-        user_family[user_id]["partner"] = partner.id
-
-        await query.answer(f"You've confirmed {partner_name} as your partner!")
+        await query.answer(f"You've confirmed as your partner!")
         await query.message.reply("Done!!")
     else:
         await query.answer("bsdk !!.")
