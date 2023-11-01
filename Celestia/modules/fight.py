@@ -204,7 +204,7 @@ async def family_profile(client, query):
     ])
 
     await query.message.edit_media(
-        media=InputMediaPhoto(media="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile),
+        media=InputMediaPhoto(media="https://graph.org//file/391f2bdd418b41e15b288.jpg", caption=user_profile),
         reply_markup=reply_markup
     )
 
