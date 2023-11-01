@@ -169,6 +169,7 @@ async def callback_cancel_partner(client, query):
         
 
 
+
 @Celestia.on_callback_query(filters.regex("family_profile"))
 async def family_profile(client, query):
     user_id = query.from_user.id
@@ -202,11 +203,10 @@ async def family_profile(client, query):
          InlineKeyboardButton("Shop", callback_data="open_shop")]
     ])
 
-    media = InputMediaPhoto(media="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile, reply_markup=reply_markup)
-    
-    await query.edit_message_media(media=media)
-
-
+    await query.message.edit_media(
+        media=InputMediaPhoto(media="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile),
+        reply_markup=reply_markup
+    )
 
 
 
