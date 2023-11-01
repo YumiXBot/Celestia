@@ -15,7 +15,7 @@ async def sumit_boot():
         importlib.import_module("Celestia.modules." + all_module)
      
     for game_module in GAMES_MODULES:
-        importlib.import_module("Celestia.modules." + game_module)
+        importlib.import_module("Celestia.modules.Games." + game_module)
       
     print("»»»» ʜᴇʀᴏᴋᴏ ʀᴏʙᴏᴛ ᴅᴇᴘʟᴏʏ sᴜᴄᴄᴇssғᴜʟʟʏ ✨ 🎉")
     await idle()
