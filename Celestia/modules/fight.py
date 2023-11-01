@@ -91,7 +91,6 @@ def profile_command(client, message):
 
 
 
-
 @Celestia.on_message(filters.command("setpartner"))
 def set_partner_command(client, message):
     user_id = message.from_user.id
@@ -112,27 +111,17 @@ def set_partner_command(client, message):
         message.reply("Target user not found in the database.")
         return
 
-  #  if user_family[user_id]["partner"]:
-  #      message.reply("You already have a partner. You cannot set a new partner.")
-  #      return
-        
-    user_family[user_id] = {
-        "partner": None,
-        "son": [],
-        "daughter": [],
-        "brothers": [],
-        "sister": [],
-        "friends": []
-    }
+    if user_family[user_id]["partner"]:
+        message.reply("You already have a partner. You cannot set a new partner.")
+        return
+
+    user_family[user_id]["partner"] = user.id
 
     reply_markup = InlineKeyboardMarkup([
         [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
          InlineKeyboardButton("🔵 NO", callback_data="cancel_partner")]
     ])
     message.reply_text(f"Congratulations! You are now partners with {user.first_name}.", reply_markup=reply_markup)
-
-
-
 
 
 
@@ -143,15 +132,16 @@ async def callback_confirm_partner(client, query):
     if reply:
         partner = reply.from_user
         partner_name = partner.first_name  # Get partner's first name
-    else:
-        await query.answer("Sorry, couldn't find a partner to confirm.")
-        return
-    
+
+
     if partner.id:
-        user_family["user_id"]["partner"] = partner.id
-        
+        user_family[user_id]["partner"] = partner.id
+
         await query.answer(f"You've confirmed {partner_name} as your partner!")
         await query.message.reply("Done!!")
+    else:
+        await query.answer("bsdk !!.")
+        return
 
 
 @Celestia.on_callback_query(filters.regex("cancel_partner"))
@@ -160,17 +150,19 @@ async def callback_cancel_partner(client, query):
     if reply:
         partner = reply.from_user
         partner_name = partner.first_name  # Get partner's first name
-    else:
-        await query.answer("Sorry, couldn't find a partner to cancel.")
-        return
     
+
     if partner.id:
+        user_family[query.from_user.id]["partner"] = None
         await query.answer(f"You've rejected {partner_name} as your partner!")
-        await query.message.reply("Rejected!!")
+        await query.message.reply("Rejected!")
 
+    else:
+        await query.answer("bsdk !!.")
+        return
+        
 
-
-@Celestia.on_callback_query(filters.regex("confirm_partner"))
+@Celestia.on_callback_query(filters.regex("family_profile"))
 def family_profile(client, query):
     user_id = query.from_user.id
 
@@ -202,8 +194,13 @@ def family_profile(client, query):
         [InlineKeyboardButton("Back", callback_data="back_profile"),
          InlineKeyboardButton("Shop", callback_data="open_shop")]
     ])
-    
-    query.reply_photo(photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
+
+    query.reply_photo(photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile, reply_markup=reply_markup)
+
+
+
+
+
 
 
 
