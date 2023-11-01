@@ -116,8 +116,8 @@ def set_partner_command(client, message):
         "partner": None,
         "friends": [],
         "son": [],
-        "daughter" [],
-        "sister" []
+        "daughter": [],
+        "sister": []
 
     
     }
