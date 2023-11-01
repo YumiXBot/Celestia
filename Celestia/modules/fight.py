@@ -19,13 +19,6 @@ def get_arg(message):
 
 user_database = {}
 
-user_family = {
-            "partner": None,
-            "friends": [],
-            "son": [],
-            "daughter": [],
-            "sister": []  
-        }
 
 user_state = {}
 
@@ -99,6 +92,8 @@ def profile_command(client, message):
 
 
 
+user_family = {}
+
 @Celestia.on_message(filters.command("setpartner"))
 def set_partner_command(client, message):
     user_id = message.from_user.id
@@ -115,8 +110,27 @@ def set_partner_command(client, message):
             message.reply("Target user not found in the database.")
             return
 
-        user_family[user_id]["partner"] = user.id  # Assuming user_family is a dictionary
-        user_family[user.id]["partner"] = user_id  # Assuming user_family is a dictionary
+        # Initialize user_family dictionary for both users
+        if user_id not in user_family:
+            user_family[user_id] = {
+                "partner": None,
+                "friends": [],
+                "son": [],
+                "daughter": [],
+                "sister": []
+                }
+            
+        if user.id not in user_family:
+            user_family[user.id] = {
+                "partner": None,
+                "friends": [],
+                "son": [],
+                "daughter": [],
+                "sister": []
+                }
+
+        user_family[user_id]["partner"] = user.id
+        user_family[user.id]["partner"] = user_id
 
         reply_markup = InlineKeyboardMarkup([
             [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
@@ -127,13 +141,12 @@ def set_partner_command(client, message):
     else:
         message.reply("Please reply to the user you want to set as a partner.")
 
-
 @Celestia.on_callback_query(filters.regex("confirm_partner"))
 async def callback_confirm_partner(client, query):
-    partner_id = user_family[query.from_user.id].get("partner")
     user_id = query.from_user.id
-    
-    if partner_id == user_id:
+    partner_id = user_family.get(user_id, {}).get("partner")
+
+    if partner_id is not None and partner_id == user_id:
         user_family[user_id]["partner"] = partner_id
         user_family[partner_id]["partner"] = user_id
 
@@ -142,24 +155,17 @@ async def callback_confirm_partner(client, query):
     else:
         await query.answer("Invalid partner selection.")
 
-
 @Celestia.on_callback_query(filters.regex("cancel_partner"))
 async def callback_cancel_partner(client, query):
     user_id = query.from_user.id
-    partner_id = user_family[user_id].get("partner")
-    
-    if partner_id:
+    partner_id = user_family.get(user_id, {}).get("partner")
+
+    if partner_id is not None:
         del user_family[user_id]["partner"]
         del user_family[partner_id]["partner"]
 
         await query.answer(f"You've canceled your partnership with {query.from_user.first_name}.")
         await query.message.reply("Partnership canceled.")
-    else:
-        await query.answer("No active partnership to cancel.")
-
-
-
-
 
         
 
