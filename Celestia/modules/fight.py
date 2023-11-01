@@ -92,46 +92,6 @@ def profile_command(client, message):
 
 
 
-
-@Celestia.on_callback_query(filters.regex("confirm_partner"))
-def family_profile(client, query):
-    user_id = query.from_user.id
-
-    if user_id not in user_database:
-        query.reply("You haven't created a character yet. Use the /character command to create one.")
-        return
-
-    character_data = user_database[user_id]
-    character_family = user_family[user_id]
-    user_profile = f"""
-┏━━━━━━━━━━━━━━━━━
-┣ Player family profile 
-┗━━━━━━━━━━━━━━━━━
-
-┏━⦿
-┣⬢ Name : {character_data['name']}
-┣⬢ Health : {character_data['health']}
-┣⬢ Celeus : {character_data['celeus']}
-┣ Partner : {character_family['partner']}
-┣ Friends : {character_family['friends']}
-┣ Son : {character_family['son']}
-┣ Daughter : {character_family['daughter']}
-┣ Sister : {character_family['sister']}
-┗━━━━━━━━━⦿
-"""
-    reply_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Back", callback_data="back_profile"),
-         InlineKeyboardButton("Shop", callback_data="open_shop")]
-    ])
-    
-    query.reply_photo(photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
-
-
-
-
-
-
-
 @Celestia.on_message(filters.command("setpartner"))
 def set_partner_command(client, message):
     user_id = message.from_user.id
@@ -152,9 +112,9 @@ def set_partner_command(client, message):
         message.reply("Target user not found in the database.")
         return
 
-    if user_family[user_id]["partner"]:
-        message.reply("You already have a partner. You cannot set a new partner.")
-        return
+  #  if user_family[user_id]["partner"]:
+  #      message.reply("You already have a partner. You cannot set a new partner.")
+  #      return
         
     user_family[user_id] = {
         "partner": None,
@@ -208,6 +168,42 @@ async def callback_cancel_partner(client, query):
         await query.answer(f"You've rejected {partner_name} as your partner!")
         await query.message.reply("Rejected!!")
 
+
+
+@Celestia.on_callback_query(filters.regex("confirm_partner"))
+def family_profile(client, query):
+    user_id = query.from_user.id
+
+    if user_id not in user_database:
+        query.reply("You haven't created a character yet. Use the /character command to create one.")
+        return
+
+    character_data = user_database[user_id]
+    character_family = user_family[user_id]
+    user_profile = f"""
+┏━━━━━━━━━━━━━━━━━
+┣ Player family profile 
+┗━━━━━━━━━━━━━━━━━
+
+┏━━━━━━━━━⦿
+┣⬢ Name : {character_data['name']}
+┣⬢ Health : {character_data['health']}
+┣⬢ Celeus : {character_data['celeus']}
+┗━━━━━━━━━⦿
+┏━⦿
+┣ Partner : {character_family['partner']}
+┣ Friends : {character_family['friends']}
+┣ Son : {character_family['son']}
+┣ Daughter : {character_family['daughter']}
+┣ Sister : {character_family['sister']}
+┗━━━━━━━━━⦿
+"""
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton("Back", callback_data="back_profile"),
+         InlineKeyboardButton("Shop", callback_data="open_shop")]
+    ])
+    
+    query.reply_photo(photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile)
 
 
 
