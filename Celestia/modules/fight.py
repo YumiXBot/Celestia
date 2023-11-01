@@ -135,11 +135,14 @@ def set_partner_command(client, message):
 @Celestia.on_callback_query(filters.regex("confirm_partner"))
 async def callback_confirm_partner(client, query):
     user_id = query.from_user.id
+    reply = message.reply_to_message
+    sexo_id = reply.from_user.id
+
     partner_id = choose_family.get(user_id)
 
     if partner_id == user_id:
-        user_family[user_id]["partner"] = partner_id
-
+        user_family[sexo_id]["partner"] = partner_id
+        choose_family.pop(user_id, None)
         await query.answer(f"You've confirmed {query.from_user.first_name} as your partner!")
         await query.message.reply("Done!!")
     else:
@@ -155,9 +158,7 @@ async def callback_cancel_partner(client, query):
     partner_id = choose_family.get(user_id)
 
     if partner_id == user_id:
-        user_family[]
-        choose_family.pop(user_id, None)
-        
+        choose_family.pop(user_id, None)                
         await query.answer(f"nhi krna meko !")
         await query.message.reply("Done!!")
     else:
