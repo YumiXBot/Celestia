@@ -108,7 +108,7 @@ def set_partner_command(client, message):
 
     if reply:
         user = reply.from_user
-        choose_family["fam_id"] = user.id
+        choose_family[user_id] = user.id
         if user.id not in user_database:
             message.reply("Target user not found in the database.")
             return
@@ -135,16 +135,7 @@ def set_partner_command(client, message):
 @Celestia.on_callback_query(filters.regex("confirm_partner"))
 async def callback_confirm_partner(client, query):
     user_id = query.from_user.id
-    partner_id = choose_family["fam_id"].get(user_id)
-
-    if user_id not in user_family:
-        user_family[user_id] = {
-            "partner": None,
-            "friends": [],
-            "son": [],
-            "daughter": [],
-            "sister": []
-        }
+    partner_id = choose_family.get(user_id)
 
     if partner_id == user_id:
         user_family[user_id]["partner"] = partner_id
@@ -161,18 +152,11 @@ async def callback_confirm_partner(client, query):
 @Celestia.on_callback_query(filters.regex("cancel_partner"))
 async def callback_cancel_partner(client, query):
     user_id = query.from_user.id
-    partner_id = choose_family["fam_id"].get(user_id)
-
-    if user_id not in user_family:
-        user_family[user_id] = {
-            "partner": None,
-            "friends": [],
-            "son": [],
-            "daughter": [],
-            "sister": []
-        }
+    partner_id = choose_family.get(user_id)
 
     if partner_id == user_id:
+        user_family[]
+        choose_family.pop(user_id, None)
         
         await query.answer(f"nhi krna meko !")
         await query.message.reply("Done!!")
