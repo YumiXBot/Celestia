@@ -94,6 +94,8 @@ def profile_command(client, message):
 
 user_family = {}
 
+choose_family = {}
+
 @Celestia.on_message(filters.command("setpartner"))
 def set_partner_command(client, message):
     user_id = message.from_user.id
@@ -106,6 +108,7 @@ def set_partner_command(client, message):
 
     if reply:
         user = reply.from_user
+        choose_family["fam_id"] = user.id
         if user.id not in user_database:
             message.reply("Target user not found in the database.")
             return
@@ -132,7 +135,7 @@ def set_partner_command(client, message):
 @Celestia.on_callback_query(filters.regex("confirm_partner"))
 async def callback_confirm_partner(client, query):
     user_id = query.from_user.id
-    partner_id = query.from_message.reply_to_message.from_user.id
+    partner_id = choose_family["fam_id"].get(user_id)
 
     if user_id not in user_family:
         user_family[user_id] = {
@@ -143,13 +146,13 @@ async def callback_confirm_partner(client, query):
             "sister": []
         }
 
-    if user_family[user_id]["partner"] is None:
+    if partner_id == user_id:
         user_family[user_id]["partner"] = partner_id
 
         await query.answer(f"You've confirmed {query.from_user.first_name} as your partner!")
         await query.message.reply("Done!!")
     else:
-        await query.answer("You already have a partner.")
+        await query.answer("bhk bsdk!!.")
 
 
 
@@ -158,17 +161,23 @@ async def callback_confirm_partner(client, query):
 @Celestia.on_callback_query(filters.regex("cancel_partner"))
 async def callback_cancel_partner(client, query):
     user_id = query.from_user.id
-    partner_id = user_family.get(user_id, {}).get("partner")
+    partner_id = choose_family["fam_id"].get(user_id)
 
-    if partner_id is not None:
-        del user_family[user_id]["partner"]
-        del user_family[partner_id]["partner"]
+    if user_id not in user_family:
+        user_family[user_id] = {
+            "partner": None,
+            "friends": [],
+            "son": [],
+            "daughter": [],
+            "sister": []
+        }
 
-        await query.answer(f"You've canceled your partnership with {query.from_user.first_name}.")
-        await query.message.reply("Partnership canceled.")
+    if partner_id == user_id:
+        
+        await query.answer(f"nhi krna meko !")
+        await query.message.reply("Done!!")
     else:
-        await query.answer("abe bsdk !!.")
-
+        await query.answer("bhk bsdk!!.")
 
         
 
