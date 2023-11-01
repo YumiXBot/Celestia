@@ -152,6 +152,7 @@ async def callback_confirm_partner(client, query):
 @Celestia.on_callback_query(filters.regex("cancel_partner"))
 async def callback_cancel_partner(client, query):
     reply = query.message.reply_to_message
+    user_id = query.from_user.id
     if reply:
         partner = reply.from_user
         partner_name = partner.first_name  # Get partner's first name
