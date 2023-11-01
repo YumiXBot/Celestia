@@ -127,8 +127,10 @@ def set_partner_command(client, message):
         message.reply("Please reply to the user you want to set as a partner.")
 
 
+
     
-   
+# ====================> ragex callback <============================= #   
+
 
 @Celestia.on_callback_query(filters.regex("confirm_partner"))
 async def callback_confirm_partner(client, query):
@@ -170,6 +172,50 @@ async def callback_cancel_partner(client, query):
 
 
 
+@Celestia.on_callback_query(filters.regex("back_profile"))
+async def back_profile(client, query):
+    user_id = query.from_user.id
+
+    if user_id not in user_database:
+        await query.answer("You haven't created a character yet. Use the /character command to create one.")
+        return
+
+    character_data = user_database[user_id]
+    user_profile = f"""
+┏━━━━━━━━━━━━━━━━━
+┣ Umm Player profile 
+┗━━━━━━━━━━━━━━━━━
+┏━⦿
+┣⬢ Name : {character_data['name']}
+┣⬢ Health : {character_data['health']}
+┣⬢ Celeus : {character_data['celeus']}
+┣⬢ Player ID : {character_data['player_id']}
+┗━━━━━━━━━⦿
+
+┏━⦿
+┣ Exp : {character_data['experience']}
+┣ Level : {character_data['level']}
+┣ Rank : {character_data['rank']}
+┣ Location : {character_data['location']}
+┣ Battles Win : {character_data['battle_win']}
+┣ Total Battles : {character_data['total_win']}
+┗━━━━━━━━━⦿
+"""
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton("Family", callback_data="family_profile"),
+         InlineKeyboardButton("Shop", callback_data="open_shop")]
+    ])
+
+    await query.message.edit_media(
+        media=InputMediaPhoto(media="https://graph.org//file/391f2bdd418b41e15b288.jpg", caption=user_profile),
+        reply_markup=reply_markup
+    )
+
+
+
+
+
+
 @Celestia.on_callback_query(filters.regex("family_profile"))
 async def family_profile(client, query):
     user_id = query.from_user.id
@@ -207,8 +253,6 @@ async def family_profile(client, query):
         media=InputMediaPhoto(media="https://graph.org//file/391f2bdd418b41e15b288.jpg", caption=user_profile),
         reply_markup=reply_markup
     )
-
-
 
 
 
