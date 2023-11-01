@@ -2,6 +2,7 @@ import random
 from Celestia import Celestia
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import InputMediaPhoto
 
 
 
