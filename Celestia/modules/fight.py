@@ -111,11 +111,16 @@ def set_partner_command(client, message):
         message.reply("Target user not found in the database.")
         return
 
-    if user_family[user_id]["partner"]:
-        message.reply("You already have a partner. You cannot set a new partner.")
-        return
+    
+    user_family[user_id] = {
+        "partner": None,
+        "friends": [],
+        "son": [],
+        "daughter" [],
+        "sister" []
 
-    user_family[user_id]["partner"] = user.id
+    
+    }
 
     reply_markup = InlineKeyboardMarkup([
         [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
