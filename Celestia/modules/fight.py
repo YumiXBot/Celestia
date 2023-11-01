@@ -129,8 +129,8 @@ def set_partner_command(client, message):
                 "sister": []
                 }
 
-        user_family[user_id]["partner"] = user.id
-        user_family[user.id]["partner"] = user_id
+        user_family[user_id]["partner"]
+        user_family[user.id]["partner"]
 
         reply_markup = InlineKeyboardMarkup([
             [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
@@ -144,7 +144,7 @@ def set_partner_command(client, message):
 @Celestia.on_callback_query(filters.regex("confirm_partner"))
 async def callback_confirm_partner(client, query):
     user_id = query.from_user.id
-    partner_id = user_family.get(user_id, {}).get("partner")
+    partner_id = user_family.get(user_id).get("partner")
 
     if partner_id is not None and partner_id == user_id:
         user_family[user_id]["partner"] = partner_id
@@ -154,6 +154,7 @@ async def callback_confirm_partner(client, query):
         await query.message.reply("Done!!")
     else:
         await query.answer("Invalid partner selection.")
+
 
 @Celestia.on_callback_query(filters.regex("cancel_partner"))
 async def callback_cancel_partner(client, query):
@@ -206,7 +207,7 @@ async def back_profile(client, query):
     ])
 
     await query.message.edit_media(
-        media=InputMediaPhoto(media="https://graph.org//file/391f2bdd418b41e15b288.jpg", caption=user_profile),
+        media=InputMediaPhoto(media="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile),
         reply_markup=reply_markup
     )
 
