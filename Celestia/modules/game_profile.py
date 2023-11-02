@@ -135,7 +135,7 @@ def set_partner(client, message):
 
 
 
-@Celestia.on_message(filters.command("friend"))
+@Celestia.on_message(filters.command("setfriend"))
 def set_friend(client, message):
     user_id = message.from_user.id
     name = message.from_user.first_name
@@ -164,8 +164,8 @@ def set_friend(client, message):
             }
 
         reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_partner")]
+            [InlineKeyboardButton("🔴 YES", callback_data="confirm_friends"),
+             InlineKeyboardButton("🔵 NO", callback_data="cancel_friends")]
         ])
         message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
 
@@ -201,8 +201,8 @@ def set_son(client, message):
             }
 
         reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_partner")]
+            [InlineKeyboardButton("🔴 YES", callback_data="confirm_son"),
+             InlineKeyboardButton("🔵 NO", callback_data="cancel_son")]
         ])
         message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
 
@@ -239,8 +239,8 @@ def set_daughter(client, message):
             }
 
         reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_partner")]
+            [InlineKeyboardButton("🔴 YES", callback_data="confirm_daughter"),
+             InlineKeyboardButton("🔵 NO", callback_data="cancel_daughter")]
         ])
         message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
 
@@ -279,8 +279,8 @@ def set_sister(client, message):
             }
 
         reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_partner")]
+            [InlineKeyboardButton("🔴 YES", callback_data="confirm_sister"),
+             InlineKeyboardButton("🔵 NO", callback_data="cancel_sister")]
         ])
         message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
 
@@ -318,8 +318,8 @@ def set_brother(client, message):
             }
 
         reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_partner")]
+            [InlineKeyboardButton("🔴 YES", callback_data="confirm_brother"),
+             InlineKeyboardButton("🔵 NO", callback_data="cancel_brother")]
         ])
         message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
 
@@ -330,15 +330,6 @@ def set_brother(client, message):
 
 
 
-@Celestia.on_callback_query(filters.regex("confirm_partner"))
-async def callback_confirm_partner(client, query):
-    
-    if user_id in choose_family:
-        
-        await query.answer("accepted !!")
-        await query.message.reply(f"You've confirmed {query.from_user.first_name} as your partner!")        
-    else:
-        await query.answer("bhk bsdk!!.")
 
 
 @Celestia.on_callback_query(filters.regex(r"accept_(partner|sister|brothers|sons|daughter|friends)"))
