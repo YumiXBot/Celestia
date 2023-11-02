@@ -332,20 +332,77 @@ def set_brother(client, message):
 
 @Celestia.on_callback_query(filters.regex("confirm_partner"))
 async def callback_confirm_partner(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    print(sexo_id)
+    
     if user_id in choose_family:
-        print(f" yeah present {user_id}")
-        partner_id = choose_family.get(user_id)
         
-        user_family[sexo_id]["partner"] = partner_id
-        choose_family.pop(user_id, None)
         await query.answer("accepted !!")
         await query.message.reply(f"You've confirmed {query.from_user.first_name} as your partner!")        
     else:
         await query.answer("bhk bsdk!!.")
+
+
+@Celestia.on_callback_query(filters.regex(r"accept_(partner|sister|brothers|sons|daughter|friends)"))
+async def callback_accept_relationship(client, query):
+    user_id = query.from_user.id
+    action = query.data.split('_')[1]  
+    reply = query.message.reply_to_message
+    sexo_id = reply.from_user.id
+    print(sexo_id)
+
+    if user_id in choose_family:
+        print(f" yeah present {user_id}")
+        partner_id = choose_family.get(user_id)
+        
+
+        if action == 'partner':
+            user_family[sexo_id]["partner"] = partner_id
+            choose_family.pop(user_id, None)
+            
+            await query.answer(f"You accepted the partnership!")
+            await query.message.reply("You are now partners.")
+            
+        elif action == 'sister':
+            
+            user_family[sexo_id]["sister"] = partner_id
+            choose_family.pop(user_id, None)
+            
+            await query.answer(f"You accepted the sisterhood!")
+            await query.message.reply("You are now sisters.")
+            
+        elif action == 'brothers':
+            
+            user_family[sexo_id]["brother"] = partner_id
+            choose_family.pop(user_id, None)
+        
+            await query.answer(f"You accepted the brotherhood!")
+            await query.message.reply("You are now brothers.")
+            
+        elif action == 'sons':
+            
+            user_family[sexo_id]["son"] = partner_id
+            choose_family.pop(user_id, None)
+            
+            await query.answer(f"You accepted the son!")
+            await query.message.reply("You are now parent and child.")
+            
+        elif action == 'daughter':
+            
+            user_family[sexo_id]["daughter"] = partner_id
+            choose_family.pop(user_id, None)
+            
+            await query.answer(f"You accepted the daughter!")
+            await query.message.reply("You are now parent and child.")
+            
+        elif action == 'friends':
+            
+            user_family[sexo_id]["friend"] = partner_id
+            choose_family.pop(user_id, None)
+            
+            await query.answer(f"You accepted the friendship!")
+            await query.message.reply("You are now friends.")
+    else:
+        await query.answer("Bruh This is not for you !!")
+
 
 
 
