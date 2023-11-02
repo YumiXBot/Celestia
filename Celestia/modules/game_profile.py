@@ -96,7 +96,7 @@ user_family = {}
 
 choose_family = {}
 
-@Celestia.on_message(filters.command("partner"))
+@Celestia.on_message(filters.command("setpartner"))
 def set_partner(client, message):
     user_id = message.from_user.id
     name = message.from_user.first_name
@@ -119,7 +119,8 @@ def set_partner(client, message):
                 "friends": [],
                 "son": [],
                 "daughter": [],
-                "sister": []
+                "sister": [],
+                "brother": []
             }
 
         reply_markup = InlineKeyboardMarkup([
@@ -156,7 +157,9 @@ def set_friend(client, message):
                 "friends": [],
                 "son": [],
                 "daughter": [],
-                "sister": []
+                "sister": [],
+                "brother": []
+                
             }
 
         reply_markup = InlineKeyboardMarkup([
@@ -192,7 +195,8 @@ def set_son(client, message):
                 "friends": [],
                 "son": [],
                 "daughter": [],
-                "sister": []
+                "sister": [],
+                "brother": []
             }
 
         reply_markup = InlineKeyboardMarkup([
@@ -229,7 +233,8 @@ def set_daughter(client, message):
                 "friends": [],
                 "son": [],
                 "daughter": [],
-                "sister": []
+                "sister": [],
+                "brother": []
             }
 
         reply_markup = InlineKeyboardMarkup([
@@ -267,7 +272,9 @@ def set_sister(client, message):
                 "friends": [],
                 "son": [],
                 "daughter": [],
-                "sister": []
+                "sister": [],
+                "brother": []
+                
             }
 
         reply_markup = InlineKeyboardMarkup([
@@ -305,7 +312,8 @@ def set_brother(client, message):
                 "friends": [],
                 "son": [],
                 "daughter": [],
-                "sister": []
+                "sister": [],
+                "brother": []
             }
 
         reply_markup = InlineKeyboardMarkup([
@@ -432,6 +440,7 @@ async def family_profile(client, query):
 ┣ Son : {character_family['son']}
 ┣ Daughter : {character_family['daughter']}
 ┣ Sister : {character_family['sister']}
+┣ Brother : {character_family['brother']}
 ┗━━━━━━━━━⦿
 """
     reply_markup = InlineKeyboardMarkup([
