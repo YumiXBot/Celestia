@@ -335,13 +335,14 @@ async def callback_confirm_partner(client, query):
     reply = query.message.reply_to_message
     sexo_id = reply.from_user.id
     print(sexo_id)
-    partner_id = choose_family.get(user_id)
-
-    if partner_id == user_id:
+    if user_id in choose_family:
+        print(f" yeah present {user_id}")
+        partner_id = choose_family.get(user_id)
+        
         user_family[sexo_id]["partner"] = partner_id
         choose_family.pop(user_id, None)
-        await query.answer(f"You've confirmed {query.from_user.first_name} as your partner!")
-        await query.message.reply("Done!!")
+        await query.answer("accepted !!")
+        await query.message.reply(f"You've confirmed {query.from_user.first_name} as your partner!")        
     else:
         await query.answer("bhk bsdk!!.")
 
@@ -352,15 +353,13 @@ async def callback_confirm_partner(client, query):
 @Celestia.on_callback_query(filters.regex("cancel_partner"))
 async def callback_cancel_partner(client, query):
     user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    print(sexo_id)
     partner_id = choose_family.get(user_id)
 
-    if partner_id == user_id:
+    if user_id in choose_family:
+        print(f"yup present {user_id}")
         choose_family.pop(user_id, None)                
-        await query.answer(f"nhi krna meko !")
-        await query.message.reply("Done!!")
+        await query.answer(f"rejected !!")
+        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
     else:
         await query.answer("bhk bsdk!!.")
 
