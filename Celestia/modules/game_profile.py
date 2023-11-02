@@ -406,7 +406,7 @@ async def callback_cancel_partner(client, query):
     sexo_id = reply.from_user.id
     partner_id = choose_family.get(sexo_id)
 
-    if user_id in choose_family:
+    if user_id == partner_id:
         print(f"yup present {user_id}")
         choose_family.pop(user_id, None)                
         await query.answer(f"rejected !!")
