@@ -18,10 +18,11 @@ def get_arg(message):
 
 
 user_database = {}
+user_family = {}
 
 
 user_state = {}
-
+choose_family = {}
 
 
 @Celestia.on_message(filters.command("character"))
@@ -92,9 +93,9 @@ def profile_command(client, message):
 
 
 
-user_family = {}
 
-choose_family = {}
+
+
 
 @Celestia.on_message(filters.command("setpartner"))
 def set_partner(client, message):
