@@ -402,7 +402,9 @@ async def callback_accept_relationship(client, query):
 @Celestia.on_callback_query(filters.regex("cancel_partner"))
 async def callback_cancel_partner(client, query):
     user_id = query.from_user.id
-    partner_id = choose_family.get(user_id)
+    reply = query.message.reply_to_message
+    sexo_id = reply.from_user.id
+    partner_id = choose_family.get(sexo_id)
 
     if user_id in choose_family:
         print(f"yup present {user_id}")
