@@ -397,7 +397,7 @@ async def callback_accept_relationship(client, query):
 
 
 
-
+# ===============> cancel callback <==================== # 
 
 @Celestia.on_callback_query(filters.regex("cancel_partner"))
 async def callback_cancel_partner(client, query):
@@ -414,9 +414,90 @@ async def callback_cancel_partner(client, query):
     else:
         await query.answer("bhk bsdk!!.")
 
+@Celestia.on_callback_query(filters.regex("cancel_friends"))
+async def callback_cancel_friends(client, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexo_id = reply.from_user.id
+    partner_id = choose_family.get(sexo_id)
+
+    if user_id == partner_id:
+        print(f"yup present {user_id}")
+        choose_family.pop(user_id, None)                
+        await query.answer(f"rejected !!")
+        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
+    else:
+        await query.answer("bhk bsdk!!.")
         
 
+@Celestia.on_callback_query(filters.regex("cancel_sons"))
+async def callback_cancel_sons(client, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexo_id = reply.from_user.id
+    partner_id = choose_family.get(sexo_id)
+
+    if user_id == partner_id:
+        print(f"yup present {user_id}")
+        choose_family.pop(user_id, None)                
+        await query.answer(f"rejected !!")
+        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
+    else:
+        await query.answer("bhk bsdk!!.")
+
+
+
+@Celestia.on_callback_query(filters.regex("cancel_daughters"))
+async def callback_cancel_daughters(client, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexo_id = reply.from_user.id
+    partner_id = choose_family.get(sexo_id)
+
+    if user_id == partner_id:
+        print(f"yup present {user_id}")
+        choose_family.pop(user_id, None)                
+        await query.answer(f"rejected !!")
+        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
+    else:
+        await query.answer("bhk bsdk!!.")
         
+
+
+
+@Celestia.on_callback_query(filters.regex("cancel_sisters"))
+async def callback_cancel_sisters(client, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexo_id = reply.from_user.id
+    partner_id = choose_family.get(sexo_id)
+
+    if user_id == partner_id:
+        print(f"yup present {user_id}")
+        choose_family.pop(user_id, None)                
+        await query.answer(f"rejected !!")
+        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
+    else:
+        await query.answer("bhk bsdk!!.")
+        
+
+@Celestia.on_callback_query(filters.regex("cancel_brothers"))
+async def callback_cancel_brothers(client, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexo_id = reply.from_user.id
+    partner_id = choose_family.get(sexo_id)
+
+    if user_id == partner_id:
+        print(f"yup present {user_id}")
+        choose_family.pop(user_id, None)                
+        await query.answer(f"rejected !!")
+        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
+    else:
+        await query.answer("bhk bsdk!!.")
+        
+
+
 
 
 
