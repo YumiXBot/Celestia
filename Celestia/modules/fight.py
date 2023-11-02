@@ -135,9 +135,9 @@ def set_partner_command(client, message):
 @Celestia.on_callback_query(filters.regex("confirm_partner"))
 async def callback_confirm_partner(client, query):
     user_id = query.from_user.id
-    reply = message.reply_to_message
+    reply = query.message.reply_to_message
     sexo_id = reply.from_user.id
-
+    print(sexo_id)
     partner_id = choose_family.get(user_id)
 
     if partner_id == user_id:
@@ -163,6 +163,8 @@ async def callback_cancel_partner(client, query):
         await query.message.reply("Done!!")
     else:
         await query.answer("bhk bsdk!!.")
+
+        
 
         
 
