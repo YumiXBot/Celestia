@@ -140,7 +140,7 @@ async def callback_confirm_partner(client, query):
     print(sexo_id)
     partner_id = choose_family.get(user_id)
 
-    if partner_id == user_id:
+    if partner_id == user_id
         user_family[sexo_id]["partner"] = partner_id
         choose_family.pop(user_id, None)
         await query.answer(f"You've confirmed {query.from_user.first_name} as your partner!")
@@ -160,7 +160,7 @@ async def callback_cancel_partner(client, query):
     print(sexo_id)
     partner_id = choose_family.get(user_id)
 
-    if partner_id == user_id:
+    if partner_id == user_id
         choose_family.pop(user_id, None)                
         await query.answer(f"nhi krna meko !")
         await query.message.reply("Done!!")
