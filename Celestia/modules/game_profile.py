@@ -109,7 +109,7 @@ def set_partner(client, message):
 
     if reply:
         user = reply.from_user
-        user_family[user_id] = {
+        choose_family[user_id] = {
                 "partner": user.id
                 }
         
@@ -151,7 +151,7 @@ def set_friend(client, message):
     if reply:
         user = reply.from_user
         
-        user_family[user_id] = {
+        choose_family[user_id] = {
                 "friend": user.id
                 }
         if user.id not in user_database:
@@ -191,7 +191,7 @@ def set_son(client, message):
 
     if reply:
         user = reply.from_user
-        user_family[user_id] = {
+        choose_family[user_id] = {
                 "son": user.id
                 }
         if user.id not in user_database:
@@ -209,8 +209,8 @@ def set_son(client, message):
             }
 
         reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_son"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_son")]
+            [InlineKeyboardButton("🔴 YES", callback_data="confirm_sons"),
+             InlineKeyboardButton("🔵 NO", callback_data="cancel_sons")]
         ])
         message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
 
@@ -231,7 +231,7 @@ def set_daughter(client, message):
 
     if reply:
         user = reply.from_user
-        user_family[user_id] = {
+        choose_family[user_id] = {
                 "daughter": user.id
                 }
         if user.id not in user_database:
@@ -249,8 +249,8 @@ def set_daughter(client, message):
             }
 
         reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_daughter"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_daughter")]
+            [InlineKeyboardButton("🔴 YES", callback_data="confirm_daughters"),
+             InlineKeyboardButton("🔵 NO", callback_data="cancel_daughters")]
         ])
         message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
 
@@ -272,7 +272,7 @@ def set_sister(client, message):
 
     if reply:
         user = reply.from_user
-        user_family[user_id] = {
+        choose_family[user_id] = {
                 "sister": user.id
                 }
         if user.id not in user_database:
@@ -291,8 +291,8 @@ def set_sister(client, message):
             }
 
         reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_sister"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_sister")]
+            [InlineKeyboardButton("🔴 YES", callback_data="confirm_sisters"),
+             InlineKeyboardButton("🔵 NO", callback_data="cancel_sisters")]
         ])
         message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
 
@@ -314,7 +314,7 @@ def set_brother(client, message):
 
     if reply:
         user = reply.from_user
-        user_family[user_id] = {
+        choose_family[user_id] = {
                 "brother": user.id
                 }
         if user.id not in user_database:
@@ -332,8 +332,8 @@ def set_brother(client, message):
             }
 
         reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_brother"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_brother")]
+            [InlineKeyboardButton("🔴 YES", callback_data="confirm_brothers"),
+             InlineKeyboardButton("🔵 NO", callback_data="cancel_brothers")]
         ])
         message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
 
