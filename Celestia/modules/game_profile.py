@@ -109,7 +109,10 @@ def set_partner(client, message):
 
     if reply:
         user = reply.from_user
-        choose_family[user_id] = user.id
+        user_family[user_id] = {
+                "partner": user.id
+                }
+        
         if user.id not in user_database:
             message.reply("Target user not found in the database.")
             return
@@ -147,7 +150,10 @@ def set_friend(client, message):
 
     if reply:
         user = reply.from_user
-        choose_family[user_id] = user.id
+        
+        user_family[user_id] = {
+                "friend": user.id
+                }
         if user.id not in user_database:
             message.reply("Target user not found in the database.")
             return
@@ -185,7 +191,9 @@ def set_son(client, message):
 
     if reply:
         user = reply.from_user
-        choose_family[user_id] = user.id
+        user_family[user_id] = {
+                "son": user.id
+                }
         if user.id not in user_database:
             message.reply("Target user not found in the database.")
             return
@@ -223,7 +231,9 @@ def set_daughter(client, message):
 
     if reply:
         user = reply.from_user
-        choose_family[user_id] = user.id
+        user_family[user_id] = {
+                "daughter": user.id
+                }
         if user.id not in user_database:
             message.reply("Target user not found in the database.")
             return
@@ -262,7 +272,9 @@ def set_sister(client, message):
 
     if reply:
         user = reply.from_user
-        choose_family[user_id] = user.id
+        user_family[user_id] = {
+                "sister": user.id
+                }
         if user.id not in user_database:
             message.reply("Target user not found in the database.")
             return
@@ -302,7 +314,9 @@ def set_brother(client, message):
 
     if reply:
         user = reply.from_user
-        choose_family[user_id] = user.id
+        user_family[user_id] = {
+                "brother": user.id
+                }
         if user.id not in user_database:
             message.reply("Target user not found in the database.")
             return
@@ -335,64 +349,19 @@ def set_brother(client, message):
 @Celestia.on_callback_query(filters.regex(r"accept_(partner|sister|brothers|sons|daughter|friends)"))
 async def callback_accept_relationship(client, query):
     user_id = query.from_user.id
-    action = query.data.split('_')[1]  
     reply = query.message.reply_to_message
     sexo_id = reply.from_user.id
-    print(sexo_id)
+    partner_id = choose_family[sexo_id].get("partner")
 
-    if user_id in choose_family:
-        print(f" yeah present {user_id}")
-        partner_id = choose_family.get(user_id)
-        
-
-        if action == 'partner':
-            user_family[sexo_id]["partner"] = partner_id
-            choose_family.pop(user_id, None)
-            
-            await query.answer(f"You accepted the partnership!")
-            await query.message.reply("You are now partners.")
-            
-        elif action == 'sister':
-            
-            user_family[sexo_id]["sister"] = partner_id
-            choose_family.pop(user_id, None)
-            
-            await query.answer(f"You accepted the sisterhood!")
-            await query.message.reply("You are now sisters.")
-            
-        elif action == 'brothers':
-            
-            user_family[sexo_id]["brother"] = partner_id
-            choose_family.pop(user_id, None)
-        
-            await query.answer(f"You accepted the brotherhood!")
-            await query.message.reply("You are now brothers.")
-            
-        elif action == 'sons':
-            
-            user_family[sexo_id]["son"] = partner_id
-            choose_family.pop(user_id, None)
-            
-            await query.answer(f"You accepted the son!")
-            await query.message.reply("You are now parent and child.")
-            
-        elif action == 'daughter':
-            
-            user_family[sexo_id]["daughter"] = partner_id
-            choose_family.pop(user_id, None)
-            
-            await query.answer(f"You accepted the daughter!")
-            await query.message.reply("You are now parent and child.")
-            
-        elif action == 'friends':
-            
-            user_family[sexo_id]["friend"] = partner_id
-            choose_family.pop(user_id, None)
-            
-            await query.answer(f"You accepted the friendship!")
-            await query.message.reply("You are now friends.")
+    if user_id == partner_id:
+        print(f"yup present {user_id}")
+        user_family[sexo_id]["partner"] = partner_id
+        choose_family[sexo_id].pop("partner", None)                
+        await query.answer(f"rejected !!")
+        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
     else:
-        await query.answer("Bruh This is not for you !!")
+        await query.answer("bhk bsdk!!.")
+
 
 
 
@@ -404,42 +373,11 @@ async def callback_cancel_partner(client, query):
     user_id = query.from_user.id
     reply = query.message.reply_to_message
     sexo_id = reply.from_user.id
-    partner_id = choose_family.get(sexo_id)
+    partner_id = choose_family[sexo_id].get("partner")
 
     if user_id == partner_id:
         print(f"yup present {user_id}")
-        choose_family.pop(user_id, None)                
-        await query.answer(f"rejected !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-
-@Celestia.on_callback_query(filters.regex("cancel_friends"))
-async def callback_cancel_friends(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family.get(sexo_id)
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        choose_family.pop(user_id, None)                
-        await query.answer(f"rejected !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-        
-
-@Celestia.on_callback_query(filters.regex("cancel_sons"))
-async def callback_cancel_sons(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family.get(sexo_id)
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        choose_family.pop(user_id, None)                
+        choose_family[user_id].pop("partner", None)                
         await query.answer(f"rejected !!")
         await query.message.reply("noi noi mujhe nhi aana relationship me !!")
     else:
@@ -447,55 +385,6 @@ async def callback_cancel_sons(client, query):
 
 
 
-@Celestia.on_callback_query(filters.regex("cancel_daughters"))
-async def callback_cancel_daughters(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family.get(sexo_id)
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        choose_family.pop(user_id, None)                
-        await query.answer(f"rejected !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-        
-
-
-
-@Celestia.on_callback_query(filters.regex("cancel_sisters"))
-async def callback_cancel_sisters(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family.get(sexo_id)
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        choose_family.pop(user_id, None)                
-        await query.answer(f"rejected !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-        
-
-@Celestia.on_callback_query(filters.regex("cancel_brothers"))
-async def callback_cancel_brothers(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family.get(sexo_id)
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        choose_family.pop(user_id, None)                
-        await query.answer(f"rejected !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-        
 
 
 
