@@ -357,7 +357,7 @@ async def callback_accept_partner(client, query):
         print(f"yup present {user_id}")
         user_family[sexo_id]["partner"] = partner_id
         choose_family[sexo_id].pop("partner", None)                
-        await query.answer(f"rejected !!")
+        await query.answer(f"accepted !!")
         await query.message.reply("noi noi mujhe nhi aana relationship me !!")
     else:
         await query.answer("bhk bsdk!!.")
@@ -374,7 +374,7 @@ async def callback_accept_friends(client, query):
         print(f"yup present {user_id}")
         user_family[sexo_id]["friend"] = partner_id
         choose_family[sexo_id].pop("friend", None)                
-        await query.answer(f"rejected !!")
+        await query.answer(f"accepted !!")
         await query.message.reply("noi noi mujhe nhi aana relationship me !!")
     else:
         await query.answer("bhk bsdk!!.")
@@ -392,7 +392,7 @@ async def callback_accept_sons(client, query):
         print(f"yup present {user_id}")
         user_family[sexo_id]["son"] = partner_id
         choose_family[sexo_id].pop("son", None)                
-        await query.answer(f"rejected !!")
+        await query.answer(f"accepted !!")
         await query.message.reply("noi noi mujhe nhi aana relationship me !!")
     else:
         await query.answer("bhk bsdk!!.")
@@ -409,7 +409,7 @@ async def callback_accept_daughters(client, query):
         print(f"yup present {user_id}")
         user_family[sexo_id]["daughter"] = partner_id
         choose_family[sexo_id].pop("daughter", None)                
-        await query.answer(f"rejected !!")
+        await query.answer(f"accepted !!")
         await query.message.reply("noi noi mujhe nhi aana relationship me !!")
     else:
         await query.answer("bhk bsdk!!.")
@@ -428,7 +428,7 @@ async def callback_accept_sisters(client, query):
         print(f"yup present {user_id}")
         user_family[sexo_id]["sister"] = partner_id
         choose_family[sexo_id].pop("sister", None)                
-        await query.answer(f"rejected !!")
+        await query.answer(f"accepted !!")
         await query.message.reply("noi noi mujhe nhi aana relationship me !!")
     else:
         await query.answer("bhk bsdk!!.")
@@ -447,7 +447,7 @@ async def callback_accept_brothers(client, query):
         print(f"yup present {user_id}")
         user_family[sexo_id]["brother"] = partner_id
         choose_family[sexo_id].pop("brother", None)                
-        await query.answer(f"rejected !!")
+        await query.answer(f"accepted !!")
         await query.message.reply("noi noi mujhe nhi aana relationship me !!")
     else:
         await query.answer("bhk bsdk!!.")
@@ -466,14 +466,90 @@ async def callback_cancel_partner(client, query):
 
     if user_id == partner_id:
         print(f"yup present {user_id}")
-        choose_family[user_id].pop("partner", None)                
+        choose_family[sexo_id].pop("partner", None)                
         await query.answer(f"rejected !!")
         await query.message.reply("noi noi mujhe nhi aana relationship me !!")
     else:
         await query.answer("bhk bsdk!!.")
 
 
+@Celestia.on_callback_query(filters.regex("cancel_friends"))
+async def callback_cancel_friends(client, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexo_id = reply.from_user.id
+    partner_id = choose_family[sexo_id].get("friend")
 
+    if user_id == partner_id:
+        print(f"yup present {user_id}")
+        choose_family[sexo_id].pop("friend", None)                
+        await query.answer(f"rejected !!")
+        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
+    else:
+        await query.answer("bhk bsdk!!.")
+
+
+@Celestia.on_callback_query(filters.regex("cancel_sons"))
+async def callback_cancel_sons(client, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexo_id = reply.from_user.id
+    partner_id = choose_family[sexo_id].get("son")
+
+    if user_id == partner_id:
+        print(f"yup present {user_id}")
+        choose_family[sexo_id].pop("son", None)                
+        await query.answer(f"rejected !!")
+        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
+    else:
+        await query.answer("bhk bsdk!!.")
+
+
+@Celestia.on_callback_query(filters.regex("cancel_daughters"))
+async def callback_cancel_daughters(client, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexo_id = reply.from_user.id
+    partner_id = choose_family[sexo_id].get("daughter")
+
+    if user_id == partner_id:
+        print(f"yup present {user_id}")
+        choose_family[sexo_id].pop("partner", None)                
+        await query.answer(f"rejected !!")
+        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
+    else:
+        await query.answer("bhk bsdk!!.")
+
+@Celestia.on_callback_query(filters.regex("cancel_sisters"))
+async def callback_cancel_sisters(client, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexo_id = reply.from_user.id
+    partner_id = choose_family[sexo_id].get("sister")
+
+    if user_id == partner_id:
+        print(f"yup present {user_id}")
+        choose_family[sexo_id].pop("sister", None)                
+        await query.answer(f"rejected !!")
+        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
+    else:
+        await query.answer("bhk bsdk!!.")
+
+
+@Celestia.on_callback_query(filters.regex("cancel_brothers"))
+async def callback_cancel_brothers(client, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexo_id = reply.from_user.id
+    partner_id = choose_family[sexo_id].get("brother")
+
+    if user_id == partner_id:
+        print(f"yup present {user_id}")
+        choose_family[sexo_id].pop("brother", None)                
+        await query.answer(f"rejected !!")
+        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
+    else:
+        await query.answer("bhk bsdk!!.")
 
 
 
