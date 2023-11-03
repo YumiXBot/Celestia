@@ -368,12 +368,12 @@ async def callback_accept_friends(client, query):
     user_id = query.from_user.id
     reply = query.message.reply_to_message
     sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("friend")
+    partner_id = choose_family[sexo_id].get("friends")
 
     if user_id == partner_id:
         print(f"yup present {user_id}")
-        user_family[sexo_id]["friend"] = partner_id
-        choose_family[sexo_id].pop("friend", None)                
+        user_family[sexo_id]["friends"] = partner_id
+        choose_family[sexo_id].pop("friends", None)                
         await query.answer(f"accepted !!")
         await query.message.reply("noi noi mujhe nhi aana relationship me !!")
     else:
@@ -478,11 +478,11 @@ async def callback_cancel_friends(client, query):
     user_id = query.from_user.id
     reply = query.message.reply_to_message
     sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("friend")
+    partner_id = choose_family[sexo_id].get("friends")
 
     if user_id == partner_id:
         print(f"yup present {user_id}")
-        choose_family[sexo_id].pop("friend", None)                
+        choose_family[sexo_id].pop("friends", None)                
         await query.answer(f"rejected !!")
         await query.message.reply("noi noi mujhe nhi aana relationship me !!")
     else:
