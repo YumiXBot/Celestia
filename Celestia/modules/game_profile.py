@@ -152,7 +152,7 @@ def set_friend(client, message):
         user = reply.from_user
         
         choose_family[user_id] = {
-                "friend": user.id
+                "friends": user.id
                 }
         if user.id not in user_database:
             message.reply("Target user not found in the database.")
