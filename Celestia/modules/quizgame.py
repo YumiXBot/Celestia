@@ -41,9 +41,9 @@ def get_top_10_winners():
 @Celestia.on_message(filters.command("addquiz") & filters.user(OWNER_ID))
 async def add_quiz(_, message):
     if len(message.text) < 11:
-        return await message.reply("**Please provide the quiz details in the format:** /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer")
+        return await message.reply("**Please provide the quiz details in the format:**\n\n /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer")
     if not message.text.split(maxsplit=1)[1]:
-        return await message.reply("**Please provide the quiz details in the format:** /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer")
+        return await message.reply("**Please provide the quiz details in the format:**\n\n /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer")
     quiz_details = message.text.split(maxsplit=1)[1]
     data = quiz_details.split("+")
     if not data[0].startswith("https"):
@@ -58,8 +58,7 @@ async def add_quiz(_, message):
         return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ᴏᴘᴛɪᴏɴ3.**")
     if not data[5]:
         return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ᴏᴘᴛɪᴏɴ4.**")
-
-    if not data[5]:
+    if not data[6]:
         return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ correct answere.**")
     
   
@@ -68,7 +67,7 @@ async def add_quiz(_, message):
         "quiz_url": quiz_url,
         "question": question,
         "options": [option1, option2, option3, option4],
-        "correct_answer": int(correct_answer)
+        "correct_answer": correct_answer
     }
     
     questions_collection.insert_one(quiz_data)
