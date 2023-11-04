@@ -58,7 +58,7 @@ async def add_quiz(_, message):
   
     question, option1, option2, option3, option4, correct_answer = data
     quiz_data = {
-        "quiz_url": quiz_url
+        "quiz_url": quiz_url,
         "question": question,
         "options": [option1, option2, option3, option4],
         "correct_answer": int(correct_answer)
