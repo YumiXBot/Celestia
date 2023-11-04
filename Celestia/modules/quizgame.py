@@ -110,10 +110,10 @@ async def _watcher(client, message):
                 caption=f"Question: {question}",
                 reply_markup=keyboard
             )
-            DICT[chat_id]["quiz_url"] = 
-            DICT[chat_id]["question"] =
-            DICT[chat_id]["option"] =
-            DICT[chat_id]["correct"] =
+            DICT[chat_id]["quiz_url"] = photo
+            DICT[chat_id]["question"] = question
+            DICT[chat_id]["option"] = option
+            DICT[chat_id]["correct"] = correct
         except errors.FloodWait as e:
             await asyncio.sleep(e.x)
     
