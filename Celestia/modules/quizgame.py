@@ -11,7 +11,7 @@ questions_collection = db["questions"]
 winners_collection = db["winners"]
 
 
-
+DICT = {}
 
 
 def create_quiz_keyboard_regex(question):
@@ -75,29 +75,51 @@ async def add_quiz(_, message):
 
 
 
-
+# =================> wacther <=================== #
 
 
 @Celestia.on_message(filters.group, group=11)
-async def quiz_watcher(_, message):
+async def _watcher(_, message):
     chat_id = message.chat.id
-
     if not message.from_user:
         return
+    if chat_id not in DICT:
+        DICT[chat_id] = {'count': 0, 'running_count': 0, 'photo': None, 'name': None, 'anime': None, 'rarity': None}
+    DICT[chat_id]['count'] += 1
 
-    chat_document = questions_collection.find_one({"_id": chat_id})
+    if DICT[chat_id]['count'] == 100:
 
-    if not chat_document:
-        return
+        
+        cusr.execute("SELECT * FROM waifus")
+        result = cusr.fetchall()
+        waifu = random.choice(result)
+        photo = waifu[1]
+        name = waifu[2]
+        anime = waifu[3]
+        rarity = waifu[4]
+        try:
+            msg = await _.send_photo(chat_id, photo=photo, caption="**ᴡᴇᴡ ᴀ sᴇxʏ ᴡᴀɪғᴜ ᴀᴘᴘᴇᴀʀᴅᴇᴅ ᴀᴅᴅ ʜᴇʀ ᴛᴏ ʏᴏᴜʀ ᴡᴀɪғᴜ ʟɪsᴛ ʙʏ sᴇɴᴅɪɴɢ: <code>/grab</code> ᴡᴀɪғᴜ ɴᴀᴍᴇ**")
+            DICT[chat_id]['photo'] = photo
+            DICT[chat_id]['name'] = name
+            DICT[chat_id]['anime'] = anime
+            DICT[chat_id]['rarity'] = rarity
+            run.clear()
+        except errors.FloodWait as e:
+            await asyncio.sleep(e.value)
 
-    if "message_count" not in chat_document:
-        questions_collection.update_one({"_id": chat_id}, {"$set": {"message_count": 0}})
-        chat_document["message_count"] = 0
+    if DICT[chat_id]['name']:
+        DICT[chat_id]['running_count'] += 1
+        if DICT[chat_id]['running_count'] == 30:
+            try:
+                character = DICT[chat_id]['name']
+                await _.send_message(chat_id, f"**ᴀ sᴇxʏ ᴡᴀɪғᴜ ʜᴀꜱ ʀᴀɴ ᴀᴡᴀʏ!!**\n\n**ɴᴀᴍᴇ** : <code>{character}</code>\n**ᴍᴀᴋᴇ ꜱᴜʀᴇ ᴛᴏ ʀᴇᴍᴇᴍʙᴇʀ ɪᴛ ɴᴇxᴛ ᴛɪᴍᴇ.**")
+                DICT.pop(chat_id)
+            except errors.FloodWait as e:
+                await asyncio.sleep(e.value)
 
-    questions_collection.update_one({"_id": chat_id}, {"$inc": {"message_count": 1}})
-    message_count = chat_document["message_count"]
+        
 
-    if message_count == 10:
+
         quiz_question = random.choice(chat_document["quiz_questions"])
         question_text = quiz_question["question"]
         options = quiz_question["options"]
@@ -115,6 +137,8 @@ async def quiz_watcher(_, message):
         )
 
         questions_collection.update_one({"_id": chat_id}, {"$set": {"quiz_message_id": message.message_id}})
+
+
 
 
 @Celestia.on_callback_query()
