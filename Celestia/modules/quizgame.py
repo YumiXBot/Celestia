@@ -88,25 +88,28 @@ async def _watcher(_, message):
     DICT[chat_id]['count'] += 1
 
     if DICT[chat_id]['count'] == 100:
-
-        
-        cusr.execute("SELECT * FROM waifus")
-        result = cusr.fetchall()
-        waifu = random.choice(result)
-        photo = waifu[1]
-        name = waifu[2]
-        anime = waifu[3]
-        rarity = waifu[4]
+        result = questions_collection.find_one()
+        data = random.choice(result)
+        photo = data["quiz_url"]
+        question = data["question"]
+        option = data["options"]
+        correct = data["correct_answer"]        
         try:
-            msg = await _.send_photo(chat_id, photo=photo, caption="**ᴡᴇᴡ ᴀ sᴇxʏ ᴡᴀɪғᴜ ᴀᴘᴘᴇᴀʀᴅᴇᴅ ᴀᴅᴅ ʜᴇʀ ᴛᴏ ʏᴏᴜʀ ᴡᴀɪғᴜ ʟɪsᴛ ʙʏ sᴇɴᴅɪɴɢ: <code>/grab</code> ᴡᴀɪғᴜ ɴᴀᴍᴇ**")
-            DICT[chat_id]['photo'] = photo
-            DICT[chat_id]['name'] = name
-            DICT[chat_id]['anime'] = anime
-            DICT[chat_id]['rarity'] = rarity
-            run.clear()
+            keyboard = InlineKeyboardMarkup([
+            [InlineKeyboardButton(option, callback_data=f"answer_{option}")]
+            for option in options
+             ])
+
+            await _.send_photo(
+            chat_id,
+            photo=photo,
+            text=f"question",
+            reply_markup=keyboard
+             )
+
         except errors.FloodWait as e:
             await asyncio.sleep(e.value)
-
+"""
     if DICT[chat_id]['name']:
         DICT[chat_id]['running_count'] += 1
         if DICT[chat_id]['running_count'] == 30:
@@ -118,26 +121,12 @@ async def _watcher(_, message):
                 await asyncio.sleep(e.value)
 
         
+"""
 
+        
 
-        quiz_question = random.choice(chat_document["quiz_questions"])
-        question_text = quiz_question["question"]
-        options = quiz_question["options"]
-
-        keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton(option, callback_data=f"answer_{option}")]
-            for option in options
-        ])
-
-        await _.send_photo(
-            chat_id,
-            photo=quiz_question["photo"],
-            caption=question_text,
-            reply_markup=keyboard
-        )
-
-        questions_collection.update_one({"_id": chat_id}, {"$set": {"quiz_message_id": message.message_id}})
-
+        
+        
 
 
 
