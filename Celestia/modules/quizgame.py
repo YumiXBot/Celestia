@@ -24,11 +24,13 @@ def create_quiz_keyboard_regex(question):
 
 def get_top_10_winners():
     top_winners = winners_collection.aggregate([
-        {"$group": {"_id": "$user_id", "username": {"$first": "$username"}, "count": {"$sum": 1}},
+        {"$group": {"_id": "$user_id", "username": {"$first": "$username"}, "count": {"$sum": 1}}},
         {"$sort": {"count": -1}},
         {"$limit": 10}
     ])
     return [winner["username"] for winner in top_winners]
+
+
 
 
 
