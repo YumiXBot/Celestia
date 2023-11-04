@@ -1,7 +1,7 @@
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import pymongo, re
-from config import MONGO_URL
+from config import MONGO_URL, OWNER_ID
 from Celestia import Celestia
 
 
@@ -36,7 +36,7 @@ def get_top_10_winners():
 
 
 
-@Celestia.on_message(filters.command("addquiz") & filters.user(SUDO_USERS))
+@Celestia.on_message(filters.command("addquiz") & filters.user(OWNER_ID))
 async def add_quiz(_, message):
     if len(message.text) < 7:
         return await message.reply("**Please provide the quiz details in the format:** /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer")
