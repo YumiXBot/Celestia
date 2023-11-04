@@ -78,8 +78,11 @@ async def add_quiz(_, message):
 # =================> wacther <=================== #
 
 
-@Celestia.on_message(filters.group, group=11)
-async def _watcher(_, message):
+
+
+
+@Celestia.on_message(filters.group & filters.group(11))
+async def _watcher(client, message):
     chat_id = message.chat.id
     if not message.from_user:
         return
@@ -87,41 +90,48 @@ async def _watcher(_, message):
         DICT[chat_id] = {'count': 0, 'running_count': 0, 'photo': None, 'name': None, 'anime': None, 'rarity': None}
     DICT[chat_id]['count'] += 1
 
-    if DICT[chat_id]['count'] == 100:
+    if DICT[chat_id]['count'] == 10:
+    
         result = questions_collection.find_one()
         data = random.choice(result)
         photo = data["quiz_url"]
         question = data["question"]
-        option = data["options"]
-        correct = data["correct_answer"]        
+        options = data["options"]
+        correct = data["correct_answer"]
         try:
             keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton(option, callback_data=f"answer_{option}")]
-            for option in options
-             ])
+                [InlineKeyboardButton(option, callback_data=f"answer_{option}")]
+                for option in options
+            ])
 
-            await _.send_photo(
-            chat_id,
-            photo=photo,
-            text=f"question",
-            reply_markup=keyboard
-             )
-
+            await client.send_photo(
+                chat_id,
+                photo=photo,
+                caption=f"Question: {question}",
+                reply_markup=keyboard
+            )
+            DICT[chat_id]["quiz_url"] = 
+            DICT[chat_id]["question"] =
+            DICT[chat_id]["option"] =
+            DICT[chat_id]["correct"] =
         except errors.FloodWait as e:
-            await asyncio.sleep(e.value)
-"""
-    if DICT[chat_id]['name']:
+            await asyncio.sleep(e.x)
+    
+    if DICT[chat_id]['correct']:
         DICT[chat_id]['running_count'] += 1
         if DICT[chat_id]['running_count'] == 30:
             try:
-                character = DICT[chat_id]['name']
-                await _.send_message(chat_id, f"**ᴀ sᴇxʏ ᴡᴀɪғᴜ ʜᴀꜱ ʀᴀɴ ᴀᴡᴀʏ!!**\n\n**ɴᴀᴍᴇ** : <code>{character}</code>\n**ᴍᴀᴋᴇ ꜱᴜʀᴇ ᴛᴏ ʀᴇᴍᴇᴍʙᴇʀ ɪᴛ ɴᴇxᴛ ᴛɪᴍᴇ.**")
+                character = DICT[chat_id]['correct']
+                await client.send_message(chat_id, f"**correct answere is **: {correct}\n**Make sure to remember it next time.**")
                 DICT.pop(chat_id)
             except errors.FloodWait as e:
-                await asyncio.sleep(e.value)
+                await asyncio.sleep(e.x)
 
-        
-"""
+
+
+
+
+
 
         
 
