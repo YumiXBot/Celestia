@@ -32,16 +32,7 @@ async def replyraid(celestia, message):
     if message.chat.id in GROUPS:
         await celu.edit("`lol mere group me mujhse hi spam krwayega!`")
         
-     """   
-    if get_user.id in OWNER_ID:
-        await celu.edit("Wew, ye to mere pati dev hai.")
-        
-    elif get_user.id in SUDO_USERS:
-        await celu.edit("ye to mere dost hai.")
-        
-    elif get_user.id in ACTIVATE_LIST:
-        await celu.edit("Already raid activated for this user.")
-    """        
+            
     ACTIVATE_LIST.append(get_user.id)
     await celu.edit(f"**Successfully Reply Raid Started for {get_user.first_name}!**")
 
