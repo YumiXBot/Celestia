@@ -81,7 +81,7 @@ async def add_quiz(_, message):
 
 
 
-@Celestia.on_message(filters.group & filters.group(11))
+@Celestia.on_message(filters.group, group=11)
 async def _watcher(client, message):
     chat_id = message.chat.id
     if not message.from_user:
