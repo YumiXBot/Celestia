@@ -3,7 +3,7 @@ from pyrogram import filters
 from Celestia import Celestia, userbot
 from config import SUDO_USERS
 
-BOT_LIST = ["CelestiaXBot", "ZuliAiBot"]
+BOT_LIST = ["CelestiaXBot", "PokiXGameBot"]
 
 
 
