@@ -1,3 +1,4 @@
+import asyncio
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import pymongo, re, random
@@ -81,6 +82,8 @@ async def add_quiz(_, message):
 
 
 
+
+
 @Celestia.on_message(filters.group, group=11)
 async def _watcher(client, message):
     chat_id = message.chat.id
@@ -91,7 +94,6 @@ async def _watcher(client, message):
     DICT[chat_id]['count'] += 1
 
     if DICT[chat_id]['count'] == 10:
-    
         result = questions_collection.find_one()
         data = random.choice(result)
         photo = data["quiz_url"]
@@ -112,20 +114,23 @@ async def _watcher(client, message):
             )
             DICT[chat_id]["quiz_url"] = photo
             DICT[chat_id]["question"] = question
-            DICT[chat_id]["option"] = option
-            DICT[chat_id]["correct"] = correct
+            DICT[chat_id]["options"] = options
+            DICT[chat_id]["correct_answer"] = correct
         except errors.FloodWait as e:
             await asyncio.sleep(e.x)
     
-    if DICT[chat_id]['correct']:
+    if DICT[chat_id].get('correct_answer'):
         DICT[chat_id]['running_count'] += 1
         if DICT[chat_id]['running_count'] == 30:
             try:
-                character = DICT[chat_id]['correct']
-                await client.send_message(chat_id, f"**correct answere is **: {correct}\n**Make sure to remember it next time.**")
+                correct_answer = DICT[chat_id]['correct_answer']
+                await client.send_message(chat_id, f"**correct answer is **: {correct_answer}\n**Make sure to remember it next time.**")
                 DICT.pop(chat_id)
             except errors.FloodWait as e:
                 await asyncio.sleep(e.x)
+
+
+
 
 
 
