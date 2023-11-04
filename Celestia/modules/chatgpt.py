@@ -1,5 +1,5 @@
 import os, time, requests
-import openai, g4f, random
+import g4f, random
 from pyrogram import filters
 from Celestia import Celestia
 from pyrogram.enums import ChatAction, ParseMode
@@ -7,40 +7,6 @@ from Celestia.modules.chatbot import cele_text
 
 
 
-
-
-async def backup_gpt(query):
-    response = await g4f.ChatCompletion.create_async(
-        model=g4f.models.default,
-        messages=[{"role": "user", "content": query}],
-        provider=g4f.Provider.GPTalk
-    )
-    return response
-
-
-openai.api_key = "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"
-
-
-
-
-@Celestia.on_message(filters.command(["chatgpt","ai","ask"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
-async def chat(celestia :Celestia, message):
-    
-    try:
-        if len(message.command) < 2:
-            await message.reply_text(
-            "**ʜᴇʟʟᴏ sɪʀ**\n**ᴇxᴀᴍᴘʟᴇ:-**`.ask How to set girlfriend ?`")
-        else:
-            a = message.text.split(' ', 1)[1]
-            MODEL = "gpt-3.5-turbo"
-            resp = openai.ChatCompletion.create(model=MODEL,messages=[{"role": "user", "content": a}],
-    temperature=0.2)
-            x=resp['choices'][0]["message"]["content"]
-            await message.reply_text(f"{x}")     
-    except Exception as e:
-        print(f"{e}")
-        response = await backup_gpt(a)
-        await message.reply_text(f"{response}")
                 
 
 
