@@ -74,12 +74,46 @@ async def add_quiz(_, message):
     await message.reply("Quiz added successfully!")
 
 
+@Celestia.on_message(filters.group, group=11)
+async def _watcher(_, message):
+    chat_id = message.chat.id
 
+    if not message.from_user:
+        return
+
+    chat_document = questions_collection.find_one({"_id": chat_id})
+
+    if chat_document and chat_document["message_count"] is None:
+        questions_collection.update_one({"_id": chat_id}, {"$set": {"message_count": 0}})
+        chat_document["message_count"] = 0
+
+    questions_collection.update_one({"_id": chat_id}, {"$inc": {"message_count": 1})
+    message_count = chat_document["message_count"]
+
+    if message_count == 10:
+        quiz_question = random.choice(chat_document["quiz_questions"])
+        question_text = quiz_question["question"]
+        options = quiz_question["options"]
+        photo = quiz_question["photo"]
+
+        keyboard = InlineKeyboardMarkup([
+            [InlineKeyboardButton(option, callback_data=f"answer_{option}")]
+            for option in options
+        ])
+
+        try:
+            msg = await _.send_photo(chat_id, photo=photo, caption=question_text, reply_markup=keyboard)
+        except errors.FloodWait as e:
+            await asyncio.sleep(e.value)
+
+        questions_collection.update_one({"_id": chat_id}, {"$set": {"quiz_message_id": msg.message_id}})
+        chat_document["quiz_message_id"] = msg.message_id
+
+    if chat_document["quiz_message_id"]:
+        pass
 
 
 """
-
-
 option_pattern = re.compile(r'^option_([1-4])$')
 
 @Celestia.on_callback_query(option_pattern)
@@ -94,9 +128,9 @@ async def check_answer_regex(client, callback_query):
     else:
         await callback_query.answer("Wrong answer. Try again next time.")
 
+"""
 
-
-@app.on_message(filters.command("ranks"))
+@Celestia.on_message(filters.command("ranks"))
 async def display_top_10_winners(client, message):
     top_winners = get_top_10_winners()
     if top_winners:
@@ -107,8 +141,6 @@ async def display_top_10_winners(client, message):
 
 
 
-
-"""
 
 
 
