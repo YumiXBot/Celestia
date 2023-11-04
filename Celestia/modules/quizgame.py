@@ -1,6 +1,6 @@
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-import pymongo, re
+import pymongo, re, random
 from config import MONGO_URL, OWNER_ID
 from Celestia import Celestia
 
@@ -74,8 +74,12 @@ async def add_quiz(_, message):
     await message.reply("Quiz added successfully!")
 
 
+
+
+
+
 @Celestia.on_message(filters.group, group=11)
-async def _watcher(_, message):
+async def quiz_watcher(_, message):
     chat_id = message.chat.id
 
     if not message.from_user:
@@ -83,52 +87,51 @@ async def _watcher(_, message):
 
     chat_document = questions_collection.find_one({"_id": chat_id})
 
-    if chat_document and chat_document["message_count"] is None:
+    if not chat_document:
+        return
+
+    if "message_count" not in chat_document:
         questions_collection.update_one({"_id": chat_id}, {"$set": {"message_count": 0}})
         chat_document["message_count"] = 0
 
-    questions_collection.update_one({"_id": chat_id}, {"$inc": {"message_count": 1}})
+    questions_collection.update_one({"_id": chat_id}, {"$inc": {"message_count": 1})
     message_count = chat_document["message_count"]
 
     if message_count == 10:
         quiz_question = random.choice(chat_document["quiz_questions"])
         question_text = quiz_question["question"]
         options = quiz_question["options"]
-        photo = quiz_question["photo"]
 
         keyboard = InlineKeyboardMarkup([
             [InlineKeyboardButton(option, callback_data=f"answer_{option}")]
             for option in options
         ])
 
-        try:
-            msg = await _.send_photo(chat_id, photo=photo, caption=question_text, reply_markup=keyboard)
-        except errors.FloodWait as e:
-            await asyncio.sleep(e.value)
+        await _.send_photo(
+            chat_id,
+            photo=quiz_question["photo"],
+            caption=question_text,
+            reply_markup=keyboard
+        )
 
-        questions_collection.update_one({"_id": chat_id}, {"$set": {"quiz_message_id": msg.message_id}})
-        chat_document["quiz_message_id"] = msg.message_id
-
-    if chat_document["quiz_message_id"]:
-        pass
+        questions_collection.update_one({"_id": chat_id}, {"$set": {"quiz_message_id": message.message_id}})
 
 
-"""
-option_pattern = re.compile(r'^option_([1-4])$')
-
-@Celestia.on_callback_query(option_pattern)
-async def check_answer_regex(client, callback_query):
+@Celestia.on_callback_query()
+async def check_answer(client, callback_query):
     user_id = callback_query.from_user.id
     username = callback_query.from_user.username
-    selected_option = int(callback_query.matches[0].group(1))
-    question = get_question_by_id(callback_query.message.message_id)
-    if question and selected_option == question["correct_answer"]:
-        winners_collection.insert_one({"user_id": user_id, "username": username, "question_id": question["_id"]})
-        await callback_query.answer("Correct answer! You are a winner.")
-    else:
-        await callback_query.answer("Wrong answer. Try again next time.")
+    selected_option = callback_query.data
 
-"""
+    if callback_query.message.reply_to_message and "quiz_message_id" in callback_query.message.reply_to_message.reply_markup.inline_keyboard[0][0].callback_data:
+        correct_answer = callback_query.message.reply_to_message.reply_markup.inline_keyboard[0][0].callback_data.split("_")[-1]
+        if selected_option == correct_answer:
+            winners_collection.insert_one({"user_id": user_id, "username": username, "question_id": callback_query.message.reply_to_message.message_id})
+            await callback_query.answer("Correct answer! You are a winner.")
+        else:
+            await callback_query.answer("Wrong answer. Try again next time.")
+
+
 
 @Celestia.on_message(filters.command("ranks"))
 async def display_top_10_winners(client, message):
