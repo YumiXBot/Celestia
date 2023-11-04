@@ -94,7 +94,7 @@ async def quiz_watcher(_, message):
         questions_collection.update_one({"_id": chat_id}, {"$set": {"message_count": 0}})
         chat_document["message_count"] = 0
 
-    questions_collection.update_one({"_id": chat_id}, {"$inc": {"message_count": 1})
+    questions_collection.update_one({"_id": chat_id}, {"$inc": {"message_count": 1}})
     message_count = chat_document["message_count"]
 
     if message_count == 10:
