@@ -63,7 +63,7 @@ async def _watcher(client, message):
     
     DICT[chat_id]['count'] += 1
 
-    if DICT[chat_id]['count'] == 10:
+    if DICT[chat_id]['count'] == 100:
         result = questions_collection.find()
         quizes = list(result)
         data = random.choice(quizes)
@@ -106,8 +106,8 @@ async def _watcher(client, message):
 @Celestia.on_callback_query(filters.regex(r'^answer_\w+'))
 async def callback_answer(client, query):
     chat_id = query.message.chat.id
-    if DICT.get(chat_id) and not DICT[chat_id]["answered"]:
-        DICT[chat_id]["answered"] = True
+    if DICT.get(chat_id) and not DICT[chat_id]["correct_answer"]:
+        DICT[chat_id]["correct_answer"] = True
         correct_answer = DICT[chat_id]['correct_answer']
         user_answer = query.data.replace('answer_', '')  # Remove the typo in the closing bracket
 
