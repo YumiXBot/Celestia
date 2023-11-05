@@ -32,7 +32,7 @@ async def add_quiz(_, message):
     if not data[2:5]:
         return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ᴏᴘᴛɪᴏɴs.**")
     if not data[6]:
-        return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ correct answere.**")
+        return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ᴄᴏʀʀᴇᴄᴛ ᴀɴsᴡᴇʀᴇ.**")
     
   
     quiz_url, question, option1, option2, option3, option4, correct_answer = data
@@ -44,7 +44,13 @@ async def add_quiz(_, message):
     }
     
     questions_collection.insert_one(quiz_data)
-    await message.reply("Quiz added successfully!")
+    await _.send_photo(1002066177399, photo=data[0], reply_markup=InlineKeyboardMarkup([[
+     InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
+      ]]))
+    await _.send_message(-1001946875647, text=f"**ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴ ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ ǫᴜɪᴢ ɢᴀᴍᴇs**[🎉]({data[0]})", reply_markup=InlineKeyboardMarkup([[
+     InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
+      ]]))
+    await message.reply("**🎉 ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴs sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ ɪɴ ʏᴏᴜʀ ǫᴜɪᴢ ᴅᴀᴛᴀʙᴀsᴇ !**")
 
 
 
@@ -80,7 +86,7 @@ async def _watcher(client, message):
             await client.send_photo(
                 chat_id,
                 photo=photo,
-                caption=f"Question: {question}",
+                caption=f"**ǫᴜᴇsᴛɪᴏɴ**: {question}",
                 reply_markup=keyboard
             )
             DICT[chat_id]["quiz_url"] = photo
@@ -95,7 +101,7 @@ async def _watcher(client, message):
         if DICT[chat_id]['running_count'] == 30:
             try:
                 correct_answer = DICT[chat_id]['correct_answer']
-                await client.send_message(chat_id, f"**correct answer is **: {correct_answer}\n**Make sure to remember it next time.**")
+                await client.send_message(chat_id, f"****ᴄᴏʀʀᴇᴄᴛ ᴀɴsᴡᴇʀ ɪs **: {correct_answer}\n**ᴍᴀᴋᴇ sᴜʀᴇ ᴛᴏ ʀᴇᴍᴇᴍʙᴇʀ ɪᴛ ɴᴇxᴛ ᴛɪᴍᴇ.**")
                 DICT.pop(chat_id)
             except errors.FloodWait as e:
                 await asyncio.sleep(e.x)
