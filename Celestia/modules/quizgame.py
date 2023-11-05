@@ -15,12 +15,6 @@ winners_collection = db["winners"]
 DICT = {}
 
 
-def create_quiz_keyboard_regex(question):
-    options = question["options"]
-    buttons = [InlineKeyboardButton(f"Option {i+1}", callback_data=f"option_{i+1}") for i in range(4)]
-    keyboard = InlineKeyboardMarkup([buttons])
-    return keyboard
-
 
 
 def get_top_10_winners():
