@@ -17,22 +17,6 @@ DICT = {}
 
 
 
-def get_top_10_winners():
-    top_winners = winners_collection.aggregate([
-        {"$group": {"_id": "$user_id", "username": {"$first": "$username"}, "count": {"$sum": 1}}},
-        {"$sort": {"count": -1}},
-        {"$limit": 10}
-    ])
-    return [winner["username"] for winner in top_winners]
-
-
-
-
-
-
-
-
-
 @Celestia.on_message(filters.command("addquiz") & filters.user(OWNER_ID))
 async def add_quiz(_, message):
     if len(message.text) < 11:
@@ -65,15 +49,6 @@ async def add_quiz(_, message):
 
 
 # =================> wacther <=================== #
-
-
-
-
-
-
-
-
-
 
 
 
@@ -128,35 +103,39 @@ async def _watcher(client, message):
 
 
 
-
-
-@Celestia.on_callback_query(filters.regex(r'^answer_\w+'))  # Regex filter for callback data
-async def callback_answer(client, callback_query):
+@Celestia.on_callback_query(filters.regex(r'^answer_\w+'))
+async def callback_answer(client, query):
     chat_id = callback_query.message.chat.id
-    if DICT.get(chat_id) and not DICT[chat_id]["answered"]:
-        DICT[chat_id]["answered"] = True
+    if DICT.get(chat_id) and not DICT[chat_id]["correct_answer"]:
+        DICT[chat_id]["correct_answer"] = True
         correct_answer = DICT[chat_id]['correct_answer']
-        user_answer = callback_query.data.replace('answer_', '')  # Extract the user's answer
+        user_answer = query.data.replace('answer_',')  
         if user_answer == correct_answer:
-            await callback_query.answer(f"**Your answer is correct!**")
+            await query.message.edit_text(f"**Your answer is correct!**")
+        
+            user_scores_collection.update_one(
+                {"chat_id": chat_id},
+                {"$inc": {"correct_answers": 1}},
+                upsert=True
+            )
         else:
-            await callback_query.answer(f"**Your answer is wrong!")
+            await query.message.edit_text(f"**Your answer is wrong. The correct answer is {correct_answer}.**")
 
 
 
 
-@Celestia.on_message(filters.command("ranks"))
-async def display_top_10_winners(client, message):
-    top_winners = get_top_10_winners()
-    if top_winners:
-        winners_text = "\n".join([f"{i+1}. {username}" for i, username in enumerate(top_winners)])
-        await message.reply(f"Top 10 Winners:\n{winners_text}")
-    else:
-        await message.reply("No winners yet!")
 
+@Celestia.on_message(filters.command("ranks") & filters.group)
+async def show_ranks(client, message):
+    top_players = user_scores_collection.find({"correct_answers": {"$gt": 0}}).sort("correct_answers", -1).limit(10)
+    if top_players.count() == 0:
+        await message.reply("No users have answered correctly yet. Be the first one!")
+        return
 
-
-
+    response = "Top 10 Players:\n"
+    for i, player in enumerate(top_players, start=1):
+        response += f"{i}. {player['chat_id']} - {player['correct_answers']} correct answers\n"
+    await message.reply(response)
 
 
 
