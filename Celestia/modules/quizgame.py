@@ -105,14 +105,16 @@ async def _watcher(client, message):
 
 @Celestia.on_callback_query(filters.regex(r'^answer_\w+'))
 async def callback_answer(client, query):
-    chat_id = callback_query.message.chat.id
-    if DICT.get(chat_id) and not DICT[chat_id]["correct_answer"]:
-        DICT[chat_id]["correct_answer"] = True
+    chat_id = query.message.chat.id
+    if DICT.get(chat_id) and not DICT[chat_id]["answered"]:
+        DICT[chat_id]["answered"] = True
         correct_answer = DICT[chat_id]['correct_answer']
-        user_answer = query.data.replace('answer_',')  
+        user_answer = query.data.replace('answer_', '')  # Remove the typo in the closing bracket
+
         if user_answer == correct_answer:
             await query.message.edit_text(f"**Your answer is correct!**")
-        
+
+            # Increment user's score in MongoDB
             user_scores_collection.update_one(
                 {"chat_id": chat_id},
                 {"$inc": {"correct_answers": 1}},
@@ -120,6 +122,7 @@ async def callback_answer(client, query):
             )
         else:
             await query.message.edit_text(f"**Your answer is wrong. The correct answer is {correct_answer}.**")
+
 
 
 
