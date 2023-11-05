@@ -2,7 +2,7 @@ import asyncio
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import pymongo, re, random
-from config import MONGO_URL, OWNER_ID
+from config import MONGO_URL, SUDO_USERS as OWNER_ID
 from Celestia import Celestia
 
 
