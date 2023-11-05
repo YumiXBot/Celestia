@@ -78,13 +78,20 @@ async def add_quiz(_, message):
 
 
 
+
+
+
+
+
 @Celestia.on_message(filters.group, group=11)
 async def _watcher(client, message):
     chat_id = message.chat.id
     if not message.from_user:
         return
+
     if chat_id not in DICT:
-        DICT[chat_id] = {'count': 0, 'running_count': 0, 'photo': None, 'name': None, 'anime': None, 'rarity': None}
+        DICT[chat_id] = {'count': 0, 'running_count': 0, 'quiz_url': None, 'question': None, 'options': None, 'correct_answer': None}
+    
     DICT[chat_id]['count'] += 1
 
     if DICT[chat_id]['count'] == 10:
