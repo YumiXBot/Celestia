@@ -130,30 +130,18 @@ async def _watcher(client, message):
 
 
 
-
-
-
-
-        
-
-        
-        
-
-
-
-@Celestia.on_callback_query()
-async def check_answer(client, callback_query):
-    user_id = callback_query.from_user.id
-    username = callback_query.from_user.username
-    selected_option = callback_query.data
-
-    if callback_query.message.reply_to_message and "quiz_message_id" in callback_query.message.reply_to_message.reply_markup.inline_keyboard[0][0].callback_data:
-        correct_answer = callback_query.message.reply_to_message.reply_markup.inline_keyboard[0][0].callback_data.split("_")[-1]
-        if selected_option == correct_answer:
-            winners_collection.insert_one({"user_id": user_id, "username": username, "question_id": callback_query.message.reply_to_message.message_id})
-            await callback_query.answer("Correct answer! You are a winner.")
+@Celestia.on_callback_query(filters.regex(r'^answer_\w+'))  # Regex filter for callback data
+async def callback_answer(client, callback_query):
+    chat_id = callback_query.message.chat.id
+    if DICT.get(chat_id) and not DICT[chat_id]["answered"]:
+        DICT[chat_id]["answered"] = True
+        correct_answer = DICT[chat_id]['correct_answer']
+        user_answer = callback_query.data.replace('answer_', '')  # Extract the user's answer
+        if user_answer == correct_answer:
+            await callback_query.answer(f"**Your answer is correct!**")
         else:
-            await callback_query.answer("Wrong answer. Try again next time.")
+            await callback_query.answer(f"**Your answer is wrong!")
+
 
 
 
