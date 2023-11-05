@@ -7,7 +7,7 @@ from Celestia import Celestia
 
 
 client = pymongo.MongoClient(MONGO_URL)
-db = client["quiz_games_db"]
+db = client["quiz_games"]
 questions_collection = db["questions"]
 winners_collection = db["winners"]
 
@@ -113,38 +113,15 @@ async def _watcher(client, message):
 async def callback_answer(client, query):
     chat_id = query.message.chat.id
     if DICT.get(chat_id) and not DICT[chat_id]["correct_answer"]:
-        DICT[chat_id]["correct_answer"] = True
         correct_answer = DICT[chat_id]['correct_answer']
-        user_answer = query.data.replace('answer_', '')  # Remove the typo in the closing bracket
+        user_answer = query.data.replace('answer_', '')
 
         if user_answer == correct_answer:
             await query.message.edit_text(f"**Your answer is correct!**")
-
-            # Increment user's score in MongoDB
-            user_scores_collection.update_one(
-                {"chat_id": chat_id},
-                {"$inc": {"correct_answers": 1}},
-                upsert=True
-            )
         else:
-            await query.message.edit_text(f"**Your answer is wrong. The correct answer is {correct_answer}.**")
+            await query.message.edit_text(f"**Your answer is wrong !!**")
 
-
-
-
-
-
-@Celestia.on_message(filters.command("ranks") & filters.group)
-async def show_ranks(client, message):
-    top_players = user_scores_collection.find({"correct_answers": {"$gt": 0}}).sort("correct_answers", -1).limit(10)
-    if top_players.count() == 0:
-        await message.reply("No users have answered correctly yet. Be the first one!")
-        return
-
-    response = "Top 10 Players:\n"
-    for i, player in enumerate(top_players, start=1):
-        response += f"{i}. {player['chat_id']} - {player['correct_answers']} correct answers\n"
-    await message.reply(response)
+        DICT.pop(chat_id)  
 
 
 
