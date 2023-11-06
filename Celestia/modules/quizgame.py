@@ -116,7 +116,7 @@ async def callback_answer(client, query):
 
     if chat_id in DICT and DICT[chat_id].get("correct_answer"):
         correct_answer = DICT[chat_id]['correct_answer']
-        DICT[chat_id]['user_answers'].append(user_answer)
+        print(user_answer)
 
         if user_answer == correct_answer:
             DICT.pop(chat_id)
