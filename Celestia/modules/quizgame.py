@@ -44,7 +44,7 @@ async def add_quiz(_, message):
     }
     
     questions_collection.insert_one(quiz_data)
-    await _.send_photo(-1002066177399, photo=data[0], text=f"Question: {data[1]}\nAnswere: {data[6]}", reply_markup=InlineKeyboardMarkup([[
+    await _.send_photo(-1002066177399, photo=data[0], caption=f"Question: {data[1]}\nAnswere: {data[6]}", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
     await _.send_message(-1001946875647, text=f"**ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴ ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ ǫᴜɪᴢ ɢᴀᴍᴇs**[🎉]({data[0]})", reply_markup=InlineKeyboardMarkup([[
@@ -107,22 +107,6 @@ async def _watcher(client, message):
                 await asyncio.sleep(e.x)
 
 
-"""
-
-@Celestia.on_callback_query(filters.regex(r'^answer_\w+'))
-async def callback_answer(client, query):
-    chat_id = query.message.chat.id
-    if DICT.get(chat_id) and not DICT[chat_id]["correct_answer"]:
-        correct_answer = DICT[chat_id]['correct_answer']
-        user_answer = query.data.replace('answer_', '')
-
-        if user_answer == correct_answer:
-            await query.message.edit_text(f"**Your answer is correct!**")
-        else:
-            await query.message.edit_text(f"**Your answer is wrong !!**")
-
-"""
-
 
 
 @Celestia.on_callback_query(filters.regex(r'^answer_\w+'))
@@ -136,45 +120,6 @@ async def callback_answer(client, query):
             await query.message.edit_text(f"**Your answer is correct!**")
         else:
             await query.message.edit_text(f"**Your answer is wrong !!**")
-
-        DICT[chat_id]['message_ids'].append(query.message.message_id)
-
-        if len(DICT[chat_id]['message_ids']) >= 30:
-            # Send the correct answer
-            await send_correct_answer(DICT[chat_id])
-            # Remove inline keyboard and stored message IDs
-            await remove_inline_keyboard(DICT[chat_id])
-            
-
-
-# Function to send the correct answer
-async def send_correct_answer(chat_data):
-    chat_id = chat_data['chat_id']
-    correct_answer = chat_data['correct_answer']
-    await Celestia.send_message(chat_id, f"**ᴄᴏʀʀᴇᴄᴛ ᴀɴsᴡᴇʀ ɪs **: {correct_answer}\n**ᴍᴀᴋᴇ sᴜʀᴇ ᴛᴏ ʀᴇᴍᴇᴍʙᴇʀ ɪᴛ ɴᴇxᴛ ᴛɪᴍᴇ.**")
-
-# Function to remove inline keyboard and clear message IDs
-async def remove_inline_keyboard(chat_data):
-    chat_id = chat_data['chat_id']
-    message_ids = chat_data['message_ids']
-    
-    # Loop through the stored message IDs and edit the messages to remove the inline keyboard
-    for message_id in message_ids:
-        try:
-            await Celestia.edit_message_reply_markup(chat_id, message_id, reply_markup=None)
-        except Exception as e:
-            print(f"Error removing inline keyboard: {e}")
-
-    # Clear the list of message IDs
-    chat_data['message_ids'] = []
-
-
-
-
-
-
-
-
 
 
 
