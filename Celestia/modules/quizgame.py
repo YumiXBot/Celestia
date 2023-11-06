@@ -64,7 +64,7 @@ async def _watcher(client, message):
         return
 
     if chat_id not in DICT:
-        DICT[chat_id] = {'count': 0, 'running_count': 0, 'quiz_url': None, 'question': None, 'options': None, 'correct_answer': None}
+        DICT[chat_id] = {'count': 0, 'running_count': 0, 'quiz_url': None, 'question': None, 'options': None, 'correct_answer': None, user_answers': None}
     
     DICT[chat_id]['count'] += 1
 
@@ -97,7 +97,6 @@ async def _watcher(client, message):
     
     if DICT[chat_id].get('correct_answer'):
         DICT[chat_id]['running_count'] += 1
-        """
         if DICT[chat_id]['running_count'] == 30:
             try:
                 correct_answer = DICT[chat_id]['correct_answer']
@@ -106,7 +105,7 @@ async def _watcher(client, message):
             except errors.FloodWait as e:
                 await asyncio.sleep(e.x)
 
-    """
+    
 
 
 
@@ -115,47 +114,18 @@ async def callback_answer(client, query):
     chat_id = query.message.chat.id
     user_answer = query.data.replace('answer_', '')
 
-    if chat_id in DICT and DICT[chat_id]["correct_answer"]:
+    if chat_id in DICT and DICT[chat_id].get("correct_answer"):
         correct_answer = DICT[chat_id]['correct_answer']
         DICT[chat_id]['user_answers'].append(user_answer)
 
         if user_answer == correct_answer:
+            DICT.pop(chat_id)
             await query.edit_text(f"**Your answer is correct!**")
         else:
             await query.edit_text(f"**Your answer is wrong!**")
 
-        if DICT[chat_id]['running_count'] == 30:
-            await query.message.reply(f"**Correct answer is**: {correct_answer}\n**Make sure to remember it next time.**")
-            DICT.pop(chat_id)
+        
+        
 
 
 
-
-
-
-
-
-
-# =================> wacther <=================== #
-
-
-"""
-
-
-
-
-
-@Celestia.on_callback_query(filters.regex(r'^answer_\w+'))
-async def callback_answer(client, query):
-    chat_id = query.message.chat.id
-    if DICT.get(chat_id) and not DICT[chat_id]["correct_answer"]:
-        correct_answer = DICT[chat_id]['correct_answer']
-        user_answer = query.data.replace('answer_', '')
-
-        if user_answer == correct_answer:
-            await query.message.edit_text(f"**Your answer is correct!**")
-        else:
-            await query.message.edit_text(f"**Your answer is wrong !!**")
-
-
-"""
