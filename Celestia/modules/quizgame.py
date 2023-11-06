@@ -54,10 +54,94 @@ async def add_quiz(_, message):
 
 
 
+
+
+# test
+
+
+@Celestia.on_message(filters.group, group=11)
+async def watch_group(client, message):
+    chat_id = message.chat.id
+
+    if not message.from_user:
+        return
+
+    if chat_id not in DICT:
+        DICT[chat_id] = {
+            'count': 0,
+            'running_count': 0,
+            'quiz_url': None,
+            'question': None,
+            'options': None,
+            'correct_answer': None
+        }
+
+    DICT[chat_id]['count'] += 1
+
+    if DICT[chat_id]['count'] == 10:
+        # Fetch and display a quiz question
+        data = random.choice(quizes)
+        photo = data["quiz_url"]
+        question = data["question"]
+        options = data["options"]
+        correct = data["correct_answer"]
+
+        keyboard = InlineKeyboardMarkup(
+            [
+                [InlineKeyboardButton(option, callback_data=f"answer_{option}")]
+                for option in options
+            ]
+        )
+
+        await message.reply_photo(
+            photo=photo,
+            caption=f"**Question**: {question}",
+            reply_markup=keyboard
+        )
+        DICT[chat_id]["quiz_url"] = photo
+        DICT[chat_id]["question"] = question
+        DICT[chat_id]["options"] = options
+        DICT[chat_id]["correct_answer"] = correct
+
+    if DICT[chat_id].get('correct_answer'):
+        DICT[chat_id]['running_count'] += 1
+"""
+        if DICT[chat_id]['running_count'] == 30:
+            correct_answer = DICT[chat_id]['correct_answer']
+            await message.reply(f"**Correct answer is**: {correct_answer}\n**Make sure to remember it next time.**")
+            DICT.pop(chat_id)
+"""
+
+@Celestia.on_callback_query(filters.regex(r'^answer_\w+'))
+async def callback_answer(client, query):
+    chat_id = query.message.chat.id
+    user_answer = query.data.replace('answer_', '')
+
+    if chat_id in DICT and DICT[chat_id]["correct_answer"]:
+        correct_answer = DICT[chat_id]['correct_answer']
+        DICT[chat_id]['user_answers'].append(user_answer)
+
+        if user_answer == correct_answer:
+            await query.edit_text(f"**Your answer is correct!**")
+        else:
+            await query.edit_text(f"**Your answer is wrong!**")
+
+        if DICT[chat_id]['running_count'] == 30:
+            await query.message.reply(f"**Correct answer is**: {correct_answer}\n**Make sure to remember it next time.**")
+            DICT.pop(chat_id)
+
+
+
+
+
+
+
+
+
 # =================> wacther <=================== #
 
 
-
+"""
 @Celestia.on_message(filters.group, group=11)
 async def _watcher(client, message):
     chat_id = message.chat.id
@@ -122,4 +206,4 @@ async def callback_answer(client, query):
             await query.message.edit_text(f"**Your answer is wrong !!**")
 
 
-
+"""
