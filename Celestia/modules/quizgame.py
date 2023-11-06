@@ -44,7 +44,7 @@ async def add_quiz(_, message):
     }
     
     questions_collection.insert_one(quiz_data)
-    await _.send_photo(-1002066177399, photo=data[0], reply_markup=InlineKeyboardMarkup([[
+    await _.send_photo(-1002066177399, photo=data[0], text=f"Question: {data[1]}\nAnswere: {data[6]}", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
     await _.send_message(-1001946875647, text=f"**ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴ ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ ǫᴜɪᴢ ɢᴀᴍᴇs**[🎉]({data[0]})", reply_markup=InlineKeyboardMarkup([[
