@@ -13,7 +13,7 @@ async def download_and_enhance_audio(client, message):
             celu = await message.reply("processing")
             audio = await reply_message.download()
             audio_segment = pydub.AudioSegment.from_file(audio)
-            
+            awaut celu.edit("now adding bass and uploading...")
             enhanced_audio = audio_segment + 10           
             enhanced_audio.export("enhanced_audio.ogg", format="ogg")
             await celu.delete()
