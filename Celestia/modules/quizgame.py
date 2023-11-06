@@ -68,7 +68,7 @@ async def _watcher(client, message):
     
     DICT[chat_id]['count'] += 1
 
-    if DICT[chat_id]['count'] == 100:
+    if DICT[chat_id]['count'] == 10:
         result = questions_collection.find()
         quizes = list(result)
         data = random.choice(quizes)
