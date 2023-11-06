@@ -68,7 +68,7 @@ async def _watcher(client, message):
     
     DICT[chat_id]['count'] += 1
 
-    if DICT[chat_id]['count'] == 10:
+    if DICT[chat_id]['count'] == 100:
         result = questions_collection.find()
         quizes = list(result)
         data = random.choice(quizes)
@@ -120,9 +120,9 @@ async def callback_answer(client, query):
 
         if user_answer == correct_answer:
             DICT.pop(chat_id)
-            await query.edit_text(f"**Your answer is correct!**")
+            await query.edit_message_text(f"{query.from_user.mention} **Your answer is correct!**")
         else:
-            await query.edit_text(f"**Your answer is wrong!**")
+            await query.edit_message_text(f"{query.from_user.mention} **Your answer is wrong!**")
 
         
         
