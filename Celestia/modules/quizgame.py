@@ -1,6 +1,6 @@
 import asyncio
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 import pymongo, re, random
 from config import MONGO_URL, SUDO_USERS as OWNER_ID
 from Celestia import Celestia
