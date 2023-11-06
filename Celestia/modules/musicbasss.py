@@ -10,12 +10,13 @@ async def download_and_enhance_audio(client, message):
         reply_message = message.reply_to_message
 
         if reply_message.audio:
+            celu = await message.reply("processing")
             audio = await reply_message.download()
             audio_segment = pydub.AudioSegment.from_file(audio)
             
             enhanced_audio = audio_segment + 10           
             enhanced_audio.export("enhanced_audio.ogg", format="ogg")
-            
+            await celu.delete()
             await message.reply_audio("enhanced_audio.ogg")
         else:
             await message.reply("The replied message is not an audio.")
