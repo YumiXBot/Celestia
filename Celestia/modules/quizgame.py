@@ -64,7 +64,7 @@ async def _watcher(client, message):
         return
 
     if chat_id not in DICT:
-        DICT[chat_id] = {'count': 0, 'running_count': 0, 'quiz_url': None, 'question': None, 'options': None, 'correct_answer': None, user_answers': None}
+        DICT[chat_id] = {'count': 0, 'running_count': 0, 'quiz_url': None, 'question': None, 'options': None, 'correct_answer': None, 'user_answers': None}
     
     DICT[chat_id]['count'] += 1
 
