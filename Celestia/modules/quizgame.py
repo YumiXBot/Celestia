@@ -121,7 +121,7 @@ async def callback_answer(client, query):
         else:
             await query.message.edit_text(f"**Your answer is wrong !!**")
 
-        DICT.pop(chat_id)  
+          
 
 
 
