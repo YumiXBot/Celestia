@@ -114,6 +114,7 @@ async def _watcher(client, message):
 @Celestia.on_callback_query(filters.regex(r'^answer_\w+'))
 async def callback_answer(client, query):
     chat_id = query.message.chat.id
+    user_id = query.from_user.id
     user_answer = query.data.replace('answer_', '')
 
     if chat_id in DICT and DICT[chat_id].get("correct_answer"):
