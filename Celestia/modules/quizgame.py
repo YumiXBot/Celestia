@@ -120,7 +120,9 @@ async def callback_answer(client, query):
 
         if user_answer == correct_answer:
             DICT.pop(chat_id)
-            await query.edit_message_text(f"{query.from_user.mention} **Your answer is correct!**")
+            await gamesdb.update_one({'user_id' : user_id},{'$set' : {'coins' : coins + 300}},upsert=True)
+            await query.edit_message_text(f"{query.from_user.mention} **You win 500coin ! Your answer is correct! **")
+            
         else:
             await query.edit_message_text(f"{query.from_user.mention} **Your answer is wrong!**")
 
