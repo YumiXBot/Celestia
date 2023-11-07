@@ -129,3 +129,56 @@ async def callback_answer(client, query):
 
 
 
+
+
+
+photos = []  
+
+current_photo_index = 0
+
+
+def send_current_photo(chat_id):
+    result = questions_collection.find()
+    data = list(result)
+    photo = data[current_photo_index]["quiz_url"]
+    with open(photos[current_photo_index], 'rb') as photo_file:
+        # Replace Celestia.send_photo with the appropriate method for sending photos
+        client.send_photo(chat_id, photo=photo_file, caption=f'Photo {current_photo_index + 1}/{len(photos)}', reply_markup=get_keyboard())
+
+
+def get_keyboard():
+    buttons = [
+        InlineKeyboardButton("Previous", callback_data="photo_prev"),
+        InlineKeyboardButton("Next", callback_data="photo_next"),
+    ]
+    return InlineKeyboardMarkup([buttons])
+
+
+@Celestia.on_message(filters.command("photo"))
+def send_photo_command(client, message):
+    global current_photo_index
+    chat_id = message.chat.id
+    current_photo_index = 0
+    send_current_photo(chat_id)
+
+
+photo_callback_pattern = re.compile(r'^photo_(prev|next)$')
+
+@Celestia.on_callback_query(photo_callback_pattern)
+def regex_button_click(client, query):
+    global current_photo_index
+    chat_id = query.message.chat.id
+    data = query.data
+
+    match = photo_callback_pattern.match(data)
+    if match:
+        button_action = match.group(1)
+        if button_action == 'prev':
+            current_photo_index = (current_photo_index - 1) % len(photos)
+        elif button_action == 'next':
+            current_photo_index = (current_photo_index + 1) % len(photos)
+
+        send_current_photo(chat_id)
+        query.answer()
+
+
