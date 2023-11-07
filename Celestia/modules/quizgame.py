@@ -4,6 +4,8 @@ from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardBu
 import pymongo, re, random
 from config import MONGO_URL, SUDO_USERS as OWNER_ID
 from Celestia import Celestia
+from Celestia.modules.games import *
+
 
 
 client = pymongo.MongoClient(MONGO_URL)
