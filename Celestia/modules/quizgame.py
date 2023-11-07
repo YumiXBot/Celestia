@@ -154,7 +154,7 @@ def get_keyboard():
     return InlineKeyboardMarkup([buttons])
 
 
-@Celestia.on_message(filters.command("photo"))
+@Celestia.on_message(filters.command("xtest"))
 def send_photo_command(client, message):
     global current_photo_index
     chat_id = message.chat.id
