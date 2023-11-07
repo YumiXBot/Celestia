@@ -80,7 +80,7 @@ async def Llama2_(query):
 
 openai.api_key = "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"
 
-completion = openai.Completion()
+
 
 start_sequence = "\nCelestia:"
 restart_sequence = "\nPerson:"
@@ -134,7 +134,6 @@ async def chatbot_reply(celestia: Celestia, message):
                 return await message.reply(response) 
             except Exception as e:
                 print(f"Error: {e}")
-                """
                 try:
                     response = await Llama2_(query)
                     await message.reply_text(response)
@@ -146,7 +145,7 @@ async def chatbot_reply(celestia: Celestia, message):
                     except Exception as e:
                         print(f"Error: {e}")
 
-         """
+         
 # ========================================= #
 
 
