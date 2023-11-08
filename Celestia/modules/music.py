@@ -211,7 +211,7 @@ async def play(_, message: Message):
 
         file_name = get_file_name(audio)
         title = file_name
-        thumb_name = "https://telegra.ph/file/00411492c1fb4c0a91f18.jpg"
+        thumb_name = "https://telegra.ph/file/9a6cd62d6024da0bd617c.jpg"
         thumbnail = thumb_name
         duration = round(audio.duration / 60)
         views = "Locally added"
@@ -245,7 +245,7 @@ async def play(_, message: Message):
 
         except Exception as e:
             title = "NaN"
-            thumb_name = "https://telegra.ph/file/00411492c1fb4c0a91f18.jpg"
+            thumb_name = "https://telegra.ph/file/9a6cd62d6024da0bd617c.jpg"
             duration = "NaN"
             views = "NaN"
             
@@ -261,7 +261,7 @@ async def play(_, message: Message):
     else:
         if len(message.command) < 2:
             await lel.edit(
-                     "💌 **ᴜsᴀɢᴇ: /ᴘʟᴀʏ ɢɪᴠᴇ ᴀ ᴛɪᴛʟᴇ sᴏɴɢ ᴛᴏ ᴘʟᴀʏ ᴍᴜsɪᴄ.**"
+                     "💌 **ᴜsᴀɢᴇ: !ᴘʟᴀʏ ɢɪᴠᴇ ᴀ ᴛɪᴛʟᴇ sᴏɴɢ ᴛᴏ ᴘʟᴀʏ ᴍᴜsɪᴄ.**"
                     
             )
         else:
@@ -599,32 +599,4 @@ async def volume_200(_, query : CallbackQuery):
 
 
 # --------------------------------------------------------------------------------------------------------- #
-
-
-@Celestia.on_message(filters.command("activevoice", prefixes="/"))
-async def active_voice(celestia :Celestia, message):
-    mystic = await message.reply(
-        "Fetching active voice chats... Please wait."
-    )
-    served_chats = await rq.get_active_chats()
-    text = ""
-    
-    for j, chat_id in enumerate(served_chats, start=1):
-        try:
-            entity = await celestia.get_chat(chat_id)
-            title = entity.title if entity.title else "Private Group"
-            if entity.username:
-                text += f"{j}. [{title}](https://t.me/{entity.username}) [`{chat_id}`]\n"
-            else:
-                text += f"{j}. {title} [`{chat_id}`]\n"
-        except Exception as e:
-            print(f"Error fetching chat info: {e}")
-    
-    if not text:
-        await mystic.edit("No Active Voice Chats found.")
-    else:
-        await mystic.edit(
-            f"**Active Voice Chats:**\n\n{text}"
-        )
-
 
