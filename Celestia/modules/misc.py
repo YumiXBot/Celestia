@@ -64,7 +64,7 @@ async def get_userinfo_img(
 # --------------------------------------------------------------------------------- #
 
 bg_path = "./Celestia/Helper/resources/userinfo.png"
-font_path = "./Celestia/Helper/resources/hiroko.ttf"
+font_path = "./Celestia/Helper/resources/celestia.ttf"
 
 # --------------------------------------------------------------------------------- #
 
@@ -87,7 +87,7 @@ INFO_TEXT = """
 
 async def userstatus(user_id):
    try:
-      user = await Hiroko.get_users(user_id)
+      user = await Celestia.get_users(user_id)
       x = user.status
       if x == enums.UserStatus.RECENTLY:
          return "User was seen recently."
