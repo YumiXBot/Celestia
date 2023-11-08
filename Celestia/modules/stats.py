@@ -63,7 +63,7 @@ async def stats(cli: Client, message: Message):
     users = len(await get_users())
     chats = len(await get_chats())
     await message.reply_text(
-        f"""ᴛᴏᴛᴀʟ sᴛᴀᴛs ᴏғ {(await cli.get_me()).mention} :
+        f"""**ᴛᴏᴛᴀʟ sᴛᴀᴛs ᴏғ** {(await cli.get_me()).mention} :
 
 ➻ ᴄʜᴀᴛs : {chats}
 ➻ ᴜsᴇʀs : {users}
@@ -94,7 +94,7 @@ async def chat_alter(celestia :Celestia, message):
             count = await celestia.get_chat_members_count(chat.id)
 
             msg = (
-                f"📝 ᴄєʟєѕтɪᴀ 💰 ᴀᴅᴅᴇᴅ ɪɴ ᴀ ɴᴇᴡ ɢʀᴏᴜᴘ\n\n"
+                f"📝 ᴄᴇʟᴇsᴛɪᴀ 💰 ᴀᴅᴅᴇᴅ ɪɴ ᴀ ɴᴇᴡ ɢʀᴏᴜᴘ\n\n"
                 f"🍂 ᴄʜᴀᴛ ɪᴅ: {message.chat.id}\n"
                 f"🔐 ᴄʜᴀᴛ ᴜsᴇʀɴᴀᴍᴇ: @{message.chat.username}\n"
                 f"📌 ᴄʜᴀᴛ ɴᴀᴍᴇ: {message.chat.title}\n"
