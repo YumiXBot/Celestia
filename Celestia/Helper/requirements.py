@@ -66,7 +66,7 @@ def get_file_name(audio: Union[Audio, Voice]):
 
 
 def downloader(url: str) -> str:
-    download_directory = os.path.join("Hiroko", "Helper", "downloader", "downloads")
+    download_directory = os.path.join("Celestia", "Helper", "downloader", "downloads")
     
     ydl_opts = {
         "format": "bestaudio/best",
@@ -94,7 +94,7 @@ def downloader(url: str) -> str:
     return os.path.join(download_directory, f"{info['id']}.{info['ext']}")
 
 async def converter(file_path: str) -> str:
-    raw_directory = os.path.join("Hiroko", "Helper", "downloader", "raw_files")
+    raw_directory = os.path.join("Celestia", "Helper", "downloader", "raw_files")
     
     out = os.path.basename(file_path)
     out = out.split(".")
