@@ -16,9 +16,9 @@ async def download_and_enhance_audio(client, message):
             await celu.edit("now adding bass and uploading...")
             
             enhanced_audio = audio_segment + 10           
-            enhanced_audio.export("enhanced_audio.ogg", format="ogg")
+            enhanced_audio.export("celestia.mp3", format="mp3")
             await celu.delete()
-            await message.reply_audio("enhanced_audio.ogg")
+            await message.reply_audio("celestia.mp3")
         else:
             await message.reply("The replied message is not an audio.")
     except Exception as e:
@@ -41,9 +41,9 @@ async def download_and_enhance_audio(client, message):
         
             louder_audio = audio_segment + 10
             
-            louder_audio.export("louder_audio.ogg", format="ogg")
+            louder_audio.export("celestia.mp3", format="mp3")
             await celu.delete()
-            await message.reply_audio("louder_audio.ogg")
+            await message.reply_audio("celestia.mp3")
         else:
             await message.reply("The replied message is not an audio.")
     except Exception as e:
@@ -59,11 +59,15 @@ async def split_stereo_and_send_audio(client, message):
         reply_message = message.reply_to_message
 
         if reply_message.audio:
+            celu = await message.reply("processing")
             a = pydub.AudioSegment.from_file(await reply_message.download())
             b = a.split_to_mono()
             mono_audio = b[0]
-            mono_audio.export("celestia.wav", format="wav")
-            await message.reply_audio("celestia.wav")
+            await celu.edit("now adding mono audio and uploading...")
+            
+            mono_audio.export("celestia.mp3", format="mp3")
+            await celu.delete()
+            await message.reply_audio("celestia.mp3")
         else:
             await message.reply("The replied message is not an audio.")
     except Exception as e:
