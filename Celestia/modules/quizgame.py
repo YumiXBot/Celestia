@@ -169,7 +169,8 @@ result = questions_collection.find()
 quizzes = list(result)
 current_index = 0
 
-@Celestia.on_message(filters.command("quizzes"))
+
+@Celestia.on_message(filters.command("quizes"))
 async def show_photo(_, message):
     chat_id = message.chat.id
     photo = quizzes[current_index]["quiz_url"]
@@ -183,8 +184,10 @@ async def show_photo(_, message):
         ]
     )
 
-    message = await message.reply_photo(photo=photo, reply_markup=keyboard)
-    message_id = message.message_id
+    await message.reply_photo(photo=photo, reply_markup=keyboard)
+    
+
+
 
 @Celestia.on_callback_query(filters.regex("^next$"))
 async def next_photo(_, query):
@@ -202,16 +205,15 @@ async def next_photo(_, query):
         ]
     )
 
-    await _.edit_message_media(
-        chat_id,
-        message_id=query.message.message_id,
-        media=InputMediaPhoto(photo=photo),
+    await query.message.edit_media(
+        media=InputMediaPhoto(photo),
         reply_markup=keyboard
     )
 
+
+
 @Celestia.on_callback_query(filters.regex("^back$"))
 async def back_photo(_, query):
-    chat_id = query.message.chat.id
     global current_index
     if current_index > 0:
         current_index -= 1
@@ -225,12 +227,13 @@ async def back_photo(_, query):
         ]
     )
 
-    await _.edit_message_media(
-        chat_id,
-        message_id=query.message.message_id,
-        media=InputMediaPhoto(photo=photo),
+
+    await query.message.edit_media(
+        media=InputMediaPhoto(photo),
         reply_markup=keyboard
     )
+
+    
 
 
     
