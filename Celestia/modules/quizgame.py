@@ -172,14 +172,14 @@ current_index = 0
 
 @Celestia.on_message(filters.command("quizes"))
 async def show_photo(_, message):
-    chat_id = message.chat.id
+    
     photo = quizzes[current_index]["quiz_url"]
 
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("Next", callback_data="next"),
-                InlineKeyboardButton("Back", callback_data="back")
+                InlineKeyboardButton("Back", callback_data="back"),
+                InlineKeyboardButton("Next", callback_data="next")                
             ]
         ]
     )
@@ -191,7 +191,9 @@ async def show_photo(_, message):
 
 @Celestia.on_callback_query(filters.regex("^next$"))
 async def next_photo(_, query):
-    chat_id = query.message.chat.id
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexi_id = reply.from_user.id
     global current_index
     if current_index < len(quizzes) - 1:
         current_index += 1
@@ -199,41 +201,48 @@ async def next_photo(_, query):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("Next", callback_data="next"),
-                InlineKeyboardButton("Back", callback_data="back")
+                InlineKeyboardButton("Back", callback_data="back"),
+                InlineKeyboardButton("Next", callback_data="next")         
             ]
         ]
     )
-
-    await query.message.edit_media(
-        media=InputMediaPhoto(photo),
-        reply_markup=keyboard
-    )
+    if user_id == sexi_id:
+        await query.message.edit_media(
+         media=InputMediaPhoto(photo),
+         reply_markup=keyboard
+       )
+    else:
+        await query.answer("This is not for you !!")
 
 
 
 @Celestia.on_callback_query(filters.regex("^back$"))
 async def back_photo(_, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexi_id = reply.from_user.id
     global current_index
     if current_index > 0:
         current_index -= 1
+    
     photo = quizzes[current_index]["quiz_url"]
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("Next", callback_data="next"),
-                InlineKeyboardButton("Back", callback_data="back")
+                InlineKeyboardButton("Back", callback_data="back"),
+                InlineKeyboardButton("Next", callback_data="next")                
             ]
         ]
     )
 
+    if user_id == sexi_id:
+        await query.message.edit_media(
+         media=InputMediaPhoto(photo),
+         reply_markup=keyboard
+      )
 
-    await query.message.edit_media(
-        media=InputMediaPhoto(photo),
-        reply_markup=keyboard
-    )
-
-    
+    else:
+        await query.answer("This is not for you !!")
 
 
     
