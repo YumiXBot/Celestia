@@ -122,7 +122,7 @@ async def _watcher(client, message):
 
     
 
-
+"""
 
 @Celestia.on_callback_query(filters.regex(r'^answer_\w+'))
 async def callback_answer(client, query):
@@ -136,21 +136,13 @@ async def callback_answer(client, query):
 
         if user_answer == correct_answer:
             DICT.pop(chat_id)
-            await query.answer("your answer is correct!!")
-            if not await is_player(user_id):
-                await create_account(user_id,query.from_user.username)
-                coins = await user_wallet(user_id)
-                x,y = await can_collect_coins(user_id)
-                if x is True:
-                    await gamesdb.update_one({'user_id' : user_id},{'$set' : {'coins' : coins + 300}},upsert=True)
-                    await edit_message_text("🎁 Yᴏᴜ ʜᴀᴠᴇ ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ᴅᴀɪʟʏ ʙᴏɴᴜs ᴏғ ₤ 300 ᴅᴀʟᴄs!\n• ᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ✑ ₤ `{0:,}`ᴅᴀʟᴄs".format(coins+10000))    
-                    
-            #await query.edit_message_text(f"{query.from_user.mention} **Your answer is correct! **")          
+            await query.answer("your answer is correct!!")            
+            await query.edit_message_text(f"{query.from_user.mention} **Your answer is correct! **")          
         else:
             await query.answer("your answer is wrong!!")
             await query.edit_message_text(f"{query.from_user.mention} **Your answer is wrong!**")
 
-
+"""
 
 
         
@@ -167,4 +159,38 @@ async def delete_document(_, message):
             await msg.edit("**ᴏʙᴊᴇᴄᴛ ᴅᴏᴇs ɴᴏᴛ ғᴏᴜɴᴅ ᴏʀ ᴄᴏᴜʟᴅ ɴᴏᴛ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ !!**")
     except Exception as e:
         await msg.edit(f"**ᴇʀʀᴏʀ**: {str(e)}")
+
+
+@Celestia.on_callback_query(filters.regex(r'^answer_\w+'))
+async def callback_answer(client, query):
+    chat_id = query.message.chat.id
+    user_id = query.from_user.id
+    user_answer = query.data.replace('answer_', '')
+
+    if chat_id in DICT and 'correct_answer' in DICT[chat_id]:
+        correct_answer = DICT[chat_id]['correct_answer']
+
+        if user_answer == correct_answer:
+            DICT.pop(chat_id)
+            await query.answer("Your answer is correct!")
+            
+            # Check if the user has an account and create one if they don't
+            if not await is_player(user_id):
+                await create_account(user_id, query.from_user.username)
+                coins = await user_wallet(user_id)
+                x, y = await can_collect_coins(user_id)
+                
+                if x is True:
+                    # Update the user's coin balance
+                    await gamesdb.update_one({'user_id': user_id}, {'$set': {'coins': coins + 300}}, upsert=True)
+                    
+                    # Edit the message to inform the user of their coin balance
+                    await query.edit_message_text("🎁 You have claimed your daily bonus of ₤ 300 Dalcs!\n• Current balance: ₤ `{0:,}` Dalcs".format(coins + 300))
+                
+        else:
+            await query.answer("Your answer is wrong!")
+            await query.edit_message_text(f"{query.from_user.mention} Your answer is wrong!")
+
+
+
 
