@@ -186,7 +186,6 @@ async def callback_answer(client, query):
 @Celestia.on_message(filters.command("deldb") & filters.user("your_user_id"))
 async def delete_document(_, message):
     query= message.text.split(None,1)[1]
-     :
     try:
         target_id = query
         result = questions_collection.delete_one({"_id": ObjectId(target_id)})
