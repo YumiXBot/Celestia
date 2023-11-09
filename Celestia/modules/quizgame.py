@@ -143,9 +143,9 @@ async def callback_answer(client, query):
                 x,y = await can_collect_coins(user_id)
                 if x is True:
                     await gamesdb.update_one({'user_id' : user_id},{'$set' : {'coins' : coins + 300}},upsert=True)
-                    return await query.reply(caption="🎁 Yᴏᴜ ʜᴀᴠᴇ ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ᴅᴀɪʟʏ ʙᴏɴᴜs ᴏғ ₤ 300 ᴅᴀʟᴄs!\n• ᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ✑ ₤ `{0:,}`ᴅᴀʟᴄs".format(coins+10000))    
+                    await edit_message_text("🎁 Yᴏᴜ ʜᴀᴠᴇ ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ᴅᴀɪʟʏ ʙᴏɴᴜs ᴏғ ₤ 300 ᴅᴀʟᴄs!\n• ᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ✑ ₤ `{0:,}`ᴅᴀʟᴄs".format(coins+10000))    
                     
-            await query.edit_message_text(f"{query.from_user.mention} **Your answer is correct! **")          
+            #await query.edit_message_text(f"{query.from_user.mention} **Your answer is correct! **")          
         else:
             await query.answer("your answer is wrong!!")
             await query.edit_message_text(f"{query.from_user.mention} **Your answer is wrong!**")
