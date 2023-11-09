@@ -193,7 +193,7 @@ async def show_photo(_, message):
 
 @Celestia.on_callback_query(filters.regex("^next$"))
 async def next_photo(_, query):
-    chat_id = message.chat.id
+    chat_id = query.chat.id
     global current_index
     if current_index < len(quizzes) - 1:
         current_index += 1
@@ -217,7 +217,7 @@ async def next_photo(_, query):
 
 @Celestia.on_callback_query(filters.regex("^back$"))
 async def back_photo(_, query):
-    chat_id = message.chat.id
+    chat_id = query.chat.id
     global current_index
     if current_index > 0:
         current_index -= 1
