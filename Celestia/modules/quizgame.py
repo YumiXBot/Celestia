@@ -57,7 +57,7 @@ async def add_quiz(_, message):
     object_id = questions_collection.find_one(sort=[("_id", -1)])
 
     questions_collection.insert_one(quiz_data)
-    await _.send_photo(-1002066177399, photo=data[0], caption=f"**📄 ǫᴜᴇsᴛɪᴏɴ**: {data[1]}\n\n**📝 ᴀɴsᴡᴇʀᴇ**: {data[6]}\n**📊 ɪᴅ**: {object_id}", reply_markup=InlineKeyboardMarkup([[
+    await _.send_photo(-1002066177399, photo=quiz_url, caption=f"**📄 ǫᴜᴇsᴛɪᴏɴ**: {question}\n\n**📝 ᴀɴsᴡᴇʀᴇ**: {correct_answer}\n**📊 ɪᴅ**: {object_id}", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
     await _.send_message(-1001946875647, text=f"**ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴ ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ ǫᴜɪᴢ ɢᴀᴍᴇs**[🎉]({data[0]})", reply_markup=InlineKeyboardMarkup([[
