@@ -1,7 +1,7 @@
 import asyncio
 from bson import ObjectId
 from pyrogram import filters
-from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto
 import pymongo, re, random
 from config import MONGO_URL, SUDO_USERS
 from Celestia import Celestia
