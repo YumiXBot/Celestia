@@ -162,3 +162,83 @@ async def callback_answer(client, query):
         else:
             await query.answer("your answer is wrong!!")
             await query.edit_message_text(f"Unfortunately, your guess wasn't accurate this time, so you won't be awarded any shells. Keep trying, and better luck next time!")
+
+
+
+
+result = questions_collection.find()
+quizzes = list(result)
+current_index = 0
+
+
+@Celestia.on_message(filters.command("quizes"))
+async def show_photo(_, message):
+    chat_id = message.chat.id
+    photo = quizzes[current_index]["quiz_url"]
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("Next", callback_data="next"),
+                InlineKeyboardButton("Back", callback_data="back")
+            ]
+        ]
+    )
+
+    message = await message.reply_photo(photo=photo, reply_markup=keyboard)
+    message_id = message.message_id
+    await message.delete()
+    global chat_id, message_id
+
+
+
+@Celestia.on_callback_query(filters.regex("^next$"))
+async def next_photo(_, query):
+    global current_index
+    if current_index < len(quizzes) - 1:
+        current_index += 1
+    photo = quizzes[current_index]["quiz_url"]
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("Next", callback_data="next"),
+                InlineKeyboardButton("Back", callback_data="back")
+            ]
+        ]
+    )
+
+    
+    await _.edit_message_media(
+        chat_id=chat_id,
+        message_id=message_id,
+        media=InputMediaPhoto(photo=photo),
+        reply_markup=keyboard
+    )
+
+@Celestia.on_callback_query(filters.regex("^back$"))
+async def back_photo(_, query):
+    global current_index
+    if current_index > 0:
+        current_index -= 1
+    photo = quizzes[current_index]["quiz_url"]
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("Next", callback_data="next"),
+                InlineKeyboardButton("Back", callback_data="back")
+            ]
+        ]
+    )
+
+    
+    await _.edit_message_media(
+        chat_id=chat_id,
+        message_id=message_id,
+        media=InputMediaPhoto(photo=photo),
+        reply_markup=keyboard
+    )
+
+
+
+
+
