@@ -16,8 +16,58 @@ winners_collection = db["winners"]
 
 DICT = {}
 
+@Celestia.on_message(filters.command("addquiz") & filters.user(OWNER_ID))
+async def add_quiz(_, message):
+    if len(message.text) < 11:
+        return await message.reply("**Please provide the quiz details in the format:**\n\n /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer")
+
+    quiz_details = message.text.split(maxsplit=1)[1]
+    data = quiz_details.split("+")
+    
+    if len(data) != 7:
+        return await message.reply("**Please provide all required quiz details in the format:**\n\n /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer")
+
+    quiz_url, question, option1, option2, option3, option4, correct_answer = data
+    
+    if not quiz_url.startswith("https"):
+        return await message.reply("**Invalid quiz URL. It should start with 'https'.**")
+    if not question:
+        return await message.reply("**Please provide a quiz question.**")
+    
+    # Convert data to title case
+    quiz_url = quiz_url.title()
+    question = question.title()
+    option1 = option1.title()
+    option2 = option2.title()
+    option3 = option3.title()
+    option4 = option4.title()
+    correct_answer = correct_answer.title()
+    
+    # Create a dictionary with the quiz data
+    quiz_data = {
+        "quiz_url": quiz_url,
+        "question": question,
+        "options": [option1, option2, option3, option4],
+        "correct_answer": correct_answer
+    }
+    
+    # Insert quiz data into your collection (you need to define 'questions_collection')
+    object_id = questions_collection.insert_one(quiz_data).inserted_id
+
+    # Send messages with the quiz data
+    await _.send_photo(-1002066177399, photo=quiz_url, caption=f"Question: {question}\n\nAnswer: {correct_answer}\nID: {object_id}", reply_markup=InlineKeyboardMarkup([[
+        InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),
+    ]]))
+    
+    await _.send_message(-1001946875647, text=f"**Quiz question uploaded successfully. Check on Quiz Games.**", reply_markup=InlineKeyboardMarkup([[
+        InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),
+    ]]))
+    
+    await message.reply("**🎉 Quiz questions successfully saved in your quiz database!**")
 
 
+
+"""
 
 @Celestia.on_message(filters.command("addquiz") & filters.user(OWNER_ID))
 async def add_quiz(_, message):
@@ -37,7 +87,7 @@ async def add_quiz(_, message):
         return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ᴄᴏʀʀᴇᴄᴛ ᴀɴsᴡᴇʀᴇ.**")
     
   
-    quiz_url, question, option1, option2, option3, option4, correct_answer = data
+    quiz_url, question.title, option1.title, option2.title, option3.title, option4.title, correct_answer.title = data
     quiz_data = {
         "quiz_url": quiz_url,
         "question": question,
@@ -56,7 +106,7 @@ async def add_quiz(_, message):
     await message.reply("**🎉 ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴs sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ ɪɴ ʏᴏᴜʀ ǫᴜɪᴢ ᴅᴀᴛᴀʙᴀsᴇ !**")
 
 
-
+"""
 
 
 
