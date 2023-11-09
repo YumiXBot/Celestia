@@ -3,7 +3,7 @@ from bson import ObjectId
 from pyrogram import filters
 from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 import pymongo, re, random
-from config import MONGO_URL, SUDO_USERS as OWNER_ID
+from config import MONGO_URL, SUDO_USERS
 from Celestia import Celestia
 
 
@@ -20,7 +20,7 @@ DICT = {}
     
 
 
-@Celestia.on_message(filters.command("addquiz") & filters.user(OWNER_ID))
+@Celestia.on_message(filters.command("addquiz") & filters.user(SUDO_USERS))
 async def add_quiz(_, message):
     if len(message.text) < 11:
         return await message.reply("**Please provide the quiz details in the format:**\n\n /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer")
