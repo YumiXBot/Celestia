@@ -132,10 +132,12 @@ async def callback_answer(client, query):
         
         
 
-@Celestia.on_message(filters.command("del") & filters.user("your_user_id"))
+@Celestia.on_message(filters.command("deldb") & filters.user("your_user_id"))
 async def delete_document(_, message):
+    query= message.text.split(None,1)[1]
+     :
     try:
-        target_id = "654c6f96a43b1817b3758666"
+        target_id = query
         result = questions_collection.delete_one({"_id": ObjectId(target_id)})
 
         if result.deleted_count == 1:
@@ -145,10 +147,6 @@ async def delete_document(_, message):
     except Exception as e:
         await message.reply(f"An error occurred: {str(e}")
 
-
-
-
-                
 
 
 
