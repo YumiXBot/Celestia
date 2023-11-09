@@ -74,7 +74,7 @@ async def add_quiz(_, message):
 
 @Celestia.on_message(filters.command("addchar") & filters.user(SUDO_USERS))
 async def shop_char(_, message):
-    if len(message.text) < 4:
+    if len(message.text) < 5:
         return await message.reply("**Please provide the character details in the format:**\n\n /addquiz img_url+name+level+price")
     if not message.text.split(maxsplit=1)[1]:
         return await message.reply("**Please provide the quiz details in the format:**\n\n /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer")
@@ -101,19 +101,19 @@ async def shop_char(_, message):
         "level": level,
         "price": price
     }
-    latest_char = questions_collection.find_one(sort=[("_id", -1)])
-    object_id = latest_quiz.get("_id")
-
     
-    questions_collection.update_one(char_data)
-    await _.send_photo(-1002090470079, photo=img_url, caption=f"**📰 ǫᴜᴇsᴛɪᴏɴ**: {name}\n\n**📝 ᴀɴsᴡᴇʀᴇ**: {level}\n**📊 price**: `{price}`", reply_markup=InlineKeyboardMarkup([[
+    latest_char = questions_collection.find_one(sort=[("_id", -1)])
+    object_id = latest_char.get("_id")
+    
+    questions_collection.update_one({"_id": object_id}, {"$set": char_data})
+    
+    await _.send_photo(-1002090470079, photo=img_url, caption=f"📰 ǫᴜᴇsᴛɪᴏɴ: {name}\n\n📝 ᴀɴsᴡᴇʀᴇ: {level}\n📊 price: {price}", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
-    await _.send_message(-1001946875647, text=f"**ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴ ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ shops**[🎉]({img_url})", reply_markup=InlineKeyboardMarkup([[
+    await _.send_message(-1001946875647, text=f"ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴ ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ shops[🎉]({img_url})", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
-    await message.reply("**🎉 ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴs sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ ɪɴ ʏᴏᴜʀ ǫᴜɪᴢ ᴅᴀᴛᴀʙᴀsᴇ !**")
-
+    await message.reply("🎉 ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴs sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ ɪɴ ʏᴏᴜʀ ǫᴜɪᴢ ᴅᴀᴛᴀʙᴀsᴇ !")
 
 
 
