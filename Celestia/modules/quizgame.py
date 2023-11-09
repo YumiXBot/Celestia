@@ -54,8 +54,10 @@ async def add_quiz(_, message):
         "options": [option1, option2, option3, option4],
         "correct_answer": correct_answer
     }
-    object_id = questions_collection.find_one(sort=[("_id", -1)])
+    latest_quiz = questions_collection.find_one(sort=[("_id", -1)])
+    object_id = latest_quiz.get("_id")
 
+    
     questions_collection.insert_one(quiz_data)
     await _.send_photo(-1002066177399, photo=quiz_url, caption=f"**📄 ǫᴜᴇsᴛɪᴏɴ**: {question}\n\n**📝 ᴀɴsᴡᴇʀᴇ**: {correct_answer}\n**📊 ɪᴅ**: {object_id}", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
