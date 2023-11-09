@@ -5,6 +5,7 @@ from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardBu
 import pymongo, re, random
 from config import MONGO_URL, SUDO_USERS
 from Celestia import Celestia
+from Celestia.modules.games import *
 
 
 
@@ -136,12 +137,22 @@ async def callback_answer(client, query):
         if user_answer == correct_answer:
             DICT.pop(chat_id)
             await query.answer("your answer is correct!!")
+            if not await is_player(user_id):
+                await create_account(user_id,message.from_user.username)
+                coins = await user_wallet(user_id)
+                x,y = await can_collect_coins(user_id)
+                if x is True:
+                    await gamesdb.update_one({'user_id' : user_id},{'$set' : {'coins' : coins + 300}},upsert=True)
+                    return await message.reply(caption="🎁 Yᴏᴜ ʜᴀᴠᴇ ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ᴅᴀɪʟʏ ʙᴏɴᴜs ᴏғ ₤ 300 ᴅᴀʟᴄs!\n• ᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ✑ ₤ `{0:,}`ᴅᴀʟᴄs".format(coins+10000))    
+                    
             await query.edit_message_text(f"{query.from_user.mention} **Your answer is correct! **")          
         else:
             await query.answer("your answer is wrong!!")
             await query.edit_message_text(f"{query.from_user.mention} **Your answer is wrong!**")
 
-        
+
+
+
         
 @Celestia.on_message(filters.command("deldb") & filters.user(SUDO_USERS))
 async def delete_document(_, message):
