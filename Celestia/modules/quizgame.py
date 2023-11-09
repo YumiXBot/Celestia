@@ -165,7 +165,7 @@ async def callback_answer(client, query):
 
 
 
-
+"""
 result = questions_collection.find()
 quizzes = list(result)
 current_index = 0
@@ -187,8 +187,7 @@ async def show_photo(_, message):
 
     message = await message.reply_photo(photo=photo, reply_markup=keyboard)
     message_id = message.message_id
-    await message.delete()
-    global chat_id, message_id
+    
 
 
 
@@ -240,5 +239,5 @@ async def back_photo(_, query):
 
 
 
-
+"""
 
