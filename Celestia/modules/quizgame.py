@@ -83,7 +83,7 @@ async def _watcher(client, message):
     
     DICT[chat_id]['count'] += 1
 
-    if DICT[chat_id]['count'] == 100:
+    if DICT[chat_id]['count'] == 10:
         result = questions_collection.find()
         quizes = list(result)
         data = random.choice(quizes)
@@ -174,7 +174,7 @@ async def callback_answer(client, query):
         if user_answer == correct_answer:
             DICT.pop(chat_id)
             await query.answer("your answer is correct!!")
-            await create_account(user_id,query.from_user.username)
+         #   await create_account(user_id,query.from_user.username)
             coins = await user_wallet(user_id)     
             await gamesdb.update_one({'user_id' : user_id},{'$set' : {'coins' : coins + 300}},upsert=True)
             await edit_message_text("🎁 Yᴏᴜ ʜᴀᴠᴇ ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ᴅᴀɪʟʏ ʙᴏɴᴜs ᴏғ ₤ 300 ᴅᴀʟᴄs!\n• ᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ✑ ₤ `{0:,}`ᴅᴀʟᴄs".format(coins+300))    
