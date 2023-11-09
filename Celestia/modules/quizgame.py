@@ -1,4 +1,5 @@
 import asyncio
+from bson import ObjectId
 from pyrogram import filters
 from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 import pymongo, re, random
@@ -131,6 +132,23 @@ async def callback_answer(client, query):
         
         
 
+@Celestia.on_message(filters.command("del") & filters.user("your_user_id"))
+async def delete_document(_, message):
+    try:
+        target_id = "654c6f96a43b1817b3758666"
+        result = questions_collection.delete_one({"_id": ObjectId(target_id)})
+
+        if result.deleted_count == 1:
+            await message.reply("Document deleted successfully.")
+        else:
+            await message.reply("Document not found or could not be deleted.")
+    except Exception as e:
+        await message.reply(f"An error occurred: {str(e}")
+
+
+
+
+                
 
 
 
