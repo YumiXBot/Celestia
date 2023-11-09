@@ -186,7 +186,7 @@ async def show_photo(_, message):
     )
 
     message = await message.reply_photo(photo=photo, reply_markup=keyboard)
-    message_id = message.message_id
+    message_id = message.id
     
 
 
@@ -210,7 +210,7 @@ async def next_photo(_, query):
     
     await _.edit_message_media(
         chat_id,
-        message_id=message.id,
+        message_id=query.message.message_id,
         media=InputMediaPhoto(photo=photo),
         reply_markup=keyboard
     )
@@ -234,7 +234,7 @@ async def back_photo(_, query):
     
     await _.edit_message_media(
         chat_id,
-        message_id=message.id,
+        message_id=query.message.message_id,
         media=InputMediaPhoto(photo=photo),
         reply_markup=keyboard
     )
