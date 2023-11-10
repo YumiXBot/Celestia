@@ -368,8 +368,8 @@ async def next_char(_, query):
     )
     if user_id == sexi_id:
         await query.message.edit_media(
-         media=InputMediaPhoto(photo),
-         caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells",    
+         media=InputMediaPhoto(photo,
+         caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),    
          reply_markup=keyboard
        )
     else:
@@ -401,8 +401,8 @@ async def back_char(_, query):
 
     if user_id == sexi_id:
         await query.message.edit_media(
-         media=InputMediaPhoto(photo),
-         caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells",    
+         media=InputMediaPhoto(photo,
+         caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),    
          reply_markup=keyboard
       )
 
