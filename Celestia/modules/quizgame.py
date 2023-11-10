@@ -72,19 +72,23 @@ async def add_quiz(_, message):
 # =================> ADD - SHOP <================= #
 
 
+char_counter = 1
+
 @Celestia.on_message(filters.command("addchar") & filters.user(SUDO_USERS))
 async def shop_char(_, message):
+    global char_counter  
+
     if len(message.text) < 5:
         return await message.reply("**Please provide the character details in the format:**\n\n /addchar img_url+name+level+price")
-    
+
     char_details = message.text.split(maxsplit=1)[1]
     data = char_details.split("+")
-    
+
     if len(data) != 4:
         return await message.reply("**Invalid format. Please check the character details format.**")
 
     img_url, name, level, price = data
-    
+
     if not img_url.startswith("https"):
         return await message.reply("**Invalid image URL. Please provide a valid URL.**")
     if not name:
@@ -104,24 +108,22 @@ async def shop_char(_, message):
         "price": price
     }
 
-    
-    latest_char = questions_collection.find_one(sort=[("_id", -1)])
-    object_id = latest_char.get("_id", 0) + 1
+    char_counter += 1
 
+    char_id = f"{char_counter:02d}"
 
-    char_data_id = f"{object_id:02d}"
-    shops_collection.insert_one({char_data_id: char_data})
-
-
-    await _.send_photo(-1002090470079, photo=img_url, caption=f"**📝 Name:** {name}\n\n**📈 Level:** {level}\n**📊 Price:** {price}", reply_markup=InlineKeyboardMarkup([[
-        InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
-    ]]))
-    
-    await _.send_message(-1001946875647, text=f"**Character added successfully!**\n\n**ID:** {char_data_id}\n**Name:** {name}\n**Level:** {level}\n**Price:** {price}\n\n[View in Shops]({img_url})", reply_markup=InlineKeyboardMarkup([[
-        InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
-    ]]))
-    
+    shops_collection.insert_one({char_id: char_data})
+    await _.send_photo(-1002066177399, photo=img_url, caption=f"**📰 ǫᴜᴇsᴛɪᴏɴ**: {question}\n\n**📝 ᴀɴsᴡᴇʀᴇ**: {correct_answer}\n**📊 ɪᴅ**: `{object_id}`", reply_markup=InlineKeyboardMarkup([[
+     InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
+      ]]))
+    await _.send_message(-1001946875647, text=f"**ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴ ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ ǫᴜɪᴢ ɢᴀᴍᴇs**[🎉]({data[0]})", reply_markup=InlineKeyboardMarkup([[
+     InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
+      ]]))
     await message.reply("🎉 Character data successfully saved in the database with ID: **" + char_data_id + "**")
+
+
+
+
 
 
 
