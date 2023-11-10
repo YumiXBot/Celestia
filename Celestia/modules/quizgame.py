@@ -12,7 +12,7 @@ from Celestia.modules.games import *
 client = pymongo.MongoClient(MONGO_URL)
 db = client["quiz_games"]
 questions_collection = db["questions"]
-winners_collection = db["winners"]
+shops_collection = db["shops"]
 
 
 DICT = {}
@@ -105,15 +105,15 @@ async def shop_char(_, message):
     latest_char = questions_collection.find_one(sort=[("_id", -1)])
     object_id = latest_char.get("_id")
     
-    questions_collection.update_one({"_id": object_id}, {"$set": char_data})
+    shops_collection.insert_one(char_data)
     
-    await _.send_photo(-1002090470079, photo=img_url, caption=f"📰 ǫᴜᴇsᴛɪᴏɴ: {name}\n\n📝 ᴀɴsᴡᴇʀᴇ: {level}\n📊 price: {price}", reply_markup=InlineKeyboardMarkup([[
+    await _.send_photo(-1002090470079, photo=img_url, caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: {price}", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
-    await _.send_message(-1001946875647, text=f"ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴ ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ shops[🎉]({img_url})", reply_markup=InlineKeyboardMarkup([[
+    await _.send_message(-1001946875647, text=f"sʜᴏᴘs ᴀssᴇᴛs ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ sʜᴏᴘs[🎉]({img_url})", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
-    await message.reply("🎉 ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴs sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ ɪɴ ʏᴏᴜʀ ǫᴜɪᴢ ᴅᴀᴛᴀʙᴀsᴇ !")
+    await message.reply("🎉 sʜᴏᴘs ᴀssᴇᴛs sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ ɪɴ ʏᴏᴜʀ ǫᴜɪᴢ ᴅᴀᴛᴀʙᴀsᴇ !")
 
 
 
