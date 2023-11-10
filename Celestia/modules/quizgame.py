@@ -105,7 +105,7 @@ async def add_char(_, message):
 
     
     shops_collection.insert_one(char_data)
-    await _.send_photo(-1002090470079, photo=img_url, caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**💰 ᴘʀɪᴄᴇ**: {price}\n**📊 ɪᴅ**: `{object_id}`", reply_markup=InlineKeyboardMarkup([[
+    await _.send_photo(-1002090470079, photo=img_url, caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**💰 ᴘʀɪᴄᴇ**: ${price} Shells\n**📊 ɪᴅ**: `{object_id}`", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
     await _.send_message(-1001946875647, text=f"**sʜᴏᴘs ᴀssᴇᴛs ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ sʜᴏᴘs**[🎉]({img_url})", reply_markup=InlineKeyboardMarkup([[
@@ -328,17 +328,19 @@ char_index = 0
 async def char_photo(_, message):
     
     photo = char[char_index]["img_url"]
+    level = char[char_index]["level"]
+    price = char[char_index]["price"]
 
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("Back", callback_data="back_char"),
-                InlineKeyboardButton("Next", callback_data="next_char")                
+                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="back_char"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="next_char")                
             ]
         ]
     )
 
-    await message.reply_photo(photo=photo, reply_markup=keyboard)
+    await message.reply_photo(photo=photo, caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells", reply_markup=keyboard)
     
 
 
@@ -352,21 +354,24 @@ async def next_char(_, query):
     if char_index < len(char) - 1:
         char_index += 1
     photo = char[char_index]["img_url"]
+    level = char[char_index]["level"]
+    price = char[char_index]["price"]
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("Back", callback_data="back"),
-                InlineKeyboardButton("Next", callback_data="next")         
+                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="back_char"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="next_char")         
             ]
         ]
     )
     if user_id == sexi_id:
         await query.message.edit_media(
          media=InputMediaPhoto(photo),
+         caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells",    
          reply_markup=keyboard
        )
     else:
-        await query.answer("This is not for you !!")
+        await query.answer("ᴛʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ !!")
 
 
 
@@ -383,8 +388,8 @@ async def back_char(_, query):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("Back", callback_data="back"),
-                InlineKeyboardButton("Next", callback_data="next")                
+                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="back_char"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="next_char")                
             ]
         ]
     )
@@ -392,11 +397,12 @@ async def back_char(_, query):
     if user_id == sexi_id:
         await query.message.edit_media(
          media=InputMediaPhoto(photo),
+         caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells",    
          reply_markup=keyboard
       )
 
     else:
-        await query.answer("This is not for you !!")
+        await query.answer("ᴛʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ !!")
 
 
     
