@@ -105,7 +105,7 @@ async def add_char(_, message):
 
     
     shops_collection.insert_one(char_data)
-    await _.send_photo(-1002090470079, photo=img_url, caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {correct_answer}\n**💰 ᴘʀɪᴄᴇ**: {price}\n**📊 ɪᴅ**: `{object_id}`", reply_markup=InlineKeyboardMarkup([[
+    await _.send_photo(-1002090470079, photo=img_url, caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**💰 ᴘʀɪᴄᴇ**: {price}\n**📊 ɪᴅ**: `{object_id}`", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
     await _.send_message(-1001946875647, text=f"**sʜᴏᴘs ᴀssᴇᴛs ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ sʜᴏᴘs**[🎉]({img_url})", reply_markup=InlineKeyboardMarkup([[
