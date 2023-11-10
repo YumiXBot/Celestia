@@ -24,9 +24,9 @@ DICT = {}
 @Celestia.on_message(filters.command("addquiz") & filters.user(SUDO_USERS))
 async def add_quiz(_, message):
     if len(message.text) < 11:
-        return await message.reply("**Please provide the quiz details in the format:**\n\n /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer")
+        return await message.reply("**Please provide the quiz details in the format:**\n\n /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer**")
     if not message.text.split(maxsplit=1)[1]:
-        return await message.reply("**Please provide the quiz details in the format:**\n\n /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer")
+        return await message.reply("**Please provide the quiz details in the format:**\n\n /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer**")
     quiz_details = message.text.split(maxsplit=1)[1]
     data = quiz_details.split("+")
     if not data[0].startswith("https"):
@@ -63,7 +63,7 @@ async def add_quiz(_, message):
     await _.send_photo(-1002066177399, photo=quiz_url, caption=f"**📰 ǫᴜᴇsᴛɪᴏɴ**: {question}\n\n**📝 ᴀɴsᴡᴇʀᴇ**: {correct_answer}\n**📊 ɪᴅ**: `{object_id}`", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
-    await _.send_message(-1001946875647, text=f"**ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴ ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ ǫᴜɪᴢ ɢᴀᴍᴇs**[🎉]({data[0]})", reply_markup=InlineKeyboardMarkup([[
+    await _.send_message(-1001946875647, text=f"**ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴ ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ ǫᴜɪᴢ ɢᴀᴍᴇs**[🎉]({quiz_url})", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
     await message.reply("**🎉 ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴs sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ ɪɴ ʏᴏᴜʀ ǫᴜɪᴢ ᴅᴀᴛᴀʙᴀsᴇ !**")
@@ -71,55 +71,50 @@ async def add_quiz(_, message):
 
 # =================> ADD - SHOP <================= #
 
-
-char_counter = 1
-
 @Celestia.on_message(filters.command("addchar") & filters.user(SUDO_USERS))
-async def shop_char(_, message):
-    global char_counter  
-
-    if len(message.text) < 5:
-        return await message.reply("**Please provide the character details in the format:**\n\n /addchar img_url+name+level+price")
-
+async def add_char(_, message):
+    if len(message.text) < 11:
+        return await message.reply("**Please provide the character shops details in the format:**\n\n /addchar img_url+name+level+price**")
+    if not message.text.split(maxsplit=1)[1]:
+        return await message.reply("**Please provide the character shops details in the format:**\n\n /addchar img_url+name+level+price**")
     char_details = message.text.split(maxsplit=1)[1]
     data = char_details.split("+")
-
-    if len(data) != 4:
-        return await message.reply("**Invalid format. Please check the character details format.**")
-
+    if not data[0].startswith("https"):
+        return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ɪᴍɢ ʟɪɴᴋ.**")
+    if not data[1]:
+        return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ᴄʜᴀʀᴀᴄᴛᴇʀ ɴᴀᴍᴇ.**")
+    if not data[3]:
+        return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ᴄᴏʀʀᴇᴄᴛ ᴘʀɪᴄᴇ.**")
+    
     img_url, name, level, price = data
-
-    if not img_url.startswith("https"):
-        return await message.reply("**Invalid image URL. Please provide a valid URL.**")
-    if not name:
-        return await message.reply("**Please provide the character name.**")
-    if not level:
-        return await message.reply("**Please provide the character level.**")
-    if not price:
-        return await message.reply("**Please provide the character price.**")
-
+    
+    img_url = img_url
     name = name.title()
-    level = level.title()
-
+    level = int(level)
+    price = int(price)
+    
+    
     char_data = {
         "img_url": img_url,
         "name": name,
         "level": level,
         "price": price
     }
+    latest_char = questions_collection.find_one(sort=[("_id", -1)])
+    object_id = latest_char.get("_id")
 
-    char_counter += 1
-
-    char_id = f"{char_counter:02d}"
-
-    shops_collection.insert_one({char_id: char_data})
-    await _.send_photo(-1002066177399, photo=img_url, caption=f"**📰 ǫᴜᴇsᴛɪᴏɴ**: {question}\n\n**📝 ᴀɴsᴡᴇʀᴇ**: {correct_answer}\n**📊 ɪᴅ**: `{object_id}`", reply_markup=InlineKeyboardMarkup([[
+    
+    shops_collection.insert_one(char_data)
+    await _.send_photo(-1002090470079, photo=img_url, caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {correct_answer}\n**💰 ᴘʀɪᴄᴇ**: {price}\n**📊 ɪᴅ**: `{object_id}`", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
-    await _.send_message(-1001946875647, text=f"**ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴ ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ ǫᴜɪᴢ ɢᴀᴍᴇs**[🎉]({data[0]})", reply_markup=InlineKeyboardMarkup([[
+    await _.send_message(-1001946875647, text=f"**sʜᴏᴘs ᴀssᴇᴛs ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ sʜᴏᴘs**[🎉]({img_url})", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
-    await message.reply("🎉 Character data successfully saved in the database with ID: **" + char_data_id + "**")
+    await message.reply("**🎉 sʜᴏᴘs ᴀssᴇᴛs sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ ɪɴ ʏᴏᴜʀ sʜᴏᴘs ᴅᴀᴛᴀʙᴀsᴇ !**")
+
+
+
 
 
 
