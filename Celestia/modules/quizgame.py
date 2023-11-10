@@ -181,7 +181,7 @@ async def _watcher(client, message):
 async def delete_document(_, message):
     try:
         query = message.text.split(None, 1)[1]
-        msg = await message.reply("processing...")
+        msg = await message.reply("ᴘʀᴏᴄᴇssɪɴɢ...")
         result = questions_collection.delete_one({"_id": ObjectId(query)})
 
         if result.deleted_count == 1:
@@ -190,6 +190,22 @@ async def delete_document(_, message):
             await msg.edit("**ᴏʙᴊᴇᴄᴛ ᴅᴏᴇs ɴᴏᴛ ғᴏᴜɴᴅ ᴏʀ ᴄᴏᴜʟᴅ ɴᴏᴛ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ !!**")
     except Exception as e:
         await msg.edit(f"**ᴇʀʀᴏʀ**: {str(e)}")
+
+
+@Celestia.on_message(filters.command("delchar") & filters.user(SUDO_USERS))
+async def delete_document(_, message):
+    try:
+        query = message.text.split(None, 1)[1]
+        msg = await message.reply("ᴘʀᴏᴄᴇssɪɴɢ...")
+        result = shops_collection.delete_one({"_id": ObjectId(query)})
+
+        if result.deleted_count == 1:
+            await msg.edit("**ᴏʙᴊᴇᴄᴛ ɪᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**")
+        else:
+            await msg.edit("**ᴏʙᴊᴇᴄᴛ ᴅᴏᴇs ɴᴏᴛ ғᴏᴜɴᴅ ᴏʀ ᴄᴏᴜʟᴅ ɴᴏᴛ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ !!**")
+    except Exception as e:
+        await msg.edit(f"**ᴇʀʀᴏʀ**: {str(e)}")
+
 
 
 @Celestia.on_callback_query(filters.regex(r'^answer_\w+'))
@@ -215,6 +231,10 @@ async def callback_answer(client, query):
             await query.answer("your answer is wrong!!")
             await query.edit_message_text(f"Unfortunately, your guess wasn't accurate this time, so you won't be awarded any shells. Keep trying, and better luck next time!")
 
+
+
+
+# ==============quizes photo================ #
 
 
 result = questions_collection.find()
@@ -297,5 +317,90 @@ async def back_photo(_, query):
         await query.answer("This is not for you !!")
 
 
+# =============== character photo ============== #
+
+result = shops_collection.find()
+char = list(result)
+char_index = 0
+
+
+@Celestia.on_message(filters.command("char"))
+async def char_photo(_, message):
     
+    photo = char[char_index]["img_url"]
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("Back", callback_data="back_char"),
+                InlineKeyboardButton("Next", callback_data="next_char")                
+            ]
+        ]
+    )
+
+    await message.reply_photo(photo=photo, reply_markup=keyboard)
+    
+
+
+
+@Celestia.on_callback_query(filters.regex("^next_char$"))
+async def next_char(_, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexi_id = reply.from_user.id
+    global char_index
+    if char_index < len(char) - 1:
+        char_index += 1
+    photo = char[char_index]["img_url"]
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("Back", callback_data="back"),
+                InlineKeyboardButton("Next", callback_data="next")         
+            ]
+        ]
+    )
+    if user_id == sexi_id:
+        await query.message.edit_media(
+         media=InputMediaPhoto(photo),
+         reply_markup=keyboard
+       )
+    else:
+        await query.answer("This is not for you !!")
+
+
+
+@Celestia.on_callback_query(filters.regex("^back_char$"))
+async def back_char(_, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexi_id = reply.from_user.id
+    global char_index
+    if char_index > 0:
+        char_index -= 1
+    
+    photo = char[char_index]["img_url"]
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("Back", callback_data="back"),
+                InlineKeyboardButton("Next", callback_data="next")                
+            ]
+        ]
+    )
+
+    if user_id == sexi_id:
+        await query.message.edit_media(
+         media=InputMediaPhoto(photo),
+         reply_markup=keyboard
+      )
+
+    else:
+        await query.answer("This is not for you !!")
+
+
+    
+        
+
+
         
