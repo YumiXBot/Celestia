@@ -327,7 +327,7 @@ async def shops(_, message):
                 InlineKeyboardButton("MAGIC", callback_data="maintainer_")                
         ]]
     )
-    await message.reply_photo(photo="https://telegra.ph/file/e325e6a24e9a2227ef3d2.jpg", caption="", reply_markup=buttons)
+    await message.reply_photo(photo="https://telegra.ph/file/e325e6a24e9a2227ef3d2.jpg", caption="Abe bhai shop hai or abhi dukhaan bnd hai kl anaa", reply_markup=buttons)
 
 
 
@@ -339,7 +339,10 @@ char_index = 0
 
 
 @Celestia.on_callback_query(filters.regex("^character_$"))
-async def char_photo(_, message):
+async def char_photo(_, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexi_id = reply.from_user.id
     
     photo = char[char_index]["img_url"]
     name = char[char_index]["name"]
@@ -354,13 +357,15 @@ async def char_photo(_, message):
             ]
         ]
     )
-
-    await query.message.edit_media(
-         media=InputMediaPhoto(photo,
-         caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),    
-         reply_markup=keyboard
-      )
-
+    if user_id == sexi_id:
+        await query.message.edit_media(
+          media=InputMediaPhoto(photo,
+          caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),    
+          reply_markup=keyboard
+       )
+    else:
+        await query.answer("abe bsdk!!")
+  
 
 
 @Celestia.on_callback_query(filters.regex("^nextc$"))
