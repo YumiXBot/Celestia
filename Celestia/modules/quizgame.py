@@ -317,6 +317,20 @@ async def back_photo(_, query):
         await query.answer("This is not for you !!")
 
 
+# =========== SHOP 
+
+@Celestia.on_message(filters.command("shop"))
+async def shops(_, message):
+    keyboard = InlineKeyboardMarkup(
+        [[
+                InlineKeyboardButton("CHARACTER", callback_data="character_"),
+                InlineKeyboardButton("MAGIC", callback_data="maintainer_")                
+        ]]
+    )
+    await message.reply_photo(photo="https://telegra.ph/file/e325e6a24e9a2227ef3d2.jpg", caption="", reply_markup=buttons)
+
+
+
 # =============== character photo ============== #
 
 result = shops_collection.find()
@@ -324,7 +338,7 @@ char = list(result)
 char_index = 0
 
 
-@Celestia.on_message(filters.command("char"))
+@Celestia.on_callback_query(filters.regex("^character_$"))
 async def char_photo(_, message):
     
     photo = char[char_index]["img_url"]
@@ -341,8 +355,11 @@ async def char_photo(_, message):
         ]
     )
 
-    await message.reply_photo(photo=photo, caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells", reply_markup=keyboard)
-    
+    await query.message.edit_media(
+         media=InputMediaPhoto(photo,
+         caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),    
+         reply_markup=keyboard
+      )
 
 
 
