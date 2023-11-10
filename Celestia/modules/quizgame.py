@@ -321,7 +321,7 @@ async def back_photo(_, query):
 
 @Celestia.on_message(filters.command("shop"))
 async def shops(_, message):
-    keyboard = InlineKeyboardMarkup(
+    buttons = InlineKeyboardMarkup(
         [[
                 InlineKeyboardButton("CHARACTER", callback_data="character_"),
                 InlineKeyboardButton("MAGIC", callback_data="maintainer_")                
