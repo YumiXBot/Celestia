@@ -335,8 +335,8 @@ async def char_photo(_, message):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="back_char"),
-                InlineKeyboardButton("ɴᴇxᴛ", callback_data="next_char")                
+                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="backc"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")                
             ]
         ]
     )
@@ -346,7 +346,7 @@ async def char_photo(_, message):
 
 
 
-@Celestia.on_callback_query(filters.regex("^next_char$"))
+@Celestia.on_callback_query(filters.regex("^nextc$"))
 async def next_char(_, query):
     user_id = query.from_user.id
     reply = query.message.reply_to_message
@@ -361,8 +361,8 @@ async def next_char(_, query):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="back_char"),
-                InlineKeyboardButton("ɴᴇxᴛ", callback_data="next_char")         
+                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="backc"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")         
             ]
         ]
     )
@@ -377,7 +377,7 @@ async def next_char(_, query):
 
 
 
-@Celestia.on_callback_query(filters.regex("^back_char$"))
+@Celestia.on_callback_query(filters.regex("^backc$"))
 async def back_char(_, query):
     user_id = query.from_user.id
     reply = query.message.reply_to_message
@@ -393,8 +393,8 @@ async def back_char(_, query):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="back_char"),
-                InlineKeyboardButton("ɴᴇxᴛ", callback_data="next_char")                
+                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="backc"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")                
             ]
         ]
     )
