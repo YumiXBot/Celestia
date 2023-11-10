@@ -328,6 +328,7 @@ char_index = 0
 async def char_photo(_, message):
     
     photo = char[char_index]["img_url"]
+    name = char[char_index]["name"]
     level = char[char_index]["level"]
     price = char[char_index]["price"]
 
@@ -354,6 +355,7 @@ async def next_char(_, query):
     if char_index < len(char) - 1:
         char_index += 1
     photo = char[char_index]["img_url"]
+    name = char[char_index]["name"]
     level = char[char_index]["level"]
     price = char[char_index]["price"]
     keyboard = InlineKeyboardMarkup(
@@ -385,6 +387,9 @@ async def back_char(_, query):
         char_index -= 1
     
     photo = char[char_index]["img_url"]
+    name = char[char_index]["name"]
+    level = char[char_index]["level"]
+    price = char[char_index]["price"]
     keyboard = InlineKeyboardMarkup(
         [
             [
