@@ -373,42 +373,13 @@ async def char_photo(_, query):
 
 
 
-@Celestia.on_message(filters.command("characters"))
-async def char_photo(_, message):
-    global char_index
-
-    photo = char[char_index]["img_url"]
-    name = char[char_index]["name"]
-    level = char[char_index]["level"]
-    price = char[char_index]["price"]
-
-    keyboard = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="backc"),
-                InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")
-            ]
-        ]
-    )
+        
     
-    
-    await message.reply_photo(
-                photo,
-                caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
-            reply_markup=keyboard
-        )
-    
-
-
-
-
 
 
 @Celestia.on_callback_query(filters.regex("^nextc$"))
 async def next_char(_, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexi_id = reply.from_user.id
+    
     global char_index
     if char_index < len(char) - 1:
         char_index += 1
@@ -424,6 +395,10 @@ async def next_char(_, query):
             ]
         ]
     )
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexi_id = reply.from_user.id
+    
     if user_id == sexi_id:
         await query.message.edit_media(
          media=InputMediaPhoto(photo,
@@ -437,9 +412,7 @@ async def next_char(_, query):
 
 @Celestia.on_callback_query(filters.regex("^backc$"))
 async def back_char(_, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexi_id = reply.from_user.id
+    
     global char_index
     if char_index > 0:
         char_index -= 1
@@ -456,6 +429,10 @@ async def back_char(_, query):
             ]
         ]
     )
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexi_id = reply.from_user.id
+    
 
     if user_id == sexi_id:
         await query.message.edit_media(
