@@ -90,7 +90,7 @@ button = InlineKeyboardMarkup(
 async def chat_alter(celestia :Celestia, message):
     chat = message.chat
     for members in message.new_chat_members:
-        if members.id == 5997219860:
+        if members.id == 6711389550:
             count = await celestia.get_chat_members_count(chat.id)
 
             msg = (
