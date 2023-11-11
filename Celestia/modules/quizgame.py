@@ -338,16 +338,10 @@ char = list(result)
 char_index = 0
 
 
-
 @Celestia.on_callback_query(filters.regex("^character_$"))
 async def char_photo(_, query):
-    """
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexi_id = reply.from_user.id
-    """
     global char_index
-    
+
     photo = char[char_index]["img_url"]
     name = char[char_index]["name"]
     level = char[char_index]["level"]
@@ -357,22 +351,27 @@ async def char_photo(_, query):
         [
             [
                 InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="backc"),
-                InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")                
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")
             ]
         ]
     )
-#    if user_id == sexi_id:
-    await query.message.edit_media(
+    
+    
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexi_id = reply.from_user.id
+    
+    if user_id == sexi_id:
+        await query.message.edit_media(
             media=InputMediaPhoto(photo,
-                caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),    
+                caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
             reply_markup=keyboard
         )
-#    else:
-#        await query.answer("abe bsdk!!")
+    else:
+        await query.answer("abe bsdk!!")
 
 
-
-
+    
 
 @Celestia.on_callback_query(filters.regex("^nextc$"))
 async def next_char(_, query):
