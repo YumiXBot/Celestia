@@ -371,7 +371,38 @@ async def char_photo(_, query):
         await query.answer("abe bsdk!!")
 
 
+
+
+@Celestia.on_message(filters.command("characters"))
+async def char_photo(_, message):
+    global char_index
+
+    photo = char[char_index]["img_url"]
+    name = char[char_index]["name"]
+    level = char[char_index]["level"]
+    price = char[char_index]["price"]
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="backc"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")
+            ]
+        ]
+    )
     
+    
+    await message.reply_photo(
+                photo,
+                caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
+            reply_markup=keyboard
+        )
+    
+
+
+
+
+
 
 @Celestia.on_callback_query(filters.regex("^nextc$"))
 async def next_char(_, query):
