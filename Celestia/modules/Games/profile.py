@@ -2,29 +2,9 @@ import random
 from Celestia import Celestia
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from pyrogram.types import InputMediaPhoto
 from Celestia.modules.Games.games import users_collection
 
-
-
-
-def get_arg(message):
-    msg = message.text
-    msg = msg.replace(" ", "", 1) if msg[1] == " " else msg
-    split = msg[1:].replace("\n", " \n").split(" ")
-    if " ".join(split[1:]).strip() == "":
-        return ""
-    return " ".join(split[1:])
-
-
-
-
-
-user_family = {}
-
-
-user_state = {}
-choose_family = {}
+characters = ["Soda", "Vivi", "Shikamaru"]
 
 
 @Celestia.on_message(filters.command("character"))
@@ -35,23 +15,47 @@ def character_creation(client, message):
         client.send_message(message.chat.id, "You have already chosen a character.")
         return
 
-    character_name = " ".join(message.command[1:])
-    if character_name:
-        users_data = {
-            "name": character_name,
-            "health": 100,
-            "rank": "Novice Traveler",
-            "partner": None,
-            "experience": "[▰▱▱▱▱]1%",
-            "level": 1,
-            "Shells": 0,
-            "location": None,
-            "battle_win": 0,
-            "total_win": 0,
-            "player_id": user_id
-        }
-        users_collection.insert_one(user_id: users_data)
-        client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=f"Character {character_name} created! You can now use the /fight command.")
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(character, callback_data=f"choose_{character}")
+            ] for character in characters
+        ]
+    )
+
+    client.send_photo(
+        message.chat.id,
+        photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg",
+        caption="Choose your character:",
+        reply_markup=keyboard
+    )
+
+
+@Celestia.on_callback_query(filters.regex(r'^choose_(Soda|Vivi|Shikamaru)$'))
+def choose_character_callback(client, query):
+    user_id = query.from_user.id
+    character_name = query.data.split('_')[1]
+
+    users_data = {
+        "name": character_name,
+        "health": 100,
+        "rank": "Novice Traveler",
+        "partner": None,
+        "experience": "[▰▱▱▱▱]1%",
+        "level": 1,
+        "Shells": 0,
+        "location": None,
+        "battle_win": 0,
+        "total_win": 0,
+        "player_id": user_id
+    }
+
+    users_collection.insert_one({user_id: users_data})
+    client.edit_message(f"You have chosen {character_name}! You can now use the /fight command.")
+
+
+
+
 
 
 
@@ -94,7 +98,62 @@ def profile_command(client, message):
 
 
 
+@Celestia.on_message(filters.command("profile"))
+def profile_command(client, message):
+    user_id = message.from_user.id
 
+    user_data = users_collection.find_one({"user_id})
+
+    if not user_data:
+        message.reply("You haven't created a character yet. Use the /character command to create one.")
+        return
+
+    character_data = user_data[user_id]
+    user_profile = f"""
+┏━━━━━━━━━━━━━━━━━
+┣ Umm Player profile 
+┗━━━━━━━━━━━━━━━━━
+┏━⦿
+┣⬢ Name : {character_data['name']}
+┣⬢ Health : {character_data['health']}
+┣⬢ Celeus : {character_data['celeus']}
+┣⬢ Player ID : {character_data['player_id']}
+┗━━━━━━━━━⦿
+
+┏━⦿
+┣ Exp : {character_data['experience']}
+┣ Level : {character_data['level']}
+┣ Rank : {character_data['rank']}
+┣ Location : {character_data['location']}
+┣ Battles Win : {character_data['battle_win']}
+┣ Total Battles : {character_data['total_win']}
+┗━━━━━━━━━⦿
+"""
+
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton("Family", callback_data="family_profile"),
+         InlineKeyboardButton("Shop", callback_data="open_shop")]
+    ])
+
+    client.send_photo(
+        message.chat.id,
+        photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg",
+        caption=user_profile,
+        reply_markup=reply_markup
+    )
+
+
+
+
+
+
+def get_arg(message):
+    msg = message.text
+    msg = msg.replace(" ", "", 1) if msg[1] == " " else msg
+    split = msg[1:].replace("\n", " \n").split(" ")
+    if " ".join(split[1:]).strip() == "":
+        return ""
+    return " ".join(split[1:])
 
 
 
