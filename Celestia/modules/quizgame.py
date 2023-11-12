@@ -226,7 +226,7 @@ async def callback_answer(client, query):
 
 
 
-# ==============quizes photo================ #
+# =================> ǫᴜɪᴢ-ᴄʜᴀʀᴀᴄᴛᴇʀs <================= #
 
 
 result = questions_collection.find()
@@ -242,8 +242,8 @@ async def show_photo(_, message):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("Back", callback_data="back"),
-                InlineKeyboardButton("Next", callback_data="next")                
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="back"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="next")                
             ]
         ]
     )
@@ -265,8 +265,8 @@ async def next_photo(_, query):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("Back", callback_data="back"),
-                InlineKeyboardButton("Next", callback_data="next")         
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="back"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="next")         
             ]
         ]
     )
@@ -276,7 +276,7 @@ async def next_photo(_, query):
          reply_markup=keyboard
        )
     else:
-        await query.answer("This is not for you !!")
+        await query.answer("ʀʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ !!")
 
 
 
@@ -293,8 +293,8 @@ async def back_photo(_, query):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("Back", callback_data="back"),
-                InlineKeyboardButton("Next", callback_data="next")                
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="back"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="next")                
             ]
         ]
     )
@@ -306,24 +306,26 @@ async def back_photo(_, query):
       )
 
     else:
-        await query.answer("This is not for you !!")
+        await query.answer("ᴛʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ !!")
 
 
-# =========== SHOP 
+
+# =================> ɢᴀᴍᴇ-sʜᴏᴘs <================= #
 
 @Celestia.on_message(filters.command("shop"))
 async def shops(_, message):
     buttons = InlineKeyboardMarkup(
         [[
-                InlineKeyboardButton("CHARACTER", callback_data="character_"),
-                InlineKeyboardButton("MAGIC", callback_data="maintainer_")                
+                InlineKeyboardButton("ᴄʜᴀʀᴀᴄᴛᴇʀ", callback_data="character_"),
+                InlineKeyboardButton("ᴍᴀɢɪᴄ", callback_data="maintainer_")                
         ]]
     )
-    await message.reply_photo(photo="https://telegra.ph/file/e325e6a24e9a2227ef3d2.jpg", caption="Abe bhai shop hai or abhi dukhaan bnd hai kl anaa", reply_markup=buttons)
+    await message.reply_photo(photo="https://telegra.ph/file/e325e6a24e9a2227ef3d2.jpg", caption="ᴛᴇxᴛ", reply_markup=buttons)
 
 
 
-# =============== character photo ============== #
+# =================> sʜᴏᴘ-ᴄʜᴀʀᴀᴄᴛᴇʀs <================= #
+
 result = character_collection.find()
 char = list(result)
 char_index = 0
@@ -342,7 +344,7 @@ async def char_photo(_, query):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="backc"),
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="backc"),
                 InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")
             ]
         ]
@@ -355,13 +357,11 @@ async def char_photo(_, query):
     if user_id == sexi_id:
         await query.message.edit_media(
             media=InputMediaPhoto(photo,
-                                   caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
+            caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
             reply_markup=keyboard
         )
     else:
-        await query.answer("abe bsdk!!")
-
-
+        await query.answer("ᴛʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ !!")
 
 
     
@@ -376,8 +376,8 @@ async def show_photo(_, message):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("Back", callback_data="backc"),
-                InlineKeyboardButton("Next", callback_data="nextc")                
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="backc"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")                
             ]
         ]
     )
@@ -404,7 +404,7 @@ async def next_char(_, query):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="backc"),
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="backc"),
                 InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")
             ]
         ]
@@ -416,11 +416,12 @@ async def next_char(_, query):
     if user_id == sexi_id:
         await query.message.edit_media(
             media=InputMediaPhoto(photo,
-                                   caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
+            caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
             reply_markup=keyboard
         )
     else:
         await query.answer("ᴛʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ !!")
+
 
 
 @Celestia.on_callback_query(filters.regex("^backc$"))
@@ -436,7 +437,7 @@ async def back_char(_, query):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="backc"),
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="backc"),
                 InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")
             ]
         ]
@@ -448,7 +449,7 @@ async def back_char(_, query):
     if user_id == sexi_id:
         await query.message.edit_media(
             media=InputMediaPhoto(photo,
-                                   caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
+            caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
             reply_markup=keyboard
         )
     else:
