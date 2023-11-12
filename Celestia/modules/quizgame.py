@@ -371,7 +371,9 @@ async def char_photo(_, query):
 
 
 
-@Celestia.on_message(filters.command("quizes"))
+
+    
+@Celestia.on_message(filters.command("char"))
 async def show_photo(_, message):
     
     photo = char[char_index]["img_url"]
@@ -389,10 +391,12 @@ async def show_photo(_, message):
     )
 
     await message.reply_photo(
-            photo,
-            caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
-            reply_markup=keyboard
-        )
+        photo,
+        caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells",
+        reply_markup=keyboard
+    )
+
+
 
 
 
