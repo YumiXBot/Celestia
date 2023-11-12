@@ -69,7 +69,7 @@ async def add_quiz(_, message):
     await message.reply("**🎉 ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴs sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ ɪɴ ʏᴏᴜʀ ǫᴜɪᴢ ᴅᴀᴛᴀʙᴀsᴇ !**")
 
 
-# =================> ADD - CHARACTER<================= #
+# =================> sʜᴏᴘ-ᴄʜᴀʀᴀᴄᴛᴇʀs <================= #
 
 @Celestia.on_message(filters.command("addchar") & filters.user(SUDO_USERS))
 async def add_char(_, message):
@@ -115,14 +115,7 @@ async def add_char(_, message):
 
 
 
-
-
-
-
-
-
-
-
+# =================> ǫᴜɪᴢ-ᴡᴀᴄᴛᴄʜᴇʀ <================= #
 
 @Celestia.on_message(filters.group, group=11)
 async def _watcher(client, message):
@@ -173,12 +166,10 @@ async def _watcher(client, message):
                 await asyncio.sleep(e.x)
 
     
+# =================> ᴅᴇʟ-ᴅᴀᴛᴀʙᴀsᴇs <================= #
 
-
-
-        
 @Celestia.on_message(filters.command("deldb") & filters.user(SUDO_USERS))
-async def delete_document(_, message):
+async def delete_quizes(_, message):
     try:
         query = message.text.split(None, 1)[1]
         msg = await message.reply("ᴘʀᴏᴄᴇssɪɴɢ...")
@@ -193,11 +184,11 @@ async def delete_document(_, message):
 
 
 @Celestia.on_message(filters.command("delchar") & filters.user(SUDO_USERS))
-async def delete_document(_, message):
+async def delete_character(_, message):
     try:
         query = message.text.split(None, 1)[1]
         msg = await message.reply("ᴘʀᴏᴄᴇssɪɴɢ...")
-        result = shops_collection.delete_one({"_id": ObjectId(query)})
+        result = character_collection.delete_one({"_id": ObjectId(query)})
 
         if result.deleted_count == 1:
             await msg.edit("**ᴏʙᴊᴇᴄᴛ ɪᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**")
@@ -207,6 +198,7 @@ async def delete_document(_, message):
         await msg.edit(f"**ᴇʀʀᴏʀ**: {str(e)}")
 
 
+# =================> ǫᴜɪᴢ-ᴀɴsᴡᴇʀ <================= #
 
 @Celestia.on_callback_query(filters.regex(r'^answer_\w+'))
 async def callback_answer(client, query):
@@ -220,16 +212,16 @@ async def callback_answer(client, query):
 
         if user_answer == correct_answer:
             DICT.pop(chat_id)
-            await query.answer("your answer is correct!!")
+            await query.answer("ʏᴏᴜʀ ᴀɴsᴡᴇʀ ɪs ᴄᴏʀʀᴇᴄᴛ !!")
 
             await create_account(user_id,query.from_user.username)
             coins = await user_wallet(user_id)     
             await gamesdb.update_one({'user_id' : user_id},{'$set' : {'coins' : coins + 300}},upsert=True)
-            await query.edit_message_text("Congratulations! Your guess is spot on, and you've won 300 shells. Well done!\nCurrent Balance ✑  `{0:,}` Shell".format(coins+300))    
+            await query.edit_message_text("🎉 ᴄᴏɴɢʀᴀᴛᴜʟᴀᴛɪᴏɴs {query.from_user.mention}! ʏᴏᴜʀ ɢᴜᴇss ɪs sᴘᴏᴛ ᴏɴ, ᴀɴᴅ ʏᴏᴜ'ᴠᴇ ᴡᴏɴ 300 sʜᴇʟʟs. ᴡᴇʟʟ ᴅᴏɴᴇ!\nᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ✑  `{0:,}` sʜᴇʟʟs".format(coins+300))    
                               
         else:
-            await query.answer("your answer is wrong!!")
-            await query.edit_message_text(f"Unfortunately, your guess wasn't accurate this time, so you won't be awarded any shells. Keep trying, and better luck next time!")
+            await query.answer("ʏᴏᴜʀ ᴀɴsᴡᴇʀ ɪs ᴡʀᴏɴɢ !!")
+            await query.edit_message_text(f"ᴜɴғᴏʀᴛᴜɴᴀᴛᴇʟʏ {query.from_user.mention}!, ʏᴏᴜʀ ɢᴜᴇss ᴡᴀsɴ'ᴛ ᴀᴄᴄᴜʀᴀᴛᴇ ᴛʜɪs ᴛɪᴍᴇ, sᴏ ʏᴏᴜ ᴡᴏɴ'ᴛ ʙᴇ ᴀᴡᴀʀᴅᴇᴅ ᴀɴʏ sʜᴇʟʟs so ʏᴏᴜ ᴡᴏɴ'ᴛ ʙᴇ ᴀᴡᴀʀᴅᴇᴅ ᴀɴʏ sʜᴇʟʟs. ᴋᴇᴇᴘ ᴛʀʏɪɴɢ, ᴀɴᴅ ʙᴇᴛᴛᴇʀ ʟᴜᴄᴋ ɴᴇxᴛ ᴛɪᴍᴇ !")
 
 
 
