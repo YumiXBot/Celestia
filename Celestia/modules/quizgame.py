@@ -324,6 +324,25 @@ async def shops(_, message):
 
 
 
+@Celestia.on_message(filters.command("explore"))
+async def explore_command(_, message):
+    result = questions_collection.find()
+    lol = list(result)
+    data = random.choice(lol)
+    photo = data["quiz_url"]
+
+    button = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("let's fight", callback_data="maintainer")
+            ]
+        ]
+    )
+
+    await message.reply_photo(photo, caption="You wanna fight with me bwhahaha", reply_markup=button)
+
+
+
 # =================> sʜᴏᴘ-ᴄʜᴀʀᴀᴄᴛᴇʀs <================= #
 
 result = character_collection.find()
