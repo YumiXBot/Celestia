@@ -332,7 +332,6 @@ async def shops(_, message):
 
 
 # =============== character photo ============== #
-"""
 result = shops_collection.find()
 char = list(result)
 char_index = 0
@@ -371,6 +370,32 @@ async def char_photo(_, query):
         await query.answer("abe bsdk!!")
 
 
+
+@Celestia.on_message(filters.command("quizes"))
+async def show_photo(_, message):
+    
+    photo = char[char_index]["img_url"]
+    name = char[char_index]["name"]
+    level = char[char_index]["level"]
+    price = char[char_index]["price"]
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("Back", callback_data="backc"),
+                InlineKeyboardButton("Next", callback_data="nextc")                
+            ]
+        ]
+    )
+
+    await message.reply_photo(
+            photo,
+            caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
+            reply_markup=keyboard
+        )
+
+
+
 @Celestia.on_callback_query(filters.regex("^nextc$"))
 async def next_char(_, query):
     global char_index
@@ -433,63 +458,7 @@ async def back_char(_, query):
     else:
         await query.answer("ᴛʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ !!")
 
-"""
-
-
-
-result = shops_collection.find()
-char = list(result)
-char_index = 0
-
-def update_character(query, index):
-    photo = char[index]["img_url"]
-    name = char[index]["name"]
-    level = char[index]["level"]
-    price = char[index]["price"]
-
-    keyboard = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="backc"),
-                InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")
-            ]
-        ]
-    )
-
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexi_id = reply.from_user.id
-
-    if user_id == sexi_id:
-        query.message.edit_media(
-            media=InputMediaPhoto(photo,
-                                   caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
-            reply_markup=keyboard
-        )
-    else:
-        query.answer("ᴛʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ !!")
-
-@Celestia.on_callback_query(filters.regex("^character_$"))
-async def char_photo(_, query):
-    global char_index
-    char_index = 0  # Reset index when entering character view
-    update_character(query, char_index)
-
-@Celestia.on_callback_query(filters.regex("^nextc$"))
-async def next_char(_, query):
-    global char_index
-    if char_index < len(char) - 1:
-        char_index += 1
-    update_character(query, char_index)
-
-@Celestia.on_callback_query(filters.regex("^backc$"))
-async def back_char(_, query):
-    global char_index
-    if char_index > 0:
-        char_index -= 1
-    update_character(query, char_index)
 
 
 
 
-        
