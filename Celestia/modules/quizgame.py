@@ -334,7 +334,8 @@ async def explore_command(_, message):
     button = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("let's fight", callback_data="maintainer")
+                InlineKeyboardButton("let's fight", callback_data="maintainer_"),
+                InlineKeyboardButton("info", callback_data="maintainer_")
             ]
         ]
     )
