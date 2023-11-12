@@ -1,693 +1,480 @@
-import random
-from Celestia import Celestia
+import asyncio
+from bson import ObjectId
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from pyrogram.types import InputMediaPhoto
+from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto
+import pymongo, re, random
+from config import MONGO_URL, SUDO_USERS
+from Celestia import Celestia
+from Celestia.modules.games import *
 
 
 
-def get_arg(message):
-    msg = message.text
-    msg = msg.replace(" ", "", 1) if msg[1] == " " else msg
-    split = msg[1:].replace("\n", " \n").split(" ")
-    if " ".join(split[1:]).strip() == "":
-        return ""
-    return " ".join(split[1:])
+client = pymongo.MongoClient(MONGO_URL)
+db = client["quiz_games"]
+questions_collection = db["questions"]
+character_collection = db["characters"]
+users_collection = db["game_users"]
 
 
+DICT = {}
 
-
-user_database = {}
-user_family = {}
-
-
-user_state = {}
-choose_family = {}
-
-
-@Celestia.on_message(filters.command("character"))
-def character_creation(client, message):
-    user_id = message.from_user.id
-
-    if user_id in user_database:
-        client.send_message(message.chat.id, "You have already chosen a character.")
-        return
-
-    character_name = " ".join(message.command[1:])
-    if character_name:
-        user_database[user_id] = {
-            "name": character_name,
-            "health": 100,
-            "rank": "Novice Traveler",
-            "partner": None,
-            "experience": "[▰▱▱▱▱]",
-            "level": 1,
-            "celeus": 10000,
-            "location": None,
-            "battle_win": 0,
-            "total_win": 0,
-            "player_id": user_id
-        }
-        user_state[user_id] = "character_created"
-        client.send_photo(message.chat.id, photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=f"Character {character_name} created! You can now use the /fight command.")
-
-
-
-@Celestia.on_message(filters.command("profile", prefixes="/"))
-def profile_command(client, message):
-    user_id = message.from_user.id
-
-    if user_id not in user_database:
-        message.reply("You haven't created a character yet. Use the /character command to create one.")
-        return
-
-    character_data = user_database[user_id]
-    user_profile = f"""
-┏━━━━━━━━━━━━━━━━━
-┣ Umm Player profile 
-┗━━━━━━━━━━━━━━━━━
-┏━⦿
-┣⬢ Name : {character_data['name']}
-┣⬢ Health : {character_data['health']}
-┣⬢ Celeus : {character_data['celeus']}
-┣⬢ Player ID : {character_data['player_id']}
-┗━━━━━━━━━⦿
-
-┏━⦿
-┣ Exp : {character_data['experience']}
-┣ Level : {character_data['level']}
-┣ Rank : {character_data['rank']}
-┣ Location : {character_data['location']}
-┣ Battles Win : {character_data['battle_win']}
-┣ Total Battles : {character_data['total_win']}
-┗━━━━━━━━━⦿
-"""
-    reply_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Family", callback_data="family_profile"),
-         InlineKeyboardButton("Shop", callback_data="open_shop")]
-    ])
-
-    message.reply_photo(photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile, reply_markup=reply_markup)
-
-
-
-
-
-
-
-
-
-@Celestia.on_message(filters.command("setpartner"))
-def set_partner(client, message):
-    user_id = message.from_user.id
-    name = message.from_user.first_name
-    reply = message.reply_to_message
-
-    if user_id not in user_database:
-        message.reply("Please create your character first using the /character command.")
-        return
-
-    if reply:
-        user = reply.from_user
-        choose_family[user_id] = {
-                "partner": user.id
-                }
-        
-        if user.id not in user_database:
-            message.reply("Target user not found in the database.")
-            return
-
-        if user_id not in user_family:
-            user_family[user_id] = {
-                "partner": None,
-                "friends": [],
-                "son": [],
-                "daughter": [],
-                "sister": [],
-                "brother": []
-            }
-
-        reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_partner"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_partner")]
-        ])
-        message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
-
-    else:
-        message.reply("Please reply to the user you want to set as a partner.")
-
-
-
-@Celestia.on_message(filters.command("setfriend"))
-def set_friend(client, message):
-    user_id = message.from_user.id
-    name = message.from_user.first_name
-    reply = message.reply_to_message
-
-    if user_id not in user_database:
-        message.reply("Please create your character first using the /character command.")
-        return
-
-    if reply:
-        user = reply.from_user
-        
-        choose_family[user_id] = {
-                "friends": user.id
-                }
-        if user.id not in user_database:
-            message.reply("Target user not found in the database.")
-            return
-
-        if user_id not in user_family:
-            user_family[user_id] = {
-                "partner": None,
-                "friends": [],
-                "son": [],
-                "daughter": [],
-                "sister": [],
-                "brother": []
-                
-            }
-
-        reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_friends"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_friends")]
-        ])
-        message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
-
-    else:
-        message.reply("Please reply to the user you want to set as a partner.")
-
-
-@Celestia.on_message(filters.command("setson"))
-def set_son(client, message):
-    user_id = message.from_user.id
-    name = message.from_user.first_name
-    reply = message.reply_to_message
-
-    if user_id not in user_database:
-        message.reply("Please create your character first using the /character command.")
-        return
-
-    if reply:
-        user = reply.from_user
-        choose_family[user_id] = {
-                "son": user.id
-                }
-        if user.id not in user_database:
-            message.reply("Target user not found in the database.")
-            return
-
-        if user_id not in user_family:
-            user_family[user_id] = {
-                "partner": None,
-                "friends": [],
-                "son": [],
-                "daughter": [],
-                "sister": [],
-                "brother": []
-            }
-
-        reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_sons"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_sons")]
-        ])
-        message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
-
-    else:
-        message.reply("Please reply to the user you want to set as a partner.")
-
-
-
-@Celestia.on_message(filters.command("setdaughter"))
-def set_daughter(client, message):
-    user_id = message.from_user.id
-    name = message.from_user.first_name
-    reply = message.reply_to_message
-
-    if user_id not in user_database:
-        message.reply("Please create your character first using the /character command.")
-        return
-
-    if reply:
-        user = reply.from_user
-        choose_family[user_id] = {
-                "daughter": user.id
-                }
-        if user.id not in user_database:
-            message.reply("Target user not found in the database.")
-            return
-
-        if user_id not in user_family:
-            user_family[user_id] = {
-                "partner": None,
-                "friends": [],
-                "son": [],
-                "daughter": [],
-                "sister": [],
-                "brother": []
-            }
-
-        reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_daughters"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_daughters")]
-        ])
-        message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
-
-    else:
-        message.reply("Please reply to the user you want to set as a partner.")
-
-
-
-
-@Celestia.on_message(filters.command("setsister"))
-def set_sister(client, message):
-    user_id = message.from_user.id
-    name = message.from_user.first_name
-    reply = message.reply_to_message
-
-    if user_id not in user_database:
-        message.reply("Please create your character first using the /character command.")
-        return
-
-    if reply:
-        user = reply.from_user
-        choose_family[user_id] = {
-                "sister": user.id
-                }
-        if user.id not in user_database:
-            message.reply("Target user not found in the database.")
-            return
-
-        if user_id not in user_family:
-            user_family[user_id] = {
-                "partner": None,
-                "friends": [],
-                "son": [],
-                "daughter": [],
-                "sister": [],
-                "brother": []
-                
-            }
-
-        reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_sisters"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_sisters")]
-        ])
-        message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
-
-    else:
-        message.reply("Please reply to the user you want to set as a partner.")
-
-
-
-
-@Celestia.on_message(filters.command("setbrother"))
-def set_brother(client, message):
-    user_id = message.from_user.id
-    name = message.from_user.first_name
-    reply = message.reply_to_message
-
-    if user_id not in user_database:
-        message.reply("Please create your character first using the /character command.")
-        return
-
-    if reply:
-        user = reply.from_user
-        choose_family[user_id] = {
-                "brother": user.id
-                }
-        if user.id not in user_database:
-            message.reply("Target user not found in the database.")
-            return
-
-        if user_id not in user_family:
-            user_family[user_id] = {
-                "partner": None,
-                "friends": [],
-                "son": [],
-                "daughter": [],
-                "sister": [],
-                "brother": []
-            }
-
-        reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔴 YES", callback_data="confirm_brothers"),
-             InlineKeyboardButton("🔵 NO", callback_data="cancel_brothers")]
-        ])
-        message.reply_text(f"Hey {name}, would you like to be {user.first_name}'s partner?", reply_markup=reply_markup)
-
-    else:
-        message.reply("Please reply to the user you want to set as a partner.")
-
-
-
-
-
-
-
-@Celestia.on_callback_query(filters.regex("accept_partner"))
-async def callback_accept_partner(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("partner")
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        user_family[sexo_id]["partner"] = partner_id
-        choose_family[sexo_id].pop("partner", None)                
-        await query.answer(f"accepted !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-
-
-@Celestia.on_callback_query(filters.regex("accept_friends"))
-async def callback_accept_friends(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("friends")
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        user_family[sexo_id]["friends"] = partner_id
-        choose_family[sexo_id].pop("friends", None)                
-        await query.answer(f"accepted !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-
-
-
-@Celestia.on_callback_query(filters.regex("accept_sons"))
-async def callback_accept_sons(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("son")
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        user_family[sexo_id]["son"] = partner_id
-        choose_family[sexo_id].pop("son", None)                
-        await query.answer(f"accepted !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-
-
-@Celestia.on_callback_query(filters.regex("accept_daughters"))
-async def callback_accept_daughters(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("daughter")
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        user_family[sexo_id]["daughter"] = partner_id
-        choose_family[sexo_id].pop("daughter", None)                
-        await query.answer(f"accepted !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-
-
-
-
-@Celestia.on_callback_query(filters.regex("accept_sisters"))
-async def callback_accept_sisters(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("sister")
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        user_family[sexo_id]["sister"] = partner_id
-        choose_family[sexo_id].pop("sister", None)                
-        await query.answer(f"accepted !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-
-
-
-
-@Celestia.on_callback_query(filters.regex("accept_brothers"))
-async def callback_accept_brothers(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("brother")
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        user_family[sexo_id]["brother"] = partner_id
-        choose_family[sexo_id].pop("brother", None)                
-        await query.answer(f"accepted !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-
-
-
-
-# ===============> cancel callback <==================== # 
-
-@Celestia.on_callback_query(filters.regex("cancel_partner"))
-async def callback_cancel_partner(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("partner")
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        choose_family[sexo_id].pop("partner", None)                
-        await query.answer(f"rejected !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-
-
-@Celestia.on_callback_query(filters.regex("cancel_friends"))
-async def callback_cancel_friends(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("friends")
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        choose_family[sexo_id].pop("friends", None)                
-        await query.answer(f"rejected !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-
-
-@Celestia.on_callback_query(filters.regex("cancel_sons"))
-async def callback_cancel_sons(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("son")
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        choose_family[sexo_id].pop("son", None)                
-        await query.answer(f"rejected !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-
-
-@Celestia.on_callback_query(filters.regex("cancel_daughters"))
-async def callback_cancel_daughters(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("daughter")
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        choose_family[sexo_id].pop("partner", None)                
-        await query.answer(f"rejected !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-
-@Celestia.on_callback_query(filters.regex("cancel_sisters"))
-async def callback_cancel_sisters(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("sister")
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        choose_family[sexo_id].pop("sister", None)                
-        await query.answer(f"rejected !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-
-
-@Celestia.on_callback_query(filters.regex("cancel_brothers"))
-async def callback_cancel_brothers(client, query):
-    user_id = query.from_user.id
-    reply = query.message.reply_to_message
-    sexo_id = reply.from_user.id
-    partner_id = choose_family[sexo_id].get("brother")
-
-    if user_id == partner_id:
-        print(f"yup present {user_id}")
-        choose_family[sexo_id].pop("brother", None)                
-        await query.answer(f"rejected !!")
-        await query.message.reply("noi noi mujhe nhi aana relationship me !!")
-    else:
-        await query.answer("bhk bsdk!!.")
-
-
-
-
-
-@Celestia.on_callback_query(filters.regex("back_profile"))
-async def back_profile(client, query):
-    user_id = query.from_user.id
-
-    if user_id not in user_database:
-        await query.answer("You haven't created a character yet. Use the /character command to create one.")
-        return
-
-    character_data = user_database[user_id]
-    user_profile = f"""
-┏━━━━━━━━━━━━━━━━━
-┣ Umm Player profile 
-┗━━━━━━━━━━━━━━━━━
-┏━⦿
-┣⬢ Name : {character_data['name']}
-┣⬢ Health : {character_data['health']}
-┣⬢ Celeus : {character_data['celeus']}
-┣⬢ Player ID : {character_data['player_id']}
-┗━━━━━━━━━⦿
-
-┏━⦿
-┣ Exp : {character_data['experience']}
-┣ Level : {character_data['level']}
-┣ Rank : {character_data['rank']}
-┣ Location : {character_data['location']}
-┣ Battles Win : {character_data['battle_win']}
-┣ Total Battles : {character_data['total_win']}
-┗━━━━━━━━━⦿
-"""
-    reply_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Family", callback_data="family_profile"),
-         InlineKeyboardButton("Shop", callback_data="open_shop")]
-    ])
-
-    await query.message.edit_media(
-        media=InputMediaPhoto(media="https://telegra.ph/file/55e27bacddf487d920a1a.jpg", caption=user_profile),
-        reply_markup=reply_markup
-    )
-
-
-
-
-
-
-@Celestia.on_callback_query(filters.regex("family_profile"))
-async def family_profile(client, query):
-    user_id = query.from_user.id
-
-    if user_id not in user_database:
-        await query.answer("You haven't created a character yet. Use the /character command to create one.")
-        return
-
-    character_data = user_database[user_id]
-    character_family = user_family[user_id]
-    user_profile = f"""
-┏━━━━━━━━━━━━━━━━━
-┣ Player family profile 
-┗━━━━━━━━━━━━━━━━━
-
-┏━━━━━━━━━⦿
-┣⬢ Name : {character_data['name']}
-┣⬢ Health : {character_data['health']}
-┣⬢ Celeus : {character_data['celeus']}
-┗━━━━━━━━━⦿
-┏━⦿
-┣ Partner : {character_family['partner']}
-┣ Friends : {character_family['friends']}
-┣ Son : {character_family['son']}
-┣ Daughter : {character_family['daughter']}
-┣ Sister : {character_family['sister']}
-┣ Brother : {character_family['brother']}
-┗━━━━━━━━━⦿
-"""
-    reply_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Back", callback_data="back_profile"),
-         InlineKeyboardButton("Shop", callback_data="open_shop")]
-    ])
-
-    await query.message.edit_media(
-        media=InputMediaPhoto(media="https://graph.org//file/391f2bdd418b41e15b288.jpg", caption=user_profile),
-        reply_markup=reply_markup
-    )
-
-
-
-
-
-
-
-
-
-                
-
-@Celestia.on_message(filters.command("fight", prefixes="/"))
-def fight_command(client, message):
-    user_id = message.from_user.id
-    name = message.from_user.first_name
     
-    reply = message.reply_to_message
-    if reply:
-        target_user = reply.from_user
+    
+# =================> ADD- QUIZ <================= #
+
+@Celestia.on_message(filters.command("addquiz") & filters.user(SUDO_USERS))
+async def add_quiz(_, message):
+    if len(message.text) < 11:
+        return await message.reply("**Please provide the quiz details in the format:**\n\n /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer**")
+    if not message.text.split(maxsplit=1)[1]:
+        return await message.reply("**Please provide the quiz details in the format:**\n\n /addquiz quiz_url+question+option1+option2+option3+option4+correct_answer**")
+    quiz_details = message.text.split(maxsplit=1)[1]
+    data = quiz_details.split("+")
+    if not data[0].startswith("https"):
+        return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ǫᴜɪᴢ ʟɪɴᴋ.**")
+    if not data[1]:
+        return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴ.**")
+    if not data[2:5]:
+        return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ᴏᴘᴛɪᴏɴs.**")
+    if not data[6]:
+        return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ᴄᴏʀʀᴇᴄᴛ ᴀɴsᴡᴇʀᴇ.**")
+    
+    quiz_url, question, option1, option2, option3, option4, correct_answer = data
+    
+    quiz_url = quiz_url
+    question = question.title()
+    option1 = option1.title()
+    option2 = option2.title()
+    option3 = option3.title()
+    option4 = option4.title()
+    correct_answer = correct_answer.title()
+    
+    
+    quiz_data = {
+        "quiz_url": quiz_url,
+        "question": question,
+        "options": [option1, option2, option3, option4],
+        "correct_answer": correct_answer
+    }
+    latest_quiz = questions_collection.find_one(sort=[("_id", -1)])
+    object_id = latest_quiz.get("_id")
+
+    
+    questions_collection.insert_one(quiz_data)
+    await _.send_photo(-1002066177399, photo=quiz_url, caption=f"**📰 ǫᴜᴇsᴛɪᴏɴ**: {question}\n\n**📝 ᴀɴsᴡᴇʀᴇ**: {correct_answer}\n**📊 ɪᴅ**: `{object_id}`", reply_markup=InlineKeyboardMarkup([[
+     InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
+      ]]))
+    await _.send_message(-1001946875647, text=f"**ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴ ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ ǫᴜɪᴢ ɢᴀᴍᴇs**[🎉]({quiz_url})", reply_markup=InlineKeyboardMarkup([[
+     InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
+      ]]))
+    await message.reply("**🎉 ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴs sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ ɪɴ ʏᴏᴜʀ ǫᴜɪᴢ ᴅᴀᴛᴀʙᴀsᴇ !**")
+
+
+# =================> sʜᴏᴘ-ᴄʜᴀʀᴀᴄᴛᴇʀs <================= #
+
+@Celestia.on_message(filters.command("addchar") & filters.user(SUDO_USERS))
+async def add_char(_, message):
+    if len(message.text) < 11:
+        return await message.reply("**Please provide the character shops details in the format:**\n\n /addchar img_url+name+level+price**")
+    if not message.text.split(maxsplit=1)[1]:
+        return await message.reply("**Please provide the character shops details in the format:**\n\n /addchar img_url+name+level+price**")
+    char_details = message.text.split(maxsplit=1)[1]
+    data = char_details.split("+")
+    if not data[0].startswith("https"):
+        return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ɪᴍɢ ʟɪɴᴋ.**")
+    if not data[1]:
+        return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ᴄʜᴀʀᴀᴄᴛᴇʀ ɴᴀᴍᴇ.**")
+    if not data[3]:
+        return await message.reply("**sᴡᴇᴇᴛʜᴇᴀʀᴛ ɪ ᴛʜɪɴᴋ ʏᴏᴜ ғᴏʀɢᴇᴛ ᴄᴏʀʀᴇᴄᴛ ᴘʀɪᴄᴇ.**")
+    
+    img_url, name, level, price = data
+    
+    img_url = img_url
+    name = name.title()
+    level = int(level)
+    price = int(price)
+    
+    
+    char_data = {
+        "img_url": img_url,
+        "name": name,
+        "level": level,
+        "price": price
+    }
+    latest_char = questions_collection.find_one(sort=[("_id", -1)])
+    object_id = latest_char.get("_id")
+
+    
+    character_collection.insert_one(char_data)
+    await _.send_photo(-1002090470079, photo=img_url, caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**💰 ᴘʀɪᴄᴇ**: ${price} Shells\n**📊 ɪᴅ**: `{object_id}`", reply_markup=InlineKeyboardMarkup([[
+     InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
+      ]]))
+    await _.send_message(-1001946875647, text=f"**sʜᴏᴘs ᴀssᴇᴛs ᴜᴘʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴄʜᴇᴄᴋ ᴏɴ sʜᴏᴘs**[🎉]({img_url})", reply_markup=InlineKeyboardMarkup([[
+     InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
+      ]]))
+    await message.reply("**🎉 sʜᴏᴘs ᴀssᴇᴛs sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ ɪɴ ʏᴏᴜʀ sʜᴏᴘs ᴅᴀᴛᴀʙᴀsᴇ !**")
+
+
+
+# =================> ǫᴜɪᴢ-ᴡᴀᴄᴛᴄʜᴇʀ <================= #
+
+@Celestia.on_message(filters.group, group=11)
+async def _watcher(client, message):
+    chat_id = message.chat.id
+    if not message.from_user:
+        return
+
+    if chat_id not in DICT:
+        DICT[chat_id] = {'count': 0, 'running_count': 0, 'quiz_url': None, 'question': None, 'options': None, 'correct_answer': None, 'user_answers': None}
+    
+    DICT[chat_id]['count'] += 1
+
+    if DICT[chat_id]['count'] == 100:
+        result = questions_collection.find()
+        quizes = list(result)
+        data = random.choice(quizes)
+        photo = data["quiz_url"]
+        question = data["question"]
+        options = data["options"]
+        correct = data["correct_answer"]
+        try:
+            keyboard = InlineKeyboardMarkup([
+                [InlineKeyboardButton(option, callback_data=f"answer_{option}")]
+                for option in options
+            ])
+
+            await client.send_photo(
+                chat_id,
+                photo=photo,
+                caption=f"**ǫᴜᴇsᴛɪᴏɴ**: {question}",
+                reply_markup=keyboard
+            )
+            DICT[chat_id]["quiz_url"] = photo
+            DICT[chat_id]["question"] = question
+            DICT[chat_id]["options"] = options
+            DICT[chat_id]["correct_answer"] = correct
+        except errors.FloodWait as e:
+            await asyncio.sleep(e.x)
+    
+    if DICT[chat_id].get('correct_answer'):
+        DICT[chat_id]['running_count'] += 1
+        if DICT[chat_id]['running_count'] == 30:
+            try:
+                correct_answer = DICT[chat_id]['correct_answer']
+                await client.send_message(chat_id, f"****ᴄᴏʀʀᴇᴄᴛ ᴀɴsᴡᴇʀ ɪs **: {correct_answer}\n**ᴍᴀᴋᴇ sᴜʀᴇ ᴛᴏ ʀᴇᴍᴇᴍʙᴇʀ ɪᴛ ɴᴇxᴛ ᴛɪᴍᴇ.**")
+                DICT.pop(chat_id)
+            except errors.FloodWait as e:
+                await asyncio.sleep(e.x)
+
+    
+# =================> ᴅᴇʟ-ᴅᴀᴛᴀʙᴀsᴇs <================= #
+
+@Celestia.on_message(filters.command("deldb") & filters.user(SUDO_USERS))
+async def delete_quizes(_, message):
+    try:
+        query = message.text.split(None, 1)[1]
+        msg = await message.reply("ᴘʀᴏᴄᴇssɪɴɢ...")
+        result = questions_collection.delete_one({"_id": ObjectId(query)})
+
+        if result.deleted_count == 1:
+            await msg.edit("**ᴏʙᴊᴇᴄᴛ ɪᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**")
+        else:
+            await msg.edit("**ᴏʙᴊᴇᴄᴛ ᴅᴏᴇs ɴᴏᴛ ғᴏᴜɴᴅ ᴏʀ ᴄᴏᴜʟᴅ ɴᴏᴛ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ !!**")
+    except Exception as e:
+        await msg.edit(f"**ᴇʀʀᴏʀ**: {str(e)}")
+
+
+@Celestia.on_message(filters.command("delchar") & filters.user(SUDO_USERS))
+async def delete_character(_, message):
+    try:
+        query = message.text.split(None, 1)[1]
+        msg = await message.reply("ᴘʀᴏᴄᴇssɪɴɢ...")
+        result = character_collection.delete_one({"_id": ObjectId(query)})
+
+        if result.deleted_count == 1:
+            await msg.edit("**ᴏʙᴊᴇᴄᴛ ɪᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**")
+        else:
+            await msg.edit("**ᴏʙᴊᴇᴄᴛ ᴅᴏᴇs ɴᴏᴛ ғᴏᴜɴᴅ ᴏʀ ᴄᴏᴜʟᴅ ɴᴏᴛ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ !!**")
+    except Exception as e:
+        await msg.edit(f"**ᴇʀʀᴏʀ**: {str(e)}")
+
+
+# =================> ǫᴜɪᴢ-ᴀɴsᴡᴇʀ <================= #
+
+@Celestia.on_callback_query(filters.regex(r'^answer_\w+'))
+async def callback_answer(client, query):
+    chat_id = query.message.chat.id
+    user_id = query.from_user.id
+    user_answer = query.data.replace('answer_', '')
+
+    if chat_id in DICT and DICT[chat_id].get("correct_answer"):
+        correct_answer = DICT[chat_id]['correct_answer']
+        print(user_answer)
+
+        if user_answer == correct_answer:
+            DICT.pop(chat_id)
+            await query.answer("ʏᴏᴜʀ ᴀɴsᴡᴇʀ ɪs ᴄᴏʀʀᴇᴄᴛ !!")
+
+            await create_account(user_id,query.from_user.username)
+            coins = await user_wallet(user_id)     
+            await gamesdb.update_one({'user_id' : user_id},{'$set' : {'coins' : coins + 300}},upsert=True)
+            await query.edit_message_text(f"🎉 ᴄᴏɴɢʀᴀᴛᴜʟᴀᴛɪᴏɴs {query.from_user.mention}! ʏᴏᴜʀ ɢᴜᴇss ɪs sᴘᴏᴛ ᴏɴ, ᴀɴᴅ ʏᴏᴜ'ᴠᴇ ᴡᴏɴ 300 sʜᴇʟʟs. ᴡᴇʟʟ ᴅᴏɴᴇ!\nᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ✑  `{0:,}` sʜᴇʟʟs".format(coins+300))    
+                              
+        else:
+            await query.answer("ʏᴏᴜʀ ᴀɴsᴡᴇʀ ɪs ᴡʀᴏɴɢ !!")
+            await query.edit_message_text(f"ᴜɴғᴏʀᴛᴜɴᴀᴛᴇʟʏ {query.from_user.mention}!, ʏᴏᴜʀ ɢᴜᴇss ᴡᴀsɴ'ᴛ ᴀᴄᴄᴜʀᴀᴛᴇ ᴛʜɪs ᴛɪᴍᴇ, sᴏ ʏᴏᴜ ᴡᴏɴ'ᴛ ʙᴇ ᴀᴡᴀʀᴅᴇᴅ ᴀɴʏ sʜᴇʟʟs so ʏᴏᴜ ᴡᴏɴ'ᴛ ʙᴇ ᴀᴡᴀʀᴅᴇᴅ ᴀɴʏ sʜᴇʟʟs. ᴋᴇᴇᴘ ᴛʀʏɪɴɢ, ᴀɴᴅ ʙᴇᴛᴛᴇʀ ʟᴜᴄᴋ ɴᴇxᴛ ᴛɪᴍᴇ !")
+
+
+
+
+# =================> ǫᴜɪᴢ-ᴄʜᴀʀᴀᴄᴛᴇʀs <================= #
+
+
+result = questions_collection.find()
+quizzes = list(result)
+current_index = 0
+
+
+@Celestia.on_message(filters.command("quizes"))
+async def show_photo(_, message):
+    
+    photo = quizzes[current_index]["quiz_url"]
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="back"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="next")                
+            ]
+        ]
+    )
+
+    await message.reply_photo(photo=photo, reply_markup=keyboard)
+    
+
+
+
+@Celestia.on_callback_query(filters.regex("^next$"))
+async def next_photo(_, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexi_id = reply.from_user.id
+    global current_index
+    if current_index < len(quizzes) - 1:
+        current_index += 1
+    photo = quizzes[current_index]["quiz_url"]
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="back"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="next")         
+            ]
+        ]
+    )
+    if user_id == sexi_id:
+        await query.message.edit_media(
+         media=InputMediaPhoto(photo),
+         reply_markup=keyboard
+       )
     else:
-        target_user = get_arg(message)
-        if not target_user:
-            client.send_message(message.chat.id, "**Whom should I fight?**")
-            return
-
-    if user_id not in user_database:
-        client.send_message(message.chat.id, "Please create your character first using the /character command.")
-        return
-
-    if target_user.id not in user_database:
-        client.send_message(message.chat.id, "Target user not found in the database.")
-        return
-
-    initiating_user_health = user_database[user_id]["health"]
-    target_user_health = user_database[target_user.id]["health"]
-
-    damage_initiator = random.randint(10, 30)
-    damage_target = random.randint(10, 30)
-
-    initiating_user_health -= damage_target
-    target_user_health -= damage_initiator
-
-    winner = user_id if initiating_user_health > target_user_health else target_user.id
-
-    result_message = f"{name} dealt {damage_initiator} damage. {target_user.first_name} dealt {damage_target} damage.\n"
-    result_message += f"{name} has {initiating_user_health} health. {target_user.first_name} has {target_user_health} health.\n"
-    result_message += f"The winner is {winner}!"
-
-    client.send_message(message.chat.id, result_message)
+        await query.answer("ʀʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ !!")
 
 
+
+@Celestia.on_callback_query(filters.regex("^back$"))
+async def back_photo(_, query):
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexi_id = reply.from_user.id
+    global current_index
+    if current_index > 0:
+        current_index -= 1
+    
+    photo = quizzes[current_index]["quiz_url"]
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="back"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="next")                
+            ]
+        ]
+    )
+
+    if user_id == sexi_id:
+        await query.message.edit_media(
+         media=InputMediaPhoto(photo),
+         reply_markup=keyboard
+      )
+
+    else:
+        await query.answer("ᴛʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ !!")
+
+
+
+# =================> ɢᴀᴍᴇ-sʜᴏᴘs <================= #
+
+@Celestia.on_message(filters.command("shop"))
+async def shops(_, message):
+    buttons = InlineKeyboardMarkup(
+        [[
+                InlineKeyboardButton("ᴄʜᴀʀᴀᴄᴛᴇʀ", callback_data="character_"),
+                InlineKeyboardButton("ᴍᴀɢɪᴄ", callback_data="maintainer_")                
+        ]]
+    )
+    await message.reply_photo(photo="https://telegra.ph/file/e325e6a24e9a2227ef3d2.jpg", caption="ᴛᴇxᴛ", reply_markup=buttons)
+
+
+
+@Celestia.on_message(filters.command("explore"))
+async def explore_command(_, message):
+    result = questions_collection.find()
+    lol = list(result)
+    data = random.choice(lol)
+    photo = data["quiz_url"]
+
+    button = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("let's fight", callback_data="maintainer_"),
+                InlineKeyboardButton("info", callback_data="maintainer_")
+            ]
+        ]
+    )
+
+    await message.reply_photo(photo, caption="You wanna fight with me bwhahaha", reply_markup=button)
+
+
+
+# =================> sʜᴏᴘ-ᴄʜᴀʀᴀᴄᴛᴇʀs <================= #
+
+result = character_collection.find()
+char = list(result)
+char_index = 0
+
+
+
+@Celestia.on_callback_query(filters.regex("^character_$"))
+async def char_photo(_, query):
+    global char_index
+
+    photo = char[char_index]["img_url"]
+    name = char[char_index]["name"]
+    level = char[char_index]["level"]
+    price = char[char_index]["price"]
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="backc"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")
+            ]
+        ]
+    )
+
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexi_id = reply.from_user.id
+
+    if user_id == sexi_id:
+        await query.message.edit_media(
+            media=InputMediaPhoto(photo,
+            caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
+            reply_markup=keyboard
+        )
+    else:
+        await query.answer("ᴛʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ !!")
+
+
+    
+@Celestia.on_message(filters.command("char"))
+async def show_photo(_, message):
+    
+    photo = char[char_index]["img_url"]
+    name = char[char_index]["name"]
+    level = char[char_index]["level"]
+    price = char[char_index]["price"]
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="backc"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")                
+            ]
+        ]
+    )
+
+    await message.reply_photo(
+        photo,
+        caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells",
+        reply_markup=keyboard
+    )
+
+
+
+
+
+@Celestia.on_callback_query(filters.regex("^nextc$"))
+async def next_char(_, query):
+    global char_index
+    if char_index < len(char) - 1:
+        char_index += 1
+    photo = char[char_index]["img_url"]
+    name = char[char_index]["name"]
+    level = char[char_index]["level"]
+    price = char[char_index]["price"]
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="backc"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")
+            ]
+        ]
+    )
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexi_id = reply.from_user.id
+
+    if user_id == sexi_id:
+        await query.message.edit_media(
+            media=InputMediaPhoto(photo,
+            caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
+            reply_markup=keyboard
+        )
+    else:
+        await query.answer("ᴛʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ !!")
+
+
+
+@Celestia.on_callback_query(filters.regex("^backc$"))
+async def back_char(_, query):
+    global char_index
+    if char_index > 0:
+        char_index -= 1
+
+    photo = char[char_index]["img_url"]
+    name = char[char_index]["name"]
+    level = char[char_index]["level"]
+    price = char[char_index]["price"]
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("ᴘʀᴇᴠ", callback_data="backc"),
+                InlineKeyboardButton("ɴᴇxᴛ", callback_data="nextc")
+            ]
+        ]
+    )
+    user_id = query.from_user.id
+    reply = query.message.reply_to_message
+    sexi_id = reply.from_user.id
+
+    if user_id == sexi_id:
+        await query.message.edit_media(
+            media=InputMediaPhoto(photo,
+            caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**📊 ᴘʀɪᴄᴇ**: ${price} Shells"),
+            reply_markup=keyboard
+        )
+    else:
+        await query.answer("ᴛʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ !!")
 
 
 
