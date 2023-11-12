@@ -217,7 +217,7 @@ async def callback_answer(client, query):
             await create_account(user_id,query.from_user.username)
             coins = await user_wallet(user_id)     
             await gamesdb.update_one({'user_id' : user_id},{'$set' : {'coins' : coins + 300}},upsert=True)
-            await query.edit_message_text("🎉 ᴄᴏɴɢʀᴀᴛᴜʟᴀᴛɪᴏɴs {query.from_user.mention}! ʏᴏᴜʀ ɢᴜᴇss ɪs sᴘᴏᴛ ᴏɴ, ᴀɴᴅ ʏᴏᴜ'ᴠᴇ ᴡᴏɴ 300 sʜᴇʟʟs. ᴡᴇʟʟ ᴅᴏɴᴇ!\nᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ✑  `{0:,}` sʜᴇʟʟs".format(coins+300))    
+            await query.edit_message_text(f"🎉 ᴄᴏɴɢʀᴀᴛᴜʟᴀᴛɪᴏɴs {query.from_user.mention}! ʏᴏᴜʀ ɢᴜᴇss ɪs sᴘᴏᴛ ᴏɴ, ᴀɴᴅ ʏᴏᴜ'ᴠᴇ ᴡᴏɴ 300 sʜᴇʟʟs. ᴡᴇʟʟ ᴅᴏɴᴇ!\nᴄᴜʀʀᴇɴᴛ ʙᴀʟᴀɴᴄᴇ ✑  `{0:,}` sʜᴇʟʟs".format(coins+300))    
                               
         else:
             await query.answer("ʏᴏᴜʀ ᴀɴsᴡᴇʀ ɪs ᴡʀᴏɴɢ !!")
