@@ -12,7 +12,7 @@ from Celestia.modules.games import *
 client = pymongo.MongoClient(MONGO_URL)
 db = client["quiz_games"]
 questions_collection = db["questions"]
-shops_collection = db["shops"]
+character_collection = db["characters"]
 
 
 DICT = {}
@@ -69,7 +69,7 @@ async def add_quiz(_, message):
     await message.reply("**🎉 ǫᴜɪᴢ ǫᴜᴇsᴛɪᴏɴs sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ ɪɴ ʏᴏᴜʀ ǫᴜɪᴢ ᴅᴀᴛᴀʙᴀsᴇ !**")
 
 
-# =================> ADD - SHOP <================= #
+# =================> ADD - CHARACTER<================= #
 
 @Celestia.on_message(filters.command("addchar") & filters.user(SUDO_USERS))
 async def add_char(_, message):
@@ -104,7 +104,7 @@ async def add_char(_, message):
     object_id = latest_char.get("_id")
 
     
-    shops_collection.insert_one(char_data)
+    character_collection.insert_one(char_data)
     await _.send_photo(-1002090470079, photo=img_url, caption=f"**📝 ɴᴀᴍᴇ**: {name}\n\n**📈 ʟᴇᴠᴇʟ**: {level}\n**💰 ᴘʀɪᴄᴇ**: ${price} Shells\n**📊 ɪᴅ**: `{object_id}`", reply_markup=InlineKeyboardMarkup([[
      InlineKeyboardButton(f"{message.from_user.first_name}", url=f"https://t.me/{message.from_user.username}"),    
       ]]))
@@ -332,7 +332,7 @@ async def shops(_, message):
 
 
 # =============== character photo ============== #
-result = shops_collection.find()
+result = character_collection.find()
 char = list(result)
 char_index = 0
 
