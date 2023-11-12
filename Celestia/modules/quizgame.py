@@ -13,6 +13,9 @@ client = pymongo.MongoClient(MONGO_URL)
 db = client["quiz_games"]
 questions_collection = db["questions"]
 character_collection = db["characters"]
+users_collection = db["game_users"]
+
+
 
 
 DICT = {}
