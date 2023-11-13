@@ -5,7 +5,7 @@ from pyrogram import filters
 from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from Celestia.modules.quizgame import users_collection
 from pyrogram.types import InputMediaPhoto
-
+from config import SUDO_USERS
 
 
 
