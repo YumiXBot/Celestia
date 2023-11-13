@@ -3,6 +3,7 @@ import importlib
 from pyrogram import idle
 from Celestia import Celestia
 from Celestia.modules import ALL_MODULES
+from Celestia.modules.Games import GAMES_MODULES
 
  
 
