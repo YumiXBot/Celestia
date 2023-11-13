@@ -6,9 +6,9 @@ from Celestia.modules.Games.games import users_collection
 
 """
 character_data = {
-    "vivi": {"image": "", "name": "Vivi", "level": 1},
-    "shikamaru": {"image": "", "name": "Shikamaru", "level": 1},
-    "sado": {"image": "", "name": "Sado", "level": 1}
+    "vivi": {"image": "https://telegra.ph/file/83320930cef11dc2d598e.jpg", "name": "Vivi", "level": 1},
+    "shikamaru": {"image": "https://telegra.ph/file/ef9239db2ae67b44d4616.jpg", "name": "Shikamaru", "level": 1},
+    "sado": {"image": "https://telegra.ph/file/4bc9e6bff0f863ff6a32a.jpg", "name": "Sado", "level": 1}
     }
 
 """
