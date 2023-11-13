@@ -1,4 +1,4 @@
-import random
+import random, re
 from Celestia import Celestia
 from pyrogram import filters
 from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
@@ -12,6 +12,7 @@ character_data = {
     }
 
 """
+
 
 disc1 = """
 ɴᴇꜰᴇʀᴛᴀʀɪ ᴅ. ᴠɪᴠɪ :  ꜱʜᴇ ɪꜱ ᴛʜᴇ ᴘʀɪɴᴄᴇꜱꜱ ᴏꜰ ᴀʟᴀʙᴀꜱᴛᴀ ᴋɪɴɢᴅᴏᴍ. ꜱʜᴇ ᴏɴᴄᴇ ᴡᴏʀᴋᴇᴅ ᴀꜱ ᴀ ᴜɴᴅᴇʀᴄᴏᴠᴇʀᴇᴅ ᴀɢᴇɴᴛ ɪɴ ʙᴀʀᴏQᴜᴇ ᴡᴏʀᴋꜱ.ᴠɪᴠɪ ᴀʟʟɪᴇᴅ ᴡɪᴛʜ ᴛʜᴇ ꜱᴛʀᴀᴡʜᴀᴛꜱ. ꜱʜᴇ ᴀʟᴏɴɢ ꜱᴀɪʟᴇᴅ ᴡɪᴛʜ ᴛʜᴇᴍ ᴛᴏ ᴀʟᴀʙᴀꜱᴛᴀ ᴀɴᴅ ᴛᴏ ᴛᴀᴋᴇ ᴅᴏᴡɴ ᴄʀᴏᴄᴏᴅɪʟᴇ. ᴛʜᴇʀᴇ ʜᴀᴘᴘᴇɴᴇᴅ ᴀ ᴡᴀʀ ᴀɢᴀɪɴꜱᴛ ᴛʜᴇ ᴄɪᴛɪᴢᴇɴꜱ ᴀɴᴅ ᴛʜᴇ ᴍᴇᴍʙᴇʀꜱ ᴏꜰ ʙᴀʀᴏQᴜᴇ ᴡᴏʀᴋꜱ. ɪɴ ᴛʜᴇ ʟᴀꜱᴛ ʟᴜꜰꜰʏ ᴛᴏᴏᴋ ᴅᴏᴡɴ ᴄʀᴏᴄᴏᴅɪʟᴇ ᴀɴᴅ ᴄʀᴏᴄᴏᴅɪʟᴇ ᴡᴀꜱ ꜱᴇɴᴅ ᴛᴏ ᴛʜᴇ ɪᴍᴘᴇʟ ᴅᴏᴡɴ ᴀꜱ ᴀ ᴘʀɪꜱᴏɴᴇʀ. ᴠɪᴠɪ ʙᴇᴄᴀᴍᴇ ᴛʜᴇ ᴘʀɪɴᴄᴇꜱꜱ ᴏɴᴄᴇ ᴀɢᴀɪɴ
@@ -51,7 +52,7 @@ async def character_creation(client, message):
 
 
 @Celestia.on_callback_query(filters.regex(r'^vivi_$'))
-async def vivi_(client, query):  # Added 'client' parameter
+async def vivi_(client, query):  
     keyboard = InlineKeyboardMarkup(
         [
             [
@@ -85,7 +86,7 @@ async def shikamaru_(client, query):  # Added 'client' parameter
 
 
 @Celestia.on_callback_query(filters.regex(r'^sado_$'))
-async def sado_(client, query):  # Added 'client' parameter
+async def sado_(client, query):  
     keyboard = InlineKeyboardMarkup(
         [
             [
@@ -104,16 +105,6 @@ async def sado_(client, query):  # Added 'client' parameter
 
 
     
-
-
-
-
-
-    
-
-
-
-
 
 
 @Celestia.on_callback_query(filters.regex(r'^choose_(Soda|Vivi|Shikamaru)$'))
