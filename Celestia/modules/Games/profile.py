@@ -52,14 +52,16 @@ async def choose_character_callback(client, query):
         "player_id": user_id
     }
 
-    users_collection.insert_one({user_id: users_data})
+    users_collection.insert_one({str(user_id): users_data})
     await query.edit_message_text(f"You have chosen {character_name}! You can now use the /fight command.")
+
+
 
 @Celestia.on_message(filters.command("profile"))
 async def profile_command(client, message):
     user_id = message.from_user.id
 
-    user_data = users_collection.find_one({user_id})
+    user_data = users_collection.find_one({str(user_id)})
 
     if not user_data:
         await message.reply("You haven't created a character yet. Use the /character command to create one.")
