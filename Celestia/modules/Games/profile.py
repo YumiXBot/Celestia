@@ -1,10 +1,11 @@
 import random
 from Celestia import Celestia
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import CallbackQuery InlineKeyboardMarkup, InlineKeyboardButton
 from Celestia.modules.Games.games import users_collection
 
-characters = ["Soda", "Vivi", "Shikamaru"]
+
+
 
 @Celestia.on_message(filters.command("character"))
 async def character_creation(client, message):
@@ -12,11 +13,12 @@ async def character_creation(client, message):
     
 
     keyboard = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(character, callback_data=f"choose_{character}")
-            ] for character in characters
-        ]
+        [[
+                InlineKeyboardButton("", callback_data=f"vivi_"),
+                InlineKeyboardButton("", callback_data=f"shikamaru_")
+        ][
+                InlineKeyboardButton("", callback_data=f"sado_")
+        ]]
     )
 
     await message.reply_photo(
@@ -24,6 +26,8 @@ async def character_creation(client, message):
         caption="Choose your character:",
         reply_markup=keyboard
     )
+
+
 
 @Celestia.on_callback_query(filters.regex(r'^choose_(Soda|Vivi|Shikamaru)$'))
 async def choose_character_callback(client, query):
