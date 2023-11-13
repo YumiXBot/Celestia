@@ -51,7 +51,7 @@ def choose_character_callback(client, query):
     }
 
     users_collection.insert_one({user_id: users_data})
-    client.edit_message(f"You have chosen {character_name}! You can now use the /fight command.")
+    await query.edit_message_text(f"You have chosen {character_name}! You can now use the /fight command.")
 
 
 
@@ -63,7 +63,7 @@ def profile_command(client, message):
     user_data = users_collection.find_one({"user_id})
 
     if not user_data:
-        message.reply("You haven't created a character yet. Use the /character command to create one.")
+        await message.reply("You haven't created a character yet. Use the /character command to create one.")
         return
 
     character_data = user_data[user_id]
@@ -93,12 +93,16 @@ def profile_command(client, message):
          InlineKeyboardButton("Shop", callback_data="open_shop")]
     ])
 
-    client.send_photo(
-        message.chat.id,
+    await message.reply_photo(
         photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg",
         caption=user_profile,
         reply_markup=reply_markup
     )
+
+
+
+
+
 
 
 
