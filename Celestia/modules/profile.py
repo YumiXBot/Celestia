@@ -71,7 +71,7 @@ async def shikamaru_(client, query):  # Added 'client' parameter
     keyboard = InlineKeyboardMarkup(
         [
             [ 
-                InlineKeyboardButton("ᴄʜᴏᴏsᴇ", callback_data="choose_Shikamori")
+                InlineKeyboardButton("ᴄʜᴏᴏsᴇ", callback_data="choose_Shikamaru")
             ],
             [
                 InlineKeyboardButton("◁", callback_data="vivi_"),
