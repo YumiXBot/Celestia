@@ -13,18 +13,21 @@ character_data = {
 
 """
 
+
 @Celestia.on_message(filters.command("character"))
 async def character_creation(client, message):
     user_id = message.from_user.id
-    
 
     keyboard = InlineKeyboardMarkup(
-        [[
-                InlineKeyboardButton("Vivi", callback_data=f"vivi_"),
-                InlineKeyboardButton("Shikamaru", callback_data=f"shikamaru_")
-        ][
-                InlineKeyboardButton("Sado", callback_data=f"sado_")
-        ]]
+        [
+            [
+                InlineKeyboardButton("Vivi", callback_data="vivi_"),
+                InlineKeyboardButton("Shikamaru", callback_data="shikamaru_")
+            ],
+            [
+                InlineKeyboardButton("Sado", callback_data="sado_")
+            ]
+        ]
     )
 
     await message.reply_photo(
@@ -32,6 +35,10 @@ async def character_creation(client, message):
         caption="Choose your character:",
         reply_markup=keyboard
     )
+
+
+
+
 
 
 
