@@ -9,11 +9,8 @@ characters = ["Soda", "Vivi", "Shikamaru"]
 @Celestia.on_message(filters.command("character"))
 async def character_creation(client, message):
     user_id = message.from_user.id
-"""
-    if user_id in users_collection:
-        await client.send_message(message.chat.id, "You have already chosen a character.")
-        return
-"""
+    
+
     keyboard = InlineKeyboardMarkup(
         [
             [
