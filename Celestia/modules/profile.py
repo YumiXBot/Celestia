@@ -1,4 +1,5 @@
 import random, re
+import bson import ObjectId
 from Celestia import Celestia
 from pyrogram import filters
 from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
@@ -174,6 +175,21 @@ async def profile_command(client, message):
         reply_markup=reply_markup
     )
 
+
+
+@Celestia.on_message(filters.command("deluser") & filters.user(SUDO_USERS))
+async def delete_users(_, message):
+    try:
+        query = message.text.split(None, 1)[1]
+        msg = await message.reply("ᴘʀᴏᴄᴇssɪɴɢ...")
+        result = users_collection.delete_one({"_id": ObjectId(query)})
+
+        if result.deleted_count == 1:
+            await msg.edit("**ᴏʙᴊᴇᴄᴛ ɪᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**")
+        else:
+            await msg.edit("**ᴏʙᴊᴇᴄᴛ ᴅᴏᴇs ɴᴏᴛ ғᴏᴜɴᴅ ᴏʀ ᴄᴏᴜʟᴅ ɴᴏᴛ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ !!**")
+    except Exception as e:
+        await msg.edit(f"**ᴇʀʀᴏʀ**: {str(e)}")
 
 
 
