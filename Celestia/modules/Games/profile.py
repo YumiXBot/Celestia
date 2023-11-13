@@ -19,10 +19,10 @@ async def character_creation(client, message):
 
     keyboard = InlineKeyboardMarkup(
         [[
-                InlineKeyboardButton("", callback_data=f"vivi_"),
-                InlineKeyboardButton("", callback_data=f"shikamaru_")
+                InlineKeyboardButton("Vivi", callback_data=f"vivi_"),
+                InlineKeyboardButton("Shikamaru", callback_data=f"shikamaru_")
         ][
-                InlineKeyboardButton("", callback_data=f"sado_")
+                InlineKeyboardButton("Sado", callback_data=f"sado_")
         ]]
     )
 
