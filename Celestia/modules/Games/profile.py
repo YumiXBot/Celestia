@@ -23,8 +23,7 @@ def character_creation(client, message):
         ]
     )
 
-    client.send_photo(
-        message.chat.id,
+    await message.reply_photo(
         photo="https://telegra.ph/file/55e27bacddf487d920a1a.jpg",
         caption="Choose your character:",
         reply_markup=keyboard
