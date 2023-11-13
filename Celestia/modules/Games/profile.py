@@ -27,7 +27,6 @@ disc3 = """
 
 
 
-
 @Celestia.on_message(filters.command("character"))
 async def character_creation(client, message):
     user_id = message.from_user.id
@@ -51,56 +50,66 @@ async def character_creation(client, message):
     )
 
 
-
-
-
 @Celestia.on_callback_query(filters.regex(r'^vivi_$'))
-async def vivi_(_,query):
-keyboard = InlineKeyboardMarkup(
+async def vivi_(client, query):  # Added 'client' parameter
+    keyboard = InlineKeyboardMarkup(
         [
             [
                 InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="maintainer_"),
                 InlineKeyboardButton("ᴄʜᴏᴏsᴇ", callback_data="choose_Vivi")
             ],
         ]
-    )    
-await query.message.edit_media(
-            media=InputMediaPhoto("https://telegra.ph/file/83320930cef11dc2d598e.jpg",
-            caption=f"**📝 ɴᴀᴍᴇ**: ᴠɪᴠɪ\n**📈 ʟᴇᴠᴇʟ**: 1\n\n**ᴅᴇsᴄʀɪᴘᴛɪᴏɴ**: {disc1}"),
-            reply_markup=keyboard
-        )
+    )
+    await query.message.edit_media(
+        media=InputMediaPhoto("https://telegra.ph/file/83320930cef11dc2d598e.jpg",
+                              caption=f"**📝 ɴᴀᴍᴇ**: ᴠɪᴠɪ\n**📈 ʟᴇᴠᴇʟ**: 1\n\n**ᴅᴇsᴄʀɪᴘᴛɪᴏɴ**: {disc1}"),
+        reply_markup=keyboard
+    )
 
-@Celestia.on_callback_query(filters.regex(r'^shikamori_$'))
-async def shikamori_(_,query):
-keyboard = InlineKeyboardMarkup(
+
+@Celestia.on_callback_query(filters.regex(r'^shikamaru_$'))  # Corrected the callback data
+async def shikamaru_(client, query):  # Added 'client' parameter
+    keyboard = InlineKeyboardMarkup(
         [
             [
                 InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="maintainer_"),
                 InlineKeyboardButton("ᴄʜᴏᴏsᴇ", callback_data="choose_Shikamaru")
             ],
         ]
-    )        
-await query.message.edit_media(
-            media=InputMediaPhoto("https://telegra.ph/file/ef9239db2ae67b44d4616.jpg",
-            caption=f"**📝 ɴᴀᴍᴇ**: sʜɪᴋᴀᴍᴏʀɪ\n**📈 ʟᴇᴠᴇʟ**: 1\n\n**ᴅᴇsᴄʀɪᴘᴛɪᴏɴ**: {disc2}"),
-            reply_markup=keyboard
-        )
+    )
+    await query.message.edit_media(
+        media=InputMediaPhoto("https://telegra.ph/file/ef9239db2ae67b44d4616.jpg",
+                              caption=f"**📝 ɴᴀᴍᴇ**: sʜɪᴋᴀᴍᴀʀᴜ\n**📈 ʟᴇᴠᴇʟ**: 1\n\n**ᴅᴇsᴄʀɪᴘᴛɪᴏɴ**: {disc2}"),
+        reply_markup=keyboard
+    )
+
 
 @Celestia.on_callback_query(filters.regex(r'^sado_$'))
-async def sado_(_,query):
-keyboard = InlineKeyboardMarkup(
+async def sado_(client, query):  # Added 'client' parameter
+    keyboard = InlineKeyboardMarkup(
         [
             [
                 InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="maintainer_"),
                 InlineKeyboardButton("ᴄʜᴏᴏsᴇ", callback_data="choose_Sado")
             ],
         ]
-    )        
-await query.message.edit_media(
-            media=InputMediaPhoto("https://telegra.ph/file/4bc9e6bff0f863ff6a32a.jpg",
-            caption=f"**📝 ɴᴀᴍᴇ**: sᴀᴅᴏ\n**📈 ʟᴇᴠᴇʟ**: 1\n\n**ᴅᴇsᴄʀɪᴘᴛɪᴏɴ**: {disc3}"),
-            reply_markup=keyboard
-        )    
+    )
+    await query.message.edit_media(
+        media=InputMediaPhoto("https://telegra.ph/file/4bc9e6bff0f863ff6a32a.jpg",
+                              caption=f"**📝 ɴᴀᴍᴇ**: sᴀᴅᴏ\n**📈 ʟᴇᴠᴇʟ**: 1\n\n**ᴅᴇsᴄʀɪᴘᴛɪᴏɴ**: {disc3}"),
+        reply_markup=keyboard
+    )
+
+
+
+
+    
+
+
+
+
+
+    
 
 
 
