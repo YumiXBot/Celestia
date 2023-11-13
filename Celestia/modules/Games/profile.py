@@ -42,8 +42,7 @@ def choose_character_callback(client, query):
         "rank": "Novice Traveler",
         "partner": None,
         "experience": "[▰▱▱▱▱]1%",
-        "level": 1,
-        "Shells": 0,
+        "level": 1,  
         "location": None,
         "battle_win": 0,
         "total_win": 0,
@@ -60,13 +59,13 @@ def choose_character_callback(client, query):
 def profile_command(client, message):
     user_id = message.from_user.id
 
-    user_data = users_collection.find_one({"user_id})
+    user_data = users_collection.find_one({user_id})
 
     if not user_data:
         await message.reply("You haven't created a character yet. Use the /character command to create one.")
         return
 
-    character_data = user_data[user_id]
+    character_data = user_data
     user_profile = f"""
 ┏━━━━━━━━━━━━━━━━━
 ┣ Umm Player profile 
@@ -74,7 +73,7 @@ def profile_command(client, message):
 ┏━⦿
 ┣⬢ Name : {character_data['name']}
 ┣⬢ Health : {character_data['health']}
-┣⬢ Celeus : {character_data['celeus']}
+┣⬢ Celeus : 0
 ┣⬢ Player ID : {character_data['player_id']}
 ┗━━━━━━━━━⦿
 
