@@ -5,14 +5,7 @@ from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardBu
 from Celestia.modules.quizgame import users_collection
 from pyrogram.types import InputMediaPhoto
 
-"""
-character_data = {
-    "vivi": {"image": "https://telegra.ph/file/83320930cef11dc2d598e.jpg", "name": "Vivi", "level": 1},
-    "shikamaru": {"image": "https://telegra.ph/file/ef9239db2ae67b44d4616.jpg", "name": "Shikamaru", "level": 1},
-    "sado": {"image": "https://telegra.ph/file/4bc9e6bff0f863ff6a32a.jpg", "name": "Sado", "level": 1}
-    }
 
-"""
 
 
 disc1 = """
@@ -56,9 +49,12 @@ async def character_creation(client, message):
 async def vivi_(client, query):  
     keyboard = InlineKeyboardMarkup(
         [
-            [
-                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="maintainer_"),
+            [ 
                 InlineKeyboardButton("ᴄʜᴏᴏsᴇ", callback_data="choose_Vivi")
+            ],
+            [
+                InlineKeyboardButton("◁", callback_data="sado_"),
+                InlineKeyboardButton("▷", callback_data="shikamaru_"),
             ],
         ]
     )
@@ -73,9 +69,12 @@ async def vivi_(client, query):
 async def shikamaru_(client, query):  # Added 'client' parameter
     keyboard = InlineKeyboardMarkup(
         [
+            [ 
+                InlineKeyboardButton("ᴄʜᴏᴏsᴇ", callback_data="choose_Shikamori")
+            ],
             [
-                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="maintainer_"),
-                InlineKeyboardButton("ᴄʜᴏᴏsᴇ", callback_data="choose_Shikamaru")
+                InlineKeyboardButton("◁", callback_data="vivi_"),
+                InlineKeyboardButton("▷", callback_data="sado_"),
             ],
         ]
     )
@@ -90,9 +89,12 @@ async def shikamaru_(client, query):  # Added 'client' parameter
 async def sado_(client, query):  
     keyboard = InlineKeyboardMarkup(
         [
-            [
-                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="maintainer_"),
+            [ 
                 InlineKeyboardButton("ᴄʜᴏᴏsᴇ", callback_data="choose_Sado")
+            ],
+            [
+                InlineKeyboardButton("◁", callback_data="shikamori_"),
+                InlineKeyboardButton("▷", callback_data="vivi_"),
             ],
         ]
     )
