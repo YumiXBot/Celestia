@@ -4,13 +4,14 @@ from pyrogram import filters
 from pyrogram.types import CallbackQuery InlineKeyboardMarkup, InlineKeyboardButton
 from Celestia.modules.Games.games import users_collection
 
-
+"""
 character_data = {
     "vivi": {"image": "", "name": "Vivi", "level": 1},
     "shikamaru": {"image": "", "name": "Shikamaru", "level": 1},
     "sado": {"image": "", "name": "Sado", "level": 1}
     }
 
+"""
 
 @Celestia.on_message(filters.command("character"))
 async def character_creation(client, message):
