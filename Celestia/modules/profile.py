@@ -108,7 +108,7 @@ async def sado_(client, query):
     
 
 
-@Celestia.on_callback_query(filters.regex(r'^choose_(Soda|Vivi|Shikamaru)$'))
+@Celestia.on_callback_query(filters.regex(r'^choose_(Sado|Vivi|Shikamaru)$'))
 async def choose_character_callback(client, query):
     user_id = query.from_user.id
     character_name = query.data.split('_')[1]
@@ -120,9 +120,8 @@ async def choose_character_callback(client, query):
         "partner": None,
         "experience": "[▰▱▱▱▱]1%",
         "level": 1,  
-        "location": None,
-        "battle_win": 0,
-        "total_win": 0,
+        "battel_win": 0,
+        "total_bettel": 0,
         "player_id": user_id
     }
 
@@ -135,7 +134,7 @@ async def choose_character_callback(client, query):
 async def profile_command(client, message):
     user_id = message.from_user.id
 
-    user_data = users_collection.find_one({str(user_id)})
+    user_data = users_collection.find_one({"_id": str(user_id)})
 
     if not user_data:
         await message.reply("You haven't created a character yet. Use the /character command to create one.")
@@ -149,15 +148,14 @@ async def profile_command(client, message):
 ┏━⦿
 ┣⬢ Name : {character_data['name']}
 ┣⬢ Health : {character_data['health']}
-┣⬢ Celeus : 0
-┣⬢ Player ID : {character_data['player_id']}
+┣⬢ Shells : 0
+┣⬢ Player ID : {character_data['player_id']}  # Change 'player_id' to '_id'
 ┗━━━━━━━━━⦿
 
 ┏━⦿
 ┣ Exp : {character_data['experience']}
 ┣ Level : {character_data['level']}
 ┣ Rank : {character_data['rank']}
-┣ Location : {character_data['location']}
 ┣ Battles Win : {character_data['battle_win']}
 ┣ Total Battles : {character_data['total_win']}
 ┗━━━━━━━━━⦿
@@ -173,5 +171,9 @@ async def profile_command(client, message):
         caption=user_profile,
         reply_markup=reply_markup
     )
+
+
+
+
 
 
