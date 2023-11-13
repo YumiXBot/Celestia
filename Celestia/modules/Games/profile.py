@@ -40,6 +40,21 @@ async def character_creation(client, message):
 
 
 
+@Celestia.on_callback_query(filters.regex(r'^vivi_$'))
+async def vivi_(_,query):
+
+
+@Celestia.on_callback_query(filters.regex(r'^vivi_$'))
+async def shikamori_(_,query):
+
+
+@Celestia.on_callback_query(filters.regex(r'^vivi_$'))
+async def sado_(_,query):
+    
+
+
+
+
 
 
 @Celestia.on_callback_query(filters.regex(r'^choose_(Soda|Vivi|Shikamaru)$'))
