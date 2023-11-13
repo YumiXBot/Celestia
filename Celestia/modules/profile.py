@@ -1,5 +1,5 @@
 import random, re
-import bson import ObjectId
+from bson import ObjectId
 from Celestia import Celestia
 from pyrogram import filters
 from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
