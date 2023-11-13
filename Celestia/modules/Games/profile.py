@@ -6,13 +6,12 @@ from Celestia.modules.Games.games import users_collection
 
 characters = ["Soda", "Vivi", "Shikamaru"]
 
-
 @Celestia.on_message(filters.command("character"))
-def character_creation(client, message):
+async def character_creation(client, message):
     user_id = message.from_user.id
 
     if user_id in users_collection:
-        client.send_message(message.chat.id, "You have already chosen a character.")
+        await client.send_message(message.chat.id, "You have already chosen a character.")
         return
 
     keyboard = InlineKeyboardMarkup(
@@ -29,9 +28,8 @@ def character_creation(client, message):
         reply_markup=keyboard
     )
 
-
 @Celestia.on_callback_query(filters.regex(r'^choose_(Soda|Vivi|Shikamaru)$'))
-def choose_character_callback(client, query):
+async def choose_character_callback(client, query):
     user_id = query.from_user.id
     character_name = query.data.split('_')[1]
 
@@ -51,11 +49,8 @@ def choose_character_callback(client, query):
     users_collection.insert_one({user_id: users_data})
     await query.edit_message_text(f"You have chosen {character_name}! You can now use the /fight command.")
 
-
-
-
 @Celestia.on_message(filters.command("profile"))
-def profile_command(client, message):
+async def profile_command(client, message):
     user_id = message.from_user.id
 
     user_data = users_collection.find_one({user_id})
@@ -99,4 +94,3 @@ def profile_command(client, message):
 
 
 
-            
