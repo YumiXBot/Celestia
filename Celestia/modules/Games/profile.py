@@ -1,7 +1,7 @@
 import random
 from Celestia import Celestia
 from pyrogram import filters
-from pyrogram.types import CallbackQuery InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from Celestia.modules.Games.games import users_collection
 
 """
