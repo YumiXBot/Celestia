@@ -100,7 +100,7 @@ async def sado_(client, query):
         ]
     )
     await query.message.edit_media(
-        media=InputMediaPhoto("https://telegra.ph/file/4bc9e6bff0f863ff6a32a.jpg",
+        media=InputMediaPhoto("https://telegra.ph/file/599c2a0a0373cea5d8d7a.jpg",
                               caption=f"**📝 ɴᴀᴍᴇ**: sᴀᴅᴏ\n**📈 ʟᴇᴠᴇʟ**: 1\n\n**ᴅᴇsᴄʀɪᴘᴛɪᴏɴ**: {disc3}"),
         reply_markup=keyboard
     )
