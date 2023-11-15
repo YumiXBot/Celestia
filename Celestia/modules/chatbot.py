@@ -278,6 +278,7 @@ async def check(_,message):
         user_id = reply.from_user.id 
         
     data = message.text.lower()
+    print(data)
     if "celestia" in data:
         
         for promoted in data:
