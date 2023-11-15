@@ -118,7 +118,7 @@ def append_interaction_to_chat_log(question, answer, chat_log=None):
 
 @Celestia.on_message(filters.text, group=200)
 async def chatbot_reply(celestia: Celestia, message):
-    bot_id = 5997219860
+    bot_id = 6711389550
     reply = message.reply_to_message
     if reply and reply.from_user.id == bot_id:
         query = message.text
