@@ -162,7 +162,7 @@ demote = ["demote"]
 
 # ========================================= #
 
-"""
+
 @Celestia.on_message(filters.command("elestia", prefixes=["c", "C"]) & admin_filter)
 async def restriction_celestia(celestia :Celestia, message):
     reply = message.reply_to_message
@@ -242,7 +242,7 @@ async def restriction_celestia(celestia :Celestia, message):
                 await message.reply(f"Huh, OK, sir!")
         
 
-"""        
+       
 
 
 
@@ -267,86 +267,4 @@ async def assis_(_, message):
 
 
 
-
-@Celestia.on_message(filters.text & filters.group)
-async def check(_,message):
-    reply = message.reply_to_message
-    chat_id = message.chat.id
-    
-    
-    if reply:
-        user_id = reply.from_user.id 
-        
-    data = message.text.lower()
-    print(data)
-    if "celestia" in data:
-        
-        for promoted in data:
-            print(f"present {promoted}")
-            if promoted in promote:
-                await celestia.promote_chat_member(chat_id, user_id, privileges=ChatPrivileges(
-                      can_change_info=True,
-                      can_invite_users=True,
-                      can_delete_messages=True,
-                      can_restrict_members=True,
-                      can_pin_messages=True,
-                      can_promote_members=False,
-                      can_manage_chat=True,
-                      can_manage_video_chats=True,
-                  ))
-                await message.reply(f"OK, sir promoted!")
-        for demoted in data:
-            print(f"present {demoted}")    
-            if demoted in demote:
-                await celestia.promote_chat_member(chat_id, user_id, privileges=ChatPrivileges(
-                      can_change_info=False,
-                      can_invite_users=False,
-                      can_delete_messages=False,
-                      can_restrict_members=False,
-                      can_pin_messages=False,
-                      can_promote_members=False,
-                      can_manage_chat=False,
-                      can_manage_video_chats=False,
-                  )) 
-                await message.reply(f"OK, sir demoted!")
-
-        
-        for banned in data:
-            print(f"present {banned}")
-            if banned in ban:
-                if user_id in SUDO_USERS:
-                    await message.reply(random.choice(strict_txt))
-                else:
-                    await celestia.ban_chat_member(chat_id, user_id)
-                    await message.reply("OK, banned!")
-        for unbanned in data:
-            print(f"present {unbanned}")
-            if unbanned in unban:
-                await celestia.unban_chat_member(chat_id, user_id)
-                await message.reply(f"OK, unbanned!") 
-        for kicked in data:
-            print(f"present {kicked}")
-            if kicked in kick:
-                if user_id in SUDO_USERS:
-                    await message.reply(random.choice(strict_txt))
-                else:
-                    await celestia.ban_chat_member(chat_id, user_id)
-                    await celestia.unban_chat_member(chat_id, user_id)
-                    await message.reply("get lost! bhga diya bhosdi wale ko") 
-        for muted in data:
-            print(f"present {muted}") 
-            if muted in mute:
-                if user_id in SUDO_USERS:
-                    await message.reply(random.choice(strict_txt))
-                else:
-                    permissions = ChatPermissions(can_send_messages=False)
-                    await message.chat.restrict_member(user_id, permissions)
-                    await message.reply(f"muted successfully! Disgusting people.") 
-        for unmuted in data:
-            print(f"present {unmuted}")            
-            if unmuted in unmute:
-                permissions = ChatPermissions(can_send_messages=True)
-                await message.chat.restrict_member(user_id, permissions)
-                await message.reply(f"Huh, OK, sir!")
-    
 
