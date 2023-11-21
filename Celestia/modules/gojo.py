@@ -3,7 +3,7 @@ from pyrogram import filters
 from Celestia import Celestia
 
 
-openai.api_key = "YOUR_API_KEY"
+openai.api_key = "sk-ATPjDUOvAGgl9NLygl39T3BlbkFJHxn1gsew2Zv8Zz0rSMdJh"
 
 
 def generate_response(prompt):
@@ -21,8 +21,9 @@ prompt = "You are Gojo Satoru, responding to someone who just challenged you to 
 
 @Celestia.on_message(filters.command("gojo"))
 async def gojo(_,message):
+    query = message.text.split(maxsplit=1)[1]
   
-    prompt += f"\nGojo Satoru: {user_input}"
+    prompt += f"\nGojo Satoru: {query}"
     response = generate_response(prompt)
     gojo_response = response[len(prompt):].strip()
     await message.reply_text(gojo_response)
